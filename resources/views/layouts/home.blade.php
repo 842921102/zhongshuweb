@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', $locale ?? 'zh-cn') }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ $siteDescription ?: '众鼠科技 - 全场景智能清洁设备服务商' }}">
+    <title>{{ $siteName ?? '众鼠科技' }}</title>
+    <link rel="stylesheet" href="{{ asset('home-assets/home-common.css') }}">
+    <link rel="stylesheet" href="{{ asset('home-assets/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('home-assets/overlay-cleanup.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home-fullpage.css') }}">
+    <style>
+        :root {
+            --theme-default-color: #00A85A;
+            --theme-default-font-color: #00A85A;
+            --theme-default-button-text-color: #ffffff;
+            --theme-default-button-border-color: transparent;
+        }
+    </style>
+    @stack('head')
+</head>
+<body class="home-page @yield('body_class')">
+<div class="home-page">
+    @include('home.partials.header')
+    <div class="site-header-spacer" aria-hidden="true"></div>
+    <main class="new_xz">
+        @yield('content')
+    </main>
+    @include('home.partials.footer')
+</div>
+<script src="{{ asset('home-assets/site-layout.js') }}" defer></script>
+<script src="{{ asset('home-assets/home.js') }}" defer></script>
+@stack('scripts')
+</body>
+</html>

@@ -1,0 +1,143 @@
+/* Arco Pro 风格管理后台增强 */
+html.fi {
+    font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', -apple-system, BlinkMacSystemFont,
+        'Segoe UI', sans-serif;
+}
+
+.fi-body {
+    background-color: #f2f3f5 !important;
+}
+
+.fi-topbar {
+    background-color: #fff !important;
+    border-bottom: 1px solid #e5e6eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.fi-sidebar {
+    background-color: #fff !important;
+    border-inline-end: 1px solid #e5e6eb;
+}
+
+.fi-sidebar-item-btn {
+    border-radius: 4px;
+    margin-inline: 4px;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-btn,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-btn {
+    background-color: #e8f3ff !important;
+    color: #165dff !important;
+}
+
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-icon {
+    color: #165dff !important;
+}
+
+.fi-sidebar-group-label {
+    color: #86909c;
+    font-size: 12px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.fi-section,
+.fi-ta-ctn,
+.fi-fo-repeater {
+    border-radius: 4px;
+    border-color: #e5e6eb !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.fi-page-header-heading {
+    font-weight: 600;
+    color: #1d2129;
+}
+
+.fi-btn.fi-color-primary {
+    box-shadow: none;
+}
+
+.fi-simple-page {
+    background-color: #f2f3f5;
+}
+
+.fi-simple-page .fi-simple-main {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* 工作台快捷入口 */
+.admin-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.admin-quick-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 12px;
+    background: #fff;
+    border: 1px solid #e5e6eb;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #4e5969;
+    transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.admin-quick-card:hover {
+    border-color: #165dff;
+    color: #165dff;
+    box-shadow: 0 2px 8px rgba(22, 93, 255, 0.12);
+}
+
+.admin-quick-card svg {
+    width: 28px;
+    height: 28px;
+    color: #165dff;
+}
+
+.admin-quick-card span {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.admin-welcome {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1d2129;
+    margin-bottom: 4px;
+}
+
+.admin-welcome-sub {
+    font-size: 14px;
+    color: #86909c;
+    margin-bottom: 0;
+}
+
+/* 关于我们页面设置：顶部 Tab 横排居左 */
+#company-page-settings.fi-sc-tabs {
+    width: 100%;
+    max-width: none;
+}
+
+#company-page-settings.fi-sc-tabs > nav.fi-tabs:not(.fi-vertical) {
+    margin-inline: 0 !important;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100%;
+}
+
+#company-page-settings.fi-sc-tabs > nav.fi-tabs .fi-tabs-item {
+    justify-content: flex-start !important;
+    flex-shrink: 0;
+}
+
+#company-page-settings.fi-sc-tabs > .fi-sc-tabs-tab.fi-active {
+    width: 100%;
+}

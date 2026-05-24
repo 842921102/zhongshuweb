@@ -1,0 +1,68 @@
+/* Global cleanup for haze, blur and overlay-like effects on the frontend. */
+
+/* Remove explicit overlay layers that sit on top of media. */
+.news-hero-overlay,
+.newsdetail-hero-overlay,
+.product-hero-overlay,
+.showcase-stage-overlay,
+.support-hero-overlay,
+.relation-hero-overlay,
+.relation-hero-pattern,
+.case-card__shade,
+.gradient-overlay,
+.franchise-hero-overlay,
+.cases-brand-wall__gear,
+.product-color-orbit,
+.product-color-shadow {
+    display: none !important;
+    background: none !important;
+}
+
+/* Remove decorative pseudo-element masks that add haze on top of imagery. */
+.news-hero-media::before,
+.news-hero-media::after,
+.relation-hero-media::before,
+.relation-hero-media::after,
+.culture-about__hero::before,
+.culture-about__hero::after,
+.factory-hero::before,
+.product-color-visual::before,
+.product-card-media::after,
+.support-video-media::after,
+.product-dropdown-card-media::after,
+.cases-brands::before,
+.cases-brands::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    filter: none !important;
+}
+
+/* Remove blur-based glass effects that soften the visual result. */
+.site-header,
+.product-dropdown,
+.site-header__lang-panel,
+.site-header__search-panel,
+.hero__arrow,
+.cases-button--ghost,
+.cases-stat-card,
+.product-button-secondary,
+.product-hero-metrics div,
+.showcase-arrow,
+.stat-card,
+body.joinus-page .news-header,
+body.support-page .news-header {
+    backdrop-filter: none !important;
+}
+
+/* Keep imagery crisp where previous styles relied on blend, blur or dimming. */
+.case-card__overlay-image,
+.cases-brand-wall__item img {
+    mix-blend-mode: normal !important;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.factory-hero-bg img {
+    opacity: 1 !important;
+}
