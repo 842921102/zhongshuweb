@@ -6,15 +6,19 @@ use App\Filament\Resources\Articles\ArticleResource;
 use App\Filament\Resources\Banners\BannerResource;
 use App\Filament\Resources\Categories\CategoryResource;
 use App\Filament\Resources\HomeSections\HomeSectionResource;
+use App\Filament\Resources\JoinApplications\JoinApplicationResource;
+use App\Filament\Resources\ProductConsultations\ProductConsultationResource;
 use App\Filament\Resources\Products\ProductResource;
 use App\Filament\Resources\SiteNavMenus\SiteNavMenuResource;
 use App\Filament\Resources\SiteSettings\SiteSettingResource;
+use App\Filament\Resources\SupportServiceRequests\SupportServiceRequestResource;
+use App\Services\AdminSubmissionStats;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Facades\Auth;
 
 class QuickManageLinks extends Widget
 {
-    protected static ?int $sort = 2;
+    protected static ?int $sort = 3;
 
     protected string $view = 'filament.widgets.quick-manage-links';
 
@@ -25,7 +29,33 @@ class QuickManageLinks extends Widget
      */
     public function getLinks(): array
     {
-        return [
+        $links = [];
+
+        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_JOIN)) {
+            $links[] = [
+                'label' => '简历投递',
+                'url' => JoinApplicationResource::getUrl(),
+                'icon' => 'inbox',
+            ];
+        }
+
+        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_PRODUCT)) {
+            $links[] = [
+                'label' => '产品咨询',
+                'url' => ProductConsultationResource::getUrl(),
+                'icon' => 'chat',
+            ];
+        }
+
+        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_SUPPORT)) {
+            $links[] = [
+                'label' => '售后申请',
+                'url' => SupportServiceRequestResource::getUrl(),
+                'icon' => 'support',
+            ];
+        }
+
+        return array_merge($links, [
             [
                 'label' => '轮播图',
                 'url' => BannerResource::getUrl(),
@@ -61,7 +91,7 @@ class QuickManageLinks extends Widget
                 'url' => SiteSettingResource::getUrl(),
                 'icon' => 'cog',
             ],
-        ];
+        ]);
     }
 
     public function getUserName(): string

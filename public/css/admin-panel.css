@@ -329,3 +329,259 @@ html.fi {
 .fi-sidebar:not(.fi-sidebar-open) .admin-sidebar-clock {
     display: none;
 }
+
+/* —— 主内容区底部版本信息 —— */
+.admin-release-footer {
+    position: fixed;
+    z-index: 25;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 0 16px 10px;
+    pointer-events: none;
+    text-align: center;
+}
+
+.admin-release-footer__inner {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 8px;
+    max-width: min(960px, calc(100vw - 32px));
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--admin-border);
+    box-shadow: 0 4px 18px rgba(16, 24, 40, 0.08);
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--admin-text-secondary);
+    pointer-events: auto;
+}
+
+.admin-release-footer__badge {
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.admin-release-footer__env {
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-release-footer.is-production .admin-release-footer__env {
+    background: #e8f7ef;
+    color: #067647;
+}
+
+.admin-release-footer.is-staging .admin-release-footer__env {
+    background: #fff4e5;
+    color: #b54708;
+}
+
+.admin-release-footer.is-local .admin-release-footer__env {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+.admin-release-footer.is-other .admin-release-footer__env {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+.admin-release-footer__sep {
+    opacity: 0.45;
+}
+
+.admin-release-footer__label {
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-release-footer__details {
+    pointer-events: auto;
+    font-size: 11px;
+    color: var(--admin-text-muted);
+}
+
+.admin-release-footer__details summary {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.admin-release-footer__details summary::-webkit-details-marker {
+    display: none;
+}
+
+.admin-release-footer__dl {
+    margin: 6px 0 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--admin-border);
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.1);
+    text-align: left;
+    min-width: 220px;
+}
+
+.admin-release-footer__dl > div {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.admin-release-footer__dl dt {
+    margin: 0;
+    color: var(--admin-text-muted);
+}
+
+.admin-release-footer__dl dd {
+    margin: 0;
+    color: var(--admin-text);
+    word-break: break-word;
+}
+
+/* —— 工作台：前台数据收集 —— */
+.admin-submission-channels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.admin-submission-channel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--admin-border);
+    background: #fff;
+    text-decoration: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-submission-channel:hover {
+    border-color: var(--admin-primary);
+    box-shadow: 0 4px 14px rgba(43, 164, 113, 0.12);
+}
+
+.admin-submission-channel__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--admin-text);
+}
+
+.admin-submission-channel__pending {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--admin-primary);
+}
+
+.admin-submission-channel__meta {
+    font-size: 12px;
+    color: var(--admin-text-muted);
+}
+
+.admin-submission-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--admin-border);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.admin-submission-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-submission-table th,
+.admin-submission-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--admin-border);
+    white-space: nowrap;
+}
+
+.admin-submission-table th {
+    font-weight: 600;
+    color: var(--admin-text-secondary);
+    background: #fafafa;
+}
+
+.admin-submission-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.admin-submission-summary {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-submission-type {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.admin-submission-type--join {
+    background: #fff4e5;
+    color: #b54708;
+}
+
+.admin-submission-type--product {
+    background: #eff8ff;
+    color: #175cd3;
+}
+
+.admin-submission-type--support {
+    background: #ecfdf3;
+    color: #067647;
+}
+
+.admin-submission-status.is-pending {
+    color: #b54708;
+    font-weight: 600;
+}
+
+.admin-submission-link {
+    color: var(--admin-primary);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.admin-submission-link:hover {
+    text-decoration: underline;
+}
+
+.admin-submission-empty {
+    text-align: center;
+    color: var(--admin-text-muted);
+    padding: 32px !important;
+}
+
+/* 避免底栏挡住分页/保存按钮 */
+.fi-main {
+    padding-bottom: 52px !important;
+}
+
+.fi-simple-main {
+    padding-bottom: 52px !important;
+}

@@ -16,7 +16,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AdminOverviewStats extends StatsOverviewWidget
 {
-    protected static ?int $sort = 1;
+    protected static ?int $sort = 2;
 
     protected ?string $heading = '数据概览';
 

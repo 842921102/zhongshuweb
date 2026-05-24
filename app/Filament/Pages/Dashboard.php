@@ -35,6 +35,8 @@ class Dashboard extends BaseDashboard
     public function getWidgets(): array
     {
         return [
+            \App\Filament\Widgets\SubmissionCollectionStats::class,
+            \App\Filament\Widgets\RecentSubmissions::class,
             \App\Filament\Widgets\AdminOverviewStats::class,
             \App\Filament\Widgets\QuickManageLinks::class,
         ];

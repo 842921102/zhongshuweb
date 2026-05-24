@@ -87,6 +87,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         FilamentView::registerRenderHook(
+            PanelsRenderHook::FOOTER,
+            fn (): string => view('filament.partials.release-footer')->render(),
+        );
+
+        FilamentView::registerRenderHook(
             PanelsRenderHook::SCRIPTS_AFTER,
             fn (): string => Blade::render('<script src="{{ $url }}" defer></script>', [
                 'url' => asset('js/admin-sidebar-nav.js'),
