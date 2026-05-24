@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\Dashboard;
 use Filament\Enums\ThemeMode;
 use Filament\FontProviders\GoogleFontProvider;
@@ -29,8 +30,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
-            ->brandName('官网管理后台')
+            ->login(Login::class)
+            ->brandName('广亨管理系统')
             ->colors([
                 'primary' => Color::hex('#165DFF'),
             ])

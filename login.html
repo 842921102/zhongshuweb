@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 - 广亨管理系统</title>
+  <style>
+  /* ========== CSS 变量 — 品牌色统一管理 ========== */
+  :root {
+    --color-primary: #2563eb;
+    --color-primary-light: #3b82f6;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+    --color-bg-start: #eff6ff;
+    --color-bg-end: #dbeafe;
+    --color-card: #ffffff;
+    --color-text: #1e293b;
+    --color-text-muted: #64748b;
+    --color-border: #e2e8f0;
+    --color-border-focus: #3b82f6;
+    --color-input-bg: #f8fafc;
+    --color-monkey-face: #c4956a;
+    --color-monkey-face-light: #d4a574;
+    --color-monkey-face-dark: #a67c52;
+    --color-monkey-inner: #f5d0b5;
+    --color-monkey-eye-white: #ffffff;
+    --color-monkey-pupil: #2d1810;
+    --color-shadow: rgba(37, 99, 235, 0.08);
+    --color-shadow-hover: rgba(37, 99, 235, 0.18);
+    --radius-card: 24px;
+    --radius-input: 12px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(145deg, var(--color-bg-start) 0%, var(--color-bg-end) 100%);
+    color: var(--color-text);
+    padding: 24px 16px;
+    overflow-x: hidden;
+  }
+
+  /* 背景装饰圆 */
+  body::before,
+  body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    width: 480px;
+    height: 480px;
+    top: -120px;
+    right: -80px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+  }
+  body::after {
+    width: 360px;
+    height: 360px;
+    bottom: -80px;
+    left: -60px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
+  }
+
+  .login-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ========== 猴子头像 ========== */
+  .monkey-container {
+    position: relative;
+    width: 140px;
+    height: 130px;
+    margin-bottom: -20px;
+    z-index: 2;
+  }
+
+  .monkey {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+
+  /* 耳朵 */
+  .monkey-ear {
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    background: var(--color-monkey-face);
+    border-radius: 50%;
+    top: 18px;
+    z-index: 0;
+  }
+  .monkey-ear::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--color-monkey-inner);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .monkey-ear.left { left: -8px; }
+  .monkey-ear.right { right: -8px; }
+
+  /* 脸部 */
+  .monkey-face {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    background: var(--color-monkey-face);
+    border-radius: 50%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    box-shadow: inset -4px -6px 12px rgba(0, 0, 0, 0.08),
+                0 4px 12px rgba(166, 124, 82, 0.25);
+  }
+
+  /* 脸部浅色区域（嘴周围） */
+  .monkey-muzzle {
+    position: absolute;
+    width: 56px;
+    height: 44px;
+    background: var(--color-monkey-inner);
+    border-radius: 50% 50% 45% 45%;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* 眼睛容器 */
+  .monkey-eyes {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 22px;
+    z-index: 3;
+  }
+
+  .monkey-eye {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    background: var(--color-monkey-eye-white);
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: height var(--transition), border-radius var(--transition);
+  }
+
+  .monkey-pupil {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--color-monkey-pupil);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease-out, opacity var(--transition);
+  }
+  .monkey-pupil::after {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    top: 2px;
+    right: 2px;
+  }
+
+  /* 眼皮 — 用于闭眼 / 偷看 */
+  .monkey-eyelid {
+    position: absolute;
+    width: 32px;
+    height: 16px;
+    background: var(--color-monkey-face-dark);
+    border-radius: 50% 50% 0 0;
+    top: 32px;
+    z-index: 4;
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform var(--transition), height var(--transition);
+    pointer-events: none;
+  }
+  .monkey-eyelid.left { left: calc(50% - 38px); }
+  .monkey-eyelid.right { right: calc(50% - 38px); }
+
+  /* 闭眼状态 */
+  .monkey.cover-eyes .monkey-eyelid {
+    transform: scaleY(1);
+    height: 28px;
+    border-radius: 50%;
+    top: 32px;
+  }
+  .monkey.cover-eyes .monkey-pupil {
+    opacity: 0;
+  }
+
+  /* 偷看状态 — 微微睁开 */
+  .monkey.peek-eyes .monkey-eyelid {
+    transform: scaleY(0.55);
+    height: 16px;
+    border-radius: 50% 50% 0 0;
+  }
+  .monkey.peek-eyes .monkey-pupil {
+    opacity: 1;
+    transform: translate(-50%, -30%);
+  }
+
+  /* 嘴巴 */
+  .monkey-mouth {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 12px;
+    border: 3px solid var(--color-monkey-face-dark);
+    border-top: none;
+    border-radius: 0 0 50% 50%;
+    z-index: 3;
+  }
+
+  /* 鼻子 */
+  .monkey-nose {
+    position: absolute;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 10px;
+    background: var(--color-monkey-face-dark);
+    border-radius: 50%;
+    z-index: 3;
+  }
+
+  /* 手臂 — 遮眼时使用 */
+  .monkey-arm {
+    position: absolute;
+    width: 32px;
+    height: 48px;
+    background: var(--color-monkey-face);
+    border-radius: 16px 16px 12px 12px;
+    top: 52px;
+    z-index: 5;
+    transform: translateY(60px) rotate(0deg);
+    opacity: 0;
+    transition: transform var(--transition), opacity var(--transition);
+    box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.1);
+  }
+  .monkey-arm::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 14px;
+    background: var(--color-monkey-face-light);
+    border-radius: 50%;
+  }
+  .monkey-arm.left {
+    left: 8px;
+    transform-origin: bottom center;
+  }
+  .monkey-arm.right {
+    right: 8px;
+    transform-origin: bottom center;
+  }
+
+  .monkey.cover-eyes .monkey-arm {
+    opacity: 1;
+  }
+  .monkey.cover-eyes .monkey-arm.left {
+    transform: translateY(0) rotate(25deg);
+  }
+  .monkey.cover-eyes .monkey-arm.right {
+    transform: translateY(0) rotate(-25deg);
+  }
+
+  .monkey.peek-eyes .monkey-arm {
+    opacity: 1;
+  }
+  .monkey.peek-eyes .monkey-arm.left {
+    transform: translateY(18px) rotate(15deg);
+  }
+  .monkey.peek-eyes .monkey-arm.right {
+    transform: translateY(18px) rotate(-15deg);
+  }
+
+  /* ========== 登录卡片 ========== */
+  .login-card {
+    width: 100%;
+    background: var(--color-card);
+    border-radius: var(--radius-card);
+    padding: 48px 36px 36px;
+    box-shadow: 0 8px 32px var(--color-shadow),
+                0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow var(--transition);
+  }
+
+  .login-card.focused {
+    box-shadow: 0 12px 48px var(--color-shadow-hover),
+                0 4px 16px rgba(37, 99, 235, 0.1);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+
+  .login-subtitle {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  /* 表单 */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .form-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    padding-right: 44px;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    background: var(--color-input-bg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-input);
+    outline: none;
+    transition: border-color var(--transition), background var(--transition),
+                box-shadow var(--transition);
+  }
+
+  .form-input::placeholder {
+    color: #94a3b8;
+  }
+
+  .form-input:focus {
+    border-color: var(--color-border-focus);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  }
+
+  #username {
+    padding-right: 16px;
+  }
+
+  /* 密码显示切换 */
+  .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: color var(--transition), background var(--transition);
+  }
+  .toggle-password:hover {
+    color: var(--color-primary);
+    background: rgba(59, 130, 246, 0.08);
+  }
+  .toggle-password svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* 记住我 & 忘记密码 */
+  .form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: -4px;
+  }
+
+  .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .remember-me input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .remember-me span {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .forgot-password {
+    font-size: 0.8125rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+  .forgot-password:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+  }
+
+  /* 登录按钮 */
+  .login-btn {
+    width: 100%;
+    height: 50px;
+    margin-top: 4px;
+    border: none;
+    border-radius: var(--radius-input);
+    background: var(--color-primary-gradient);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    transition: transform var(--transition), box-shadow var(--transition);
+  }
+
+  .login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
+  }
+
+  .login-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
+
+  .login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* 错误提示 */
+  .error-msg {
+    display: none;
+    font-size: 0.8125rem;
+    color: #ef4444;
+    text-align: center;
+    padding: 8px 12px;
+    background: #fef2f2;
+    border-radius: 8px;
+  }
+  .error-msg.show {
+    display: block;
+  }
+
+  /* ========== 响应式 ========== */
+  @media (max-width: 480px) {
+    .login-card {
+      padding: 44px 24px 28px;
+    }
+    .login-title {
+      font-size: 1.25rem;
+    }
+    .monkey-container {
+      width: 120px;
+      height: 110px;
+    }
+    .monkey {
+      width: 100px;
+      height: 100px;
+    }
+    .monkey-face {
+      width: 96px;
+      height: 96px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrapper">
+    <!-- 猴子头像 -->
+    <div class="monkey-container">
+      <div class="monkey" id="monkey">
+        <div class="monkey-ear left"></div>
+        <div class="monkey-ear right"></div>
+
+        <div class="monkey-face">
+          <div class="monkey-muzzle"></div>
+          <div class="monkey-nose"></div>
+          <div class="monkey-eyes">
+            <div class="monkey-eye left">
+              <div class="monkey-pupil" id="pupilLeft"></div>
+            </div>
+            <div class="monkey-eye right">
+              <div class="monkey-pupil" id="pupilRight"></div>
+            </div>
+          </div>
+          <div class="monkey-mouth"></div>
+        </div>
+
+        <div class="monkey-eyelid left"></div>
+        <div class="monkey-eyelid right"></div>
+
+        <div class="monkey-arm left"></div>
+        <div class="monkey-arm right"></div>
+      </div>
+    </div>
+
+    <!-- 登录卡片 -->
+    <div class="login-card" id="loginCard">
+      <div class="login-header">
+        <h1 class="login-title">广亨管理系统</h1>
+        <p class="login-subtitle">欢迎回来，请登录你的账号</p>
+      </div>
+
+      <form class="login-form" id="loginForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="username">账号</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            class="form-input"
+            placeholder="请输入账号"
+            autocomplete="username"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">密码</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input"
+              placeholder="请输入密码"
+              autocomplete="current-password"
+              required
+            >
+            <button type="button" class="toggle-password" id="togglePassword" aria-label="显示密码">
+              <!-- 眼睛图标（隐藏状态） -->
+              <svg id="iconEyeOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+                <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/>
+              </svg>
+              <!-- 眼睛图标（显示状态，默认隐藏） -->
+              <svg id="iconEyeOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="remember-me">
+            <input type="checkbox" id="remember" name="remember">
+            <span>记住我</span>
+          </label>
+          <a href="#" class="forgot-password" id="forgotLink">忘记密码</a>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <button type="submit" class="login-btn" id="loginBtn">登 录</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ========== DOM 引用 ========== */
+    const monkey       = document.getElementById('monkey');
+    const pupilLeft    = document.getElementById('pupilLeft');
+    const pupilRight   = document.getElementById('pupilRight');
+    const loginCard    = document.getElementById('loginCard');
+    const loginForm    = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+    const iconEyeOff   = document.getElementById('iconEyeOff');
+    const iconEyeOn    = document.getElementById('iconEyeOn');
+    const loginBtn     = document.getElementById('loginBtn');
+    const errorMsg     = document.getElementById('errorMsg');
+    const forgotLink   = document.getElementById('forgotLink');
+
+    /* ========== 状态 ========== */
+    let passwordVisible = false;
+    let activeField = null; // 'username' | 'password' | null
+
+    // 瞳孔最大偏移量（px）
+    const MAX_PUPIL_OFFSET = 6;
+    // 账号输入时，每个字符对应的水平偏移
+    const TYPING_OFFSET_PER_CHAR = 0.8;
+
+    /* ========== 工具函数 ========== */
+
+    /** 限制数值在 min ~ max 之间 */
+    function clamp(val, min, max) {
+      return Math.min(Math.max(val, min), max);
+    }
+
+    /** 设置双眼瞳孔偏移 */
+    function setPupilOffset(x, y) {
+      const tx = clamp(x, -MAX_PUPIL_OFFSET, MAX_PUPIL_OFFSET);
+      const ty = clamp(y, -MAX_PUPIL_OFFSET, MAX_PUPIL_OFFSET);
+      const transform = 'translate(calc(-50% + ' + tx + 'px), calc(-50% + ' + ty + 'px))';
+      pupilLeft.style.transform  = transform;
+      pupilRight.style.transform = transform;
+    }
+
+    /** 重置瞳孔到中心 */
+    function resetPupils() {
+      setPupilOffset(0, 0);
+    }
+
+    /** 根据元素位置计算看向该元素的瞳孔偏移 */
+    function lookAtElement(el) {
+      const monkeyRect = monkey.getBoundingClientRect();
+      const elRect     = el.getBoundingClientRect();
+      const monkeyCX   = monkeyRect.left + monkeyRect.width / 2;
+      const monkeyCY   = monkeyRect.top  + monkeyRect.height * 0.42;
+      const targetCX   = elRect.left + elRect.width / 2;
+      const targetCY   = elRect.top  + elRect.height / 2;
+      const dx = targetCX - monkeyCX;
+      const dy = targetCY - monkeyCY;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const scale = Math.min(dist / 120, 1);
+      setPupilOffset((dx / dist) * MAX_PUPIL_OFFSET * scale,
+                     (dy / dist) * MAX_PUPIL_OFFSET * scale);
+    }
+
+    /** 更新猴子遮眼 / 偷看状态 */
+    function updateMonkeyCoverState() {
+      monkey.classList.remove('cover-eyes', 'peek-eyes');
+
+      if (activeField === 'password') {
+        if (passwordVisible) {
+          monkey.classList.add('peek-eyes');
+        } else {
+          monkey.classList.add('cover-eyes');
+        }
+      }
+    }
+
+    /** 卡片聚焦高亮 */
+    function updateCardFocus() {
+      if (activeField) {
+        loginCard.classList.add('focused');
+      } else {
+        loginCard.classList.remove('focused');
+      }
+    }
+
+    /* ========== 鼠标跟随 ========== */
+    document.addEventListener('mousemove', function (e) {
+      // 密码框聚焦时不跟随鼠标
+      if (activeField === 'password') return;
+
+      if (activeField === 'username') {
+        // 账号框聚焦时看向输入框，叠加输入长度偏移
+        lookAtElement(usernameInput);
+        const extraX = Math.min(usernameInput.value.length * TYPING_OFFSET_PER_CHAR, MAX_PUPIL_OFFSET);
+        const current = pupilLeft.style.transform;
+        // 在 lookAt 基础上追加向右偏移
+        const match = current.match(/calc\(-50% \+ ([-\d.]+)px\)/);
+        const baseX = match ? parseFloat(match[1]) : 0;
+        const matchY = current.match(/calc\(-50% \+ [-\d.]+px\), calc\(-50% \+ ([-\d.]+)px\)/);
+        const baseY = matchY ? parseFloat(matchY[1]) : 0;
+        setPupilOffset(baseX + extraX * 0.5, baseY);
+        return;
+      }
+
+      // 默认：跟随鼠标
+      const monkeyRect = monkey.getBoundingClientRect();
+      const cx = monkeyRect.left + monkeyRect.width / 2;
+      const cy = monkeyRect.top  + monkeyRect.height * 0.42;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const scale = Math.min(dist / 200, 1);
+      setPupilOffset((dx / dist) * MAX_PUPIL_OFFSET * scale,
+                     (dy / dist) * MAX_PUPIL_OFFSET * scale);
+    });
+
+    /* ========== 账号输入框事件 ========== */
+    usernameInput.addEventListener('focus', function () {
+      activeField = 'username';
+      updateCardFocus();
+      updateMonkeyCoverState();
+      lookAtElement(usernameInput);
+    });
+
+    usernameInput.addEventListener('blur', function () {
+      if (document.activeElement !== passwordInput) {
+        activeField = null;
+        updateCardFocus();
+        updateMonkeyCoverState();
+        resetPupils();
+      }
+    });
+
+    usernameInput.addEventListener('input', function () {
+      if (activeField === 'username') {
+        lookAtElement(usernameInput);
+        const extraX = Math.min(usernameInput.value.length * TYPING_OFFSET_PER_CHAR, MAX_PUPIL_OFFSET);
+        const monkeyRect = monkey.getBoundingClientRect();
+        const elRect = usernameInput.getBoundingClientRect();
+        const dx = elRect.left + elRect.width / 2 - (monkeyRect.left + monkeyRect.width / 2);
+        const dy = elRect.top + elRect.height / 2 - (monkeyRect.top + monkeyRect.height * 0.42);
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const scale = Math.min(dist / 120, 1);
+        setPupilOffset((dx / dist) * MAX_PUPIL_OFFSET * scale + extraX,
+                       (dy / dist) * MAX_PUPIL_OFFSET * scale);
+      }
+    });
+
+    /* ========== 密码输入框事件 ========== */
+    passwordInput.addEventListener('focus', function () {
+      activeField = 'password';
+      updateCardFocus();
+      updateMonkeyCoverState();
+    });
+
+    passwordInput.addEventListener('blur', function () {
+      // 若点击的是显示密码按钮，不立即恢复
+      setTimeout(function () {
+        if (document.activeElement === togglePassword) return;
+        if (document.activeElement === usernameInput) {
+          activeField = 'username';
+        } else {
+          activeField = null;
+          resetPupils();
+        }
+        updateCardFocus();
+        updateMonkeyCoverState();
+      }, 100);
+    });
+
+    /* ========== 显示 / 隐藏密码 ========== */
+    togglePassword.addEventListener('mousedown', function (e) {
+      e.preventDefault(); // 保持密码框焦点，避免遮眼状态闪烁
+    });
+
+    togglePassword.addEventListener('click', function () {
+      passwordVisible = !passwordVisible;
+      passwordInput.type = passwordVisible ? 'text' : 'password';
+      iconEyeOff.style.display = passwordVisible ? 'none' : 'block';
+      iconEyeOn.style.display  = passwordVisible ? 'block' : 'none';
+      togglePassword.setAttribute('aria-label', passwordVisible ? '隐藏密码' : '显示密码');
+
+      // 密码框聚焦时更新猴子状态
+      if (activeField === 'password') {
+        updateMonkeyCoverState();
+      }
+    });
+
+    /* ========== 登录提交 — 替换为真实接口 ========== */
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorMsg.classList.remove('show');
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      const remember = document.getElementById('remember').checked;
+
+      // 基础前端校验
+      if (!username) {
+        showError('请输入账号');
+        usernameInput.focus();
+        return;
+      }
+      if (!password) {
+        showError('请输入密码');
+        passwordInput.focus();
+        return;
+      }
+
+      // 禁用按钮，防止重复提交
+      loginBtn.disabled = true;
+      loginBtn.textContent = '登录中…';
+
+      /*
+       * TODO: 替换为真实登录 API 调用，示例：
+       *
+       * fetch('/api/login', {
+       *   method: 'POST',
+       *   headers: { 'Content-Type': 'application/json' },
+       *   body: JSON.stringify({ username, password, remember })
+       * })
+       *   .then(res => res.json())
+       *   .then(data => {
+       *     if (data.success) {
+       *       window.location.href = data.redirect || '/dashboard';
+       *     } else {
+       *       showError(data.message || '登录失败，请重试');
+       *     }
+       *   })
+       *   .catch(() => showError('网络错误，请稍后重试'))
+       *   .finally(() => {
+       *     loginBtn.disabled = false;
+       *     loginBtn.textContent = '登 录';
+       *   });
+       */
+
+      // 演示：模拟请求
+      setTimeout(function () {
+        loginBtn.disabled = false;
+        loginBtn.textContent = '登 录';
+        showError('演示模式：请接入真实登录接口');
+      }, 1200);
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.classList.add('show');
+    }
+
+    /* ========== 忘记密码 ========== */
+    forgotLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      // TODO: 跳转到忘记密码页面
+      alert('请联系管理员重置密码');
+    });
+
+  })();
+  </script>
+</body>
+</html>
