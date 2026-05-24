@@ -214,6 +214,6 @@ class SiteController extends Controller
 
     private function locale(Request $request): string
     {
-        return (string) $request->query('lang', $request->query('locale', 'zh-cn'));
+        return current_lang();
     }
 }

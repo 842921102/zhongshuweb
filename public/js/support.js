@@ -39,15 +39,6 @@
   }
 
   /* Nav active */
-  document.querySelectorAll('.site-header__nav-link[data-route]').forEach(function (link) {
-    var routes = (link.getAttribute('data-route') || '').split(',');
-    var path = window.location.pathname.replace(/\/$/, '') || '/';
-    if (routes.some(function (key) { return key === 'support' && path === '/support'; })) {
-      link.classList.add('is-active');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-
   /* Topic buttons */
   if (form) {
     var topicInput = form.querySelector('input[name="topic"]');

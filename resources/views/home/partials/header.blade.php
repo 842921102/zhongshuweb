@@ -48,16 +48,6 @@
             <button class="site-header__icon-button" type="button" aria-label="打开搜索" aria-expanded="false" aria-controls="siteHeaderSearchPanel" data-search-toggle>
                 <img src="{{ asset('home-assets/home-search.svg') }}" alt="">
             </button>
-            <div class="site-header__lang-wrap" data-lang-wrap>
-                <button class="site-header__lang" type="button" aria-label="切换语言" aria-expanded="false" aria-controls="siteHeaderLangPanel" data-lang-toggle>
-                    <img src="{{ asset('home-assets/home-lang.svg') }}" alt="">
-                    <span>中文</span>
-                </button>
-                <div class="site-header__lang-panel" id="siteHeaderLangPanel" data-lang-panel hidden>
-                    <a class="site-header__lang-option {{ ($locale ?? 'zh-cn') === 'zh-cn' ? 'is-active' : '' }}" href="{{ current_url_for_lang('zh-cn') }}" data-lang="zh-cn">中文</a>
-                    <a class="site-header__lang-option {{ ($locale ?? 'zh-cn') === 'en-us' ? 'is-active' : '' }}" href="{{ current_url_for_lang('en-us') }}" data-lang="en-us">EN</a>
-                </div>
-            </div>
         </div>
     </div>
     <div class="site-header__search-panel" id="siteHeaderSearchPanel" data-search-panel hidden>

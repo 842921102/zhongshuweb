@@ -31,32 +31,23 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->brandName('广亨管理系统')
+            ->brandName('众鼠CMS管理系统')
             ->colors([
-                'primary' => Color::hex('#165DFF'),
+                'primary' => Color::hex('#2BA471'),
             ])
             ->font('Noto Sans SC', provider: GoogleFontProvider::class)
             ->defaultThemeMode(ThemeMode::Light)
             ->sidebarCollapsibleOnDesktop()
             ->navigationGroups([
-                NavigationGroup::make('官网管理')
-                    ->icon(Heroicon::OutlinedGlobeAlt),
-                NavigationGroup::make('产品管理')
-                    ->icon(Heroicon::OutlinedCube),
-                NavigationGroup::make('案例管理')
-                    ->icon(Heroicon::OutlinedBriefcase),
-                NavigationGroup::make('新闻管理')
-                    ->icon(Heroicon::OutlinedNewspaper),
-                NavigationGroup::make('关于我们')
-                    ->icon(Heroicon::OutlinedBuildingOffice2),
-                NavigationGroup::make('技术支持')
-                    ->icon(Heroicon::OutlinedWrenchScrewdriver),
-                NavigationGroup::make('加入我们')
-                    ->icon(Heroicon::OutlinedUserPlus),
-                NavigationGroup::make('内容管理')
-                    ->icon(Heroicon::OutlinedDocumentText),
-                NavigationGroup::make('系统设置')
-                    ->icon(Heroicon::OutlinedCog6Tooth),
+                $this->collapsedNavGroup('官网管理', Heroicon::OutlinedGlobeAlt),
+                $this->collapsedNavGroup('产品管理', Heroicon::OutlinedCube),
+                $this->collapsedNavGroup('案例管理', Heroicon::OutlinedBriefcase),
+                $this->collapsedNavGroup('新闻管理', Heroicon::OutlinedNewspaper),
+                $this->collapsedNavGroup('关于我们', Heroicon::OutlinedBuildingOffice2),
+                $this->collapsedNavGroup('技术支持', Heroicon::OutlinedWrenchScrewdriver),
+                $this->collapsedNavGroup('加入我们', Heroicon::OutlinedUserPlus),
+                $this->collapsedNavGroup('内容管理', Heroicon::OutlinedDocumentText),
+                $this->collapsedNavGroup('系统设置', Heroicon::OutlinedCog6Tooth),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
@@ -79,5 +70,12 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ]);
+    }
+
+    private function collapsedNavGroup(string $label, Heroicon $icon): NavigationGroup
+    {
+        return NavigationGroup::make($label)
+            ->icon($icon)
+            ->collapsed();
     }
 }

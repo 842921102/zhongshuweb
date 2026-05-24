@@ -9,7 +9,7 @@ class CompanyController extends Controller
 {
     public function index(): View
     {
-        $locale = request()->query('lang', 'zh-cn');
+        $locale = current_lang();
 
         return view('company.index', (new CompanyPageService($locale))->data());
     }

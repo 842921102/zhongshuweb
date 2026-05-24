@@ -111,11 +111,4 @@
     });
   }
 
-  document.querySelectorAll('.site-header__nav-link[data-route]').forEach(function (link) {
-    var routes = (link.getAttribute('data-route') || '').split(',');
-    if (routes.indexOf('product') !== -1) {
-      link.classList.add('is-active');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
 })();

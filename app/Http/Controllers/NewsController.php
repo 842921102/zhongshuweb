@@ -10,7 +10,7 @@ class NewsController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
 
         return view('news.index', (new NewsPageService($locale))->indexData(
             categorySlug: $request->query('category'),
@@ -20,7 +20,7 @@ class NewsController extends Controller
 
     public function show(Request $request, string $article): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $data = (new NewsPageService($locale))->showData($article);
 
         if ($data === null) {

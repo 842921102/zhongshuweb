@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('body_class', 'case-studies-page')
+@section('body_class', 'case-studies-page case-studies-detail header-solid-top')
 
 @section('content')
 @push('head')

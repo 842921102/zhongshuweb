@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SiteNavMenus\Tables;
 
 use App\Models\SiteNavMenu;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
@@ -61,10 +62,18 @@ class SiteNavMenusTable
             ])
             ->recordActions([
                 EditAction::make()->label('编辑'),
+                DeleteAction::make()
+                    ->label('删除')
+                    ->requiresConfirmation()
+                    ->modalHeading('删除菜单')
+                    ->modalDescription(fn (SiteNavMenu $record): string => $record->isSystem()
+                        ? '这是系统内置菜单，删除后可通过顶部「同步默认菜单」恢复。确定删除吗？'
+                        : '确定删除该菜单项吗？'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->label('删除选中'),
                 ]),
             ]);
     }

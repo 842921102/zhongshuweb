@@ -20,7 +20,12 @@ class EditSiteNavMenu extends EditRecord
     {
         return [
             DeleteAction::make()
-                ->visible(fn (): bool => ! $this->record->isSystem()),
+                ->label('删除')
+                ->requiresConfirmation()
+                ->modalHeading('删除菜单')
+                ->modalDescription(fn (): string => $this->record->isSystem()
+                    ? '这是系统内置菜单，删除后可通过列表页「同步默认菜单」恢复。确定删除吗？'
+                    : '确定删除该菜单项吗？'),
         ];
     }
 

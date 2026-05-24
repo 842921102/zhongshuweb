@@ -41,12 +41,62 @@
   var socialQrImage = document.querySelector('[data-social-qr-image]');
   var activeSocialTrigger = null;
 
+  function normalizePath(path) {
+    return (path || '/').replace(/\/$/, '') || '/';
+  }
+
+  function routeKeyMatches(path, key) {
+    key = String(key || '').trim();
+    if (!key) {
+      return false;
+    }
+
+    switch (key) {
+      case 'home':
+      case 'index':
+        return path === '/';
+      case 'product':
+        return path === '/products' || path.indexOf('/products/') === 0;
+      case 'case':
+      case 'cases':
+        return path === '/cases' || path.indexOf('/cases/') === 0;
+      case 'about':
+      case 'culture':
+        return path === '/about';
+      case 'news':
+        return path === '/news' || path.indexOf('/news/') === 0;
+      case 'support':
+        return path === '/support';
+      case 'joinus':
+        return path === '/join-us' || path.indexOf('/join-us') === 0;
+      default:
+        return path.indexOf('/' + key) === 0;
+    }
+  }
+
+  function initNavActiveState() {
+    var path = normalizePath(window.location.pathname);
+    document.querySelectorAll('.site-header__nav-link[data-route]').forEach(function (link) {
+      var routes = (link.getAttribute('data-route') || '').split(',');
+      var active = routes.some(function (key) {
+        return routeKeyMatches(path, key);
+      });
+      link.classList.toggle('is-active', active);
+      if (active) {
+        link.setAttribute('aria-current', 'page');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  }
+
   function setHeaderState() {
     if (!header) {
       return;
     }
 
-    if (window.scrollY > 24) {
+    var solidTop = document.body.classList.contains('header-solid-top');
+    if (solidTop || window.scrollY > 24) {
       header.classList.add('is-scrolled');
     } else {
       header.classList.remove('is-scrolled');
@@ -535,6 +585,7 @@
     socialQrPanel.style.setProperty('--qr-arrow-offset', arrowOffset + 'px');
   }
 
+  initNavActiveState();
   setHeaderState();
   window.addEventListener('scroll', setHeaderState, { passive: true });
   if (header) {

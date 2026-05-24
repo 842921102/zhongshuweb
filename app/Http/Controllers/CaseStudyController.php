@@ -10,7 +10,7 @@ class CaseStudyController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $service = new CaseStudyPageService($locale);
 
         return view('cases.index', $service->indexData(
@@ -21,7 +21,7 @@ class CaseStudyController extends Controller
 
     public function show(Request $request, string $slug): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $service = new CaseStudyPageService($locale);
         $data = $service->showData($slug);
 

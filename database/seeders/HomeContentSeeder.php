@@ -13,6 +13,7 @@ use App\Models\HomeSection;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\SiteFooterLink;
+use App\Models\SiteSocialLink;
 use App\Models\SiteNavMenu;
 use App\Models\SitePartner;
 use App\Models\SiteSetting;
@@ -35,6 +36,7 @@ class HomeContentSeeder extends Seeder
         $this->seedNews();
         $this->seedAbout();
         $this->seedFooterLinks();
+        $this->seedSocialLinks();
     }
 
     protected function seedSections(): void
@@ -54,12 +56,13 @@ class HomeContentSeeder extends Seeder
             ['key' => 'site_name', 'value' => '众鼠科技', 'group' => 'general', 'label' => '站点名称', 'type' => 'text'],
             ['key' => 'site_description', 'value' => '全场景智能清洁设备研发、制造、销售与服务。', 'group' => 'general', 'label' => '站点描述', 'type' => 'textarea'],
             ['key' => 'company_name', 'value' => '众鼠科技', 'group' => 'footer', 'label' => '公司名称', 'type' => 'text'],
-            ['key' => 'footer_tagline', 'value' => '专注智能清洁设备与全场景环卫生态，为城市与产业空间提供可靠装备与数字化服务。', 'group' => 'footer', 'label' => '页脚简介', 'type' => 'textarea'],
+            ['key' => 'company_name_en', 'value' => 'ZHONGSHU TECHNOLOGY', 'group' => 'footer', 'label' => '公司英文名', 'type' => 'text'],
+            ['key' => 'footer_tagline', 'value' => '专业为有机废弃物提供无害化、减量化处理和资源化利用系统解决方案的运营服务商。', 'group' => 'footer', 'label' => '页脚简介', 'type' => 'textarea'],
             ['key' => 'contact_phone', 'value' => '15378711662', 'group' => 'footer', 'label' => '联系电话', 'type' => 'text'],
             ['key' => 'contact_email', 'value' => 'zsmart@zsmartglobal.com', 'group' => 'footer', 'label' => '联系邮箱', 'type' => 'text'],
-            ['key' => 'contact_address', 'value' => '深圳市南山区粤海街道高新社区高新南九道61号卫星大厦906', 'group' => 'footer', 'label' => '联系地址', 'type' => 'textarea'],
+            ['key' => 'contact_address', 'value' => '上海市浦东新区成山路718弄1号T1栋906室', 'group' => 'footer', 'label' => '联系地址', 'type' => 'textarea'],
             ['key' => 'footer_copyright', 'value' => '© 2026 众鼠科技有限公司. All rights reserved', 'group' => 'footer', 'label' => '版权信息', 'type' => 'text'],
-            ['key' => 'icp_number', 'value' => '', 'group' => 'footer', 'label' => 'ICP备案号', 'type' => 'text'],
+            ['key' => 'icp_number', 'value' => '京ICP备12345678号', 'group' => 'footer', 'label' => 'ICP备案号', 'type' => 'text'],
             ['key' => 'header_logo_default', 'value' => '/home-assets/69f053450ed94.png', 'group' => 'header', 'label' => '顶部Logo(透明底)', 'type' => 'text'],
             ['key' => 'header_logo_scrolled', 'value' => '/home-assets/69f026d932c50.png', 'group' => 'header', 'label' => '顶部Logo(滚动后)', 'type' => 'text'],
             ['key' => 'footer_logo', 'value' => '/home-assets/69e9d8260dd85.png', 'group' => 'footer', 'label' => '页脚Logo', 'type' => 'text'],
@@ -169,7 +172,17 @@ class HomeContentSeeder extends Seeder
     protected function seedCaseCms(): void
     {
         CaseStudyCategory::ensureDefaults('zh-cn');
-        CasePageSetting::forLocale('zh-cn');
+        CasePageSetting::query()->updateOrCreate(
+            ['locale' => 'zh-cn'],
+            [
+                'page_title' => '客户案例',
+                'page_subtitle' => '全场景智能清洁设备在各类场景的成功应用，以可靠装备与数字化服务助力客户提升运营效率。',
+                'banner_image_pc' => '/home-assets/69eb39ed040f4.jpg',
+                'banner_height' => 420,
+                'meta_title' => '客户案例 - 众鼠科技',
+                'meta_description' => '众鼠科技客户案例：环卫清扫、产业园区、产业基地等场景的项目落地与实践。',
+            ]
+        );
     }
 
     protected function seedCases(): void
@@ -307,18 +320,46 @@ class HomeContentSeeder extends Seeder
     protected function seedFooterLinks(): void
     {
         $groups = [
-            ['products', '产品中心', [['无人转运车', '#'], ['遥控割草机', '#']]],
-            ['solutions', '解决方案', [['招商加盟', '/cases']]],
-            ['about', '关于我们', [['公司介绍', '#home-about'], ['新闻资讯', '/news']]],
+            ['products', '产品中', [
+                ['无人转运车', '/products'],
+                ['遥控割草机', '/products'],
+            ]],
+            ['solutions', '解决方案', [
+                ['招商加盟', '/cases'],
+                ['应用案例', '/cases'],
+            ]],
+            ['about', '关于我们', [
+                ['公司介绍', '/about'],
+                ['应用案例', '/cases'],
+                ['新闻资讯', '/news'],
+                ['加入我们', '/join-us'],
+                ['联系我们', '/about#contact'],
+            ]],
         ];
 
         foreach ($groups as [$key, $label, $links]) {
             foreach ($links as $i => [$text, $url]) {
                 SiteFooterLink::query()->updateOrCreate(
-                    ['group_key' => $key, 'label' => $text],
+                    ['group_key' => $key, 'label' => $text, 'locale' => 'zh-cn'],
                     ['group_label' => $label, 'url' => $url, 'sort_order' => $i, 'is_active' => true]
                 );
             }
+        }
+    }
+
+    protected function seedSocialLinks(): void
+    {
+        $items = [
+            ['name' => '抖音', 'icon' => '/home-assets/social-douyin.svg', 'type' => 'qr', 'sort_order' => 0],
+            ['name' => '微信', 'icon' => '/home-assets/social-wechat.svg', 'type' => 'qr', 'sort_order' => 1],
+            ['name' => '在线客服', 'icon' => '/home-assets/social-message.svg', 'type' => 'link', 'url' => '/support', 'sort_order' => 2],
+        ];
+
+        foreach ($items as $row) {
+            SiteSocialLink::query()->updateOrCreate(
+                ['name' => $row['name'], 'locale' => 'zh-cn'],
+                array_merge($row, ['is_active' => true, 'qr_image' => null])
+            );
         }
     }
 }

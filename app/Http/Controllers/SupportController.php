@@ -15,7 +15,7 @@ class SupportController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $docType = $request->query('doc_type');
 
         return view('support.index', (new SupportPageService($locale))->indexData($docType));
@@ -38,7 +38,7 @@ class SupportController extends Controller
 
     public function submit(Request $request): JsonResponse
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $pageData = SupportPageService::pageData($locale);
 
         $validator = Validator::make($request->all(), [

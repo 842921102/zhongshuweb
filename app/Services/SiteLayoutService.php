@@ -7,11 +7,15 @@ use App\Models\ProductPageSetting;
 use App\Models\SiteFooterLink;
 use App\Models\SiteNavMenu;
 use App\Models\SiteSetting;
+use App\Models\SiteSocialLink;
 use App\Support\MediaUrl;
 use Illuminate\Support\Collection;
 
 class SiteLayoutService
 {
+    /** @var list<string> */
+    private const FOOTER_GROUP_ORDER = ['products', 'solutions', 'about'];
+
     public function __construct(
         public string $locale = 'zh-cn',
     ) {}
@@ -46,16 +50,29 @@ class SiteLayoutService
      */
     public function footerData(): array
     {
-        $links = SiteFooterLink::query()
+        $grouped = SiteFooterLink::query()
             ->forLocale($this->locale)
             ->where('is_active', true)
-            ->orderBy('group_key')
             ->orderBy('sort_order')
             ->get()
             ->groupBy('group_key');
 
+        $linkGroups = collect(self::FOOTER_GROUP_ORDER)
+            ->mapWithKeys(fn (string $key) => [$key => $grouped->get($key, collect())])
+            ->filter(fn ($group) => $group->isNotEmpty());
+
+        $social = SiteSocialLink::query()
+            ->forLocale($this->locale)
+            ->active()
+            ->orderBy('sort_order')
+            ->get()
+            ->map(fn (SiteSocialLink $link) => $link->toFooterArray())
+            ->values()
+            ->all();
+
         return [
             'company_name' => SiteSetting::get('company_name', SiteSetting::get('site_name', '众鼠科技')),
+            'company_name_en' => SiteSetting::get('company_name_en'),
             'logo' => SiteSetting::get('footer_logo'),
             'tagline' => SiteSetting::get('footer_tagline'),
             'phone' => SiteSetting::get('contact_phone'),
@@ -63,8 +80,8 @@ class SiteLayoutService
             'address' => SiteSetting::get('contact_address'),
             'copyright' => SiteSetting::get('footer_copyright'),
             'icp' => SiteSetting::get('icp_number'),
-            'social' => json_decode(SiteSetting::get('social_links', '[]'), true) ?: [],
-            'link_groups' => $links,
+            'social' => $social,
+            'link_groups' => $linkGroups,
         ];
     }
 

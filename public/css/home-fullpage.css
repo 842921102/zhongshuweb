@@ -1,6 +1,6 @@
 /* 分屏式首页：在保留官网 home.css 结构基础上叠加 */
-.home-page .section.screen-section,
-.home-page .hero.screen-section {
+.is-home-index .section.screen-section,
+.is-home-index .hero.screen-section {
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
@@ -9,17 +9,12 @@
     scroll-margin-top: 72px;
 }
 
-.home-page .hero.screen-section {
-    min-height: 100vh;
-    min-height: 100dvh;
-}
-
-.home-page .section.solutions.screen-section .site-shell,
-.home-page .section.products.screen-section .site-shell,
-.home-page .section.case-studies.screen-section .site-shell,
-.home-page .section.partners.screen-section .site-shell,
-.home-page .section.news.screen-section .site-shell,
-.home-page .section.about.screen-section .site-shell {
+.is-home-index .section.solutions.screen-section .site-shell,
+.is-home-index .section.products.screen-section .site-shell,
+.is-home-index .section.case-studies.screen-section .site-shell,
+.is-home-index .section.partners.screen-section .site-shell,
+.is-home-index .section.news.screen-section .site-shell,
+.is-home-index .section.about.screen-section .site-shell {
     width: 100%;
     flex: 1;
     display: flex;
@@ -29,20 +24,20 @@
     padding-bottom: 24px;
 }
 
-.home-page .products__list:empty {
+.is-home-index .products__list:empty {
     display: none;
     margin: 0;
     padding: 0;
     min-height: 0;
 }
 
-.home-page .site-footer.screen-section {
+.is-home-index .site-footer.screen-section {
     min-height: auto;
 }
 
 @media (max-width: 767px) {
-    .home-page .section.screen-section,
-    .home-page .hero.screen-section {
+    .is-home-index .section.screen-section,
+    .is-home-index .hero.screen-section {
         min-height: auto;
         min-height: unset;
     }

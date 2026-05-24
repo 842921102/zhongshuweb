@@ -13,13 +13,19 @@ if (! function_exists('media_url')) {
 if (! function_exists('current_lang')) {
     function current_lang(string $fallback = 'zh-cn'): string
     {
+        $defaultLocale = (string) config('site.frontend_locale', $fallback);
+
+        if (! config('site.locale_switcher_enabled', false)) {
+            return $defaultLocale;
+        }
+
         try {
             $lang = request()->query('lang');
         } catch (Throwable) {
             $lang = null;
         }
 
-        return filled($lang) ? (string) $lang : $fallback;
+        return filled($lang) ? (string) $lang : $defaultLocale;
     }
 }
 

@@ -11,18 +11,18 @@
 
 @layer components {
     .fi-body {
-        @apply bg-[#f2f3f5];
+        @apply bg-[#f7f8fa];
     }
 
     .fi-topbar {
-        @apply border-b border-[#e5e6eb] bg-white shadow-sm;
+        @apply border-b border-[#e8e8e8] bg-white shadow-none;
     }
 
     .fi-sidebar {
-        @apply border-e border-[#e5e6eb] bg-white;
+        @apply border-e border-[#e8e8e8] bg-white;
     }
 
     .fi-sidebar-item.fi-active .fi-sidebar-item-btn {
-        @apply bg-[#e8f3ff] text-[#165dff];
+        @apply bg-[#f0faf5] text-[#2ba471];
     }
 }

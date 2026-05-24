@@ -18,7 +18,7 @@ html.is-product-dropdown-open {
   --home-color-border: #e5e7eb;
   --home-color-surface: #f9fafb;
   --home-color-surface-alt: #f3f4f6;
-  --home-color-footer: #101828;
+  --home-color-footer: #05080d;
   --home-color-footer-soft: #99a1af;
   --home-color-accent: #fac107;
   --home-color-white: #ffffff;
@@ -195,31 +195,99 @@ ul {
   color: var(--site-header-fg-scrolled, #1d1d1f);
 }
 
-body:not(.home-page) .site-header {
-  background: var(--site-header-bg-scrolled, #ffffff);
-  box-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
-}
-
-body:not(.home-page) .site-header .site-header__nav,
-body:not(.home-page) .site-header .site-header__actions {
-  color: var(--site-header-fg-scrolled, #1d1d1f);
-}
-
-body:not(.home-page) .site-header .site-header__brand-logo--default {
-  opacity: 0;
-}
-
-body:not(.home-page) .site-header .site-header__brand-logo--scrolled {
-  opacity: 1;
-  filter: none;
-}
-
 .site-header-spacer {
   height: 80px;
 }
 
-.home-page .site-header-spacer {
+.has-immersive-header .site-header-spacer {
   display: none;
+  height: 0;
+}
+
+.header-solid-top .site-header-spacer {
+  display: block;
+  height: 80px;
+}
+
+/* 全站顶栏：透明叠在 Banner 上，滚动/悬停菜单时变白（与首页一致） */
+.has-immersive-header:not(.header-solid-top) .site-header {
+  --site-header-bg: transparent;
+  --site-header-fg-default: #ffffff;
+  --site-header-icon-filter-default: brightness(0) invert(1);
+  --site-header-bg-scrolled: #ffffff;
+  --site-header-fg-scrolled: #101828;
+  --site-header-icon-filter-scrolled: brightness(0) invert(0);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__nav,
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__actions {
+  color: #fff;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__nav-link,
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__lang {
+  color: inherit;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__nav-link img,
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__icon-button img,
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__lang img {
+  filter: brightness(0) invert(1);
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__brand-logo--default {
+  opacity: 1;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header:not(.is-scrolled):not(.is-hovering-nav) .site-header__brand-logo--scrolled {
+  opacity: 0;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header.is-scrolled,
+.has-immersive-header:not(.header-solid-top) .site-header.is-hovering-nav {
+  background: var(--site-header-bg-scrolled, #ffffff);
+  border-bottom-color: #e5e7eb;
+  box-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header.is-scrolled .site-header__brand-logo--default,
+.has-immersive-header:not(.header-solid-top) .site-header.is-hovering-nav .site-header__brand-logo--default {
+  opacity: 0;
+}
+
+.has-immersive-header:not(.header-solid-top) .site-header.is-scrolled .site-header__brand-logo--scrolled,
+.has-immersive-header:not(.header-solid-top) .site-header.is-hovering-nav .site-header__brand-logo--scrolled {
+  opacity: 1;
+  filter: none;
+}
+
+/* 浅色顶区页面：顶栏默认白底（案例列表等） */
+.header-solid-top .site-header {
+  background: var(--site-header-bg-scrolled, #ffffff);
+  box-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
+}
+
+.header-solid-top .site-header .site-header__nav,
+.header-solid-top .site-header .site-header__actions {
+  color: var(--site-header-fg-scrolled, #101828);
+}
+
+.header-solid-top .site-header .site-header__brand-logo--default {
+  opacity: 0;
+}
+
+.header-solid-top .site-header .site-header__brand-logo--scrolled {
+  opacity: 1;
+  filter: none;
+}
+
+.header-solid-top .site-header .site-header__nav-link img,
+.header-solid-top .site-header .site-header__icon-button img,
+.header-solid-top .site-header .site-header__lang img {
+  filter: var(--site-header-icon-filter-scrolled, brightness(0) invert(0));
 }
 
 .site-header__inner {
@@ -355,12 +423,6 @@ body:not(.home-page) .site-header .site-header__brand-logo--scrolled {
 
 .site-header.is-hovering-nav .site-header__icon-button img,
 .site-header.is-hovering-nav .site-header__lang img {
-  filter: var(--site-header-icon-filter-scrolled, brightness(0) invert(0));
-}
-
-body:not(.home-page) .site-header .site-header__nav-link img,
-body:not(.home-page) .site-header .site-header__icon-button img,
-body:not(.home-page) .site-header .site-header__lang img {
   filter: var(--site-header-icon-filter-scrolled, brightness(0) invert(0));
 }
 
@@ -978,22 +1040,45 @@ body.support-page .support-hero-container {
 
 .site-footer__top {
   display: grid;
-  grid-template-columns: 1.2fr 1.8fr;
-  gap: 48px;
+  grid-template-columns: minmax(260px, 1.35fr) repeat(3, minmax(0, 1fr));
+  gap: 48px 40px;
   padding-bottom: 64px;
 }
 
 .site-footer__brand img {
-  width: 175px;
-  height: 40px;
-  margin-bottom: 32px;
+  width: auto;
+  max-width: 220px;
+  height: auto;
+  max-height: 48px;
+  margin-bottom: 28px;
 }
 
 .site-footer__brand p {
-  margin: 0 0 32px;
-  max-width: 448px;
-  color: #99A1AF;
-  line-height: 1.7;
+  margin: 0 0 28px;
+  max-width: 360px;
+  color: #99a1af;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.site-footer__col h3 {
+  margin: 0 0 24px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--site-footer-fg, var(--home-color-white));
+}
+
+.site-footer__col a {
+  display: block;
+  margin-bottom: 12px;
+  color: #99a1af;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: color var(--home-transition);
+}
+
+.site-footer__col a:hover {
+  color: var(--site-footer-fg, var(--home-color-white));
 }
 
 .site-footer__contact {
@@ -1019,28 +1104,6 @@ body.support-page .support-hero-container {
 
 .site-footer__contact span {
   line-height: 1.5;
-}
-
-.site-footer__links {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
-}
-
-.site-footer__links h3 {
-  margin: 0 0 24px;
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.site-footer__links a {
-  display: block;
-  margin-bottom: 12px;
-  color:  #99A1AF;
-}
-
-.site-footer__links a:hover {
-  color: var(--site-footer-fg, var(--home-color-white));
 }
 
 .site-footer__mobile {
@@ -1130,10 +1193,21 @@ body.support-page .support-hero-container {
   position: relative;
 }
 
-.site-footer__bottom p {
+.site-footer__legal {
   margin: 0;
-  color: #99A1AF;
+  color: #99a1af;
   font-size: 14px;
+  line-height: 1.6;
+}
+
+.site-footer__legal-sep {
+  margin: 0 8px;
+  opacity: 0.7;
+}
+
+.site-footer__social-wrap {
+  position: relative;
+  flex-shrink: 0;
 }
 
 .site-footer__social {
@@ -1279,6 +1353,17 @@ body.support-page .support-hero-container {
   background: #1890ff; /* 悬停时滑块颜色 */
 }
 
+@media (max-width: 1199px) and (min-width: 750px) {
+  .site-footer__top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 32px;
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 967px) {
   :root {
     --home-shell-gap: 24px;
@@ -1365,10 +1450,6 @@ body.support-page .support-hero-container {
 
   .site-footer__top {
     grid-template-columns: 1fr;
-  }
-
-  .site-footer__links {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .site-footer__bottom {
@@ -1475,8 +1556,19 @@ body.support-page .support-hero-container {
   {
     margin-bottom: 10px;
   }
-  .site-footer__links a{
-    color: #99A1AF;
+  .site-footer__col a,
+  .site-footer__accordion-body a {
+    color: #99a1af;
+  }
+
+  .site-footer__bottom {
+    align-items: center;
+  }
+
+  .site-footer__social-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
   }
   .new_xz .bts {
 		min-height: 40px;

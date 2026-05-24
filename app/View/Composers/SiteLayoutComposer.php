@@ -25,7 +25,7 @@ class SiteLayoutComposer
             return;
         }
 
-        $locale = $data['locale'] ?? request()->query('lang', 'zh-cn');
+        $locale = $data['locale'] ?? current_lang();
         $shared = (new SiteLayoutService($locale))->shared();
 
         $view->with(array_intersect_key($shared, array_flip($missing)));

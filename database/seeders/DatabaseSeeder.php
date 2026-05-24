@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             CompanyAboutSeeder::class,
             SupportSeeder::class,
             JoinUsSeeder::class,
+            RolePermissionSeeder::class,
         ]);
 
         \App\Models\ProductPageSetting::forLocale('zh-cn');

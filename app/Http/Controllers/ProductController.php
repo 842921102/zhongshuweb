@@ -15,7 +15,7 @@ class ProductController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
 
         return view('products.index', (new ProductPageService($locale))->indexData(
             $request->query('category')
@@ -24,7 +24,7 @@ class ProductController extends Controller
 
     public function show(Request $request, string $product): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $data = (new ProductPageService($locale))->showData($product);
 
         if ($data === null) {
@@ -36,7 +36,7 @@ class ProductController extends Controller
 
     public function consult(Request $request, string $product): JsonResponse
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $data = (new ProductPageService($locale))->showData($product);
 
         if ($data === null) {

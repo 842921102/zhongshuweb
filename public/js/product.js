@@ -121,12 +121,4 @@
 
   bindCatalogTabs();
 
-  document.querySelectorAll('.site-header__nav-link[data-route]').forEach(function (link) {
-    var routes = (link.getAttribute('data-route') || '').split(',');
-    var path = window.location.pathname.replace(/\/$/, '') || '/';
-    if (routes.some(function (key) { return key === 'product' && path === '/products'; })) {
-      link.classList.add('is-active');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
 })();

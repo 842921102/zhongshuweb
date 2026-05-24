@@ -63,17 +63,6 @@
     });
   }
 
-  document.querySelectorAll('.site-header__nav-link[data-route]').forEach(function (link) {
-    var routes = (link.getAttribute('data-route') || '').split(',');
-    var path = window.location.pathname.replace(/\/$/, '') || '/';
-    if (routes.some(function (key) {
-      return key === 'joinus' && (path === '/join-us' || path.indexOf('/join-us') === 0);
-    })) {
-      link.classList.add('is-active');
-      link.setAttribute('aria-current', 'page');
-    }
-  });
-
   var filterLinks = document.querySelectorAll('.join-job-filter-link');
   var jobCards = document.querySelectorAll('.join-job-card[data-join-category]');
 

@@ -1,58 +1,241 @@
-/* Arco Pro 风格管理后台增强 */
+/* 医疗管理后台风格 — 侧边栏与全局 */
+:root {
+    --admin-primary: #2ba471;
+    --admin-primary-light: #f0faf5;
+    --admin-bg: #f7f8fa;
+    --admin-text: #333333;
+    --admin-text-secondary: #666666;
+    --admin-text-muted: #999999;
+    --admin-border: #e8e8e8;
+}
+
 html.fi {
     font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', -apple-system, BlinkMacSystemFont,
         'Segoe UI', sans-serif;
 }
 
 .fi-body {
-    background-color: #f2f3f5 !important;
+    background-color: var(--admin-bg) !important;
 }
 
+/* —— 顶栏 —— */
 .fi-topbar {
     background-color: #fff !important;
-    border-bottom: 1px solid #e5e6eb;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    border-bottom: 1px solid var(--admin-border);
+    box-shadow: none;
 }
 
+/* —— 侧边栏容器 —— */
 .fi-sidebar {
     background-color: #fff !important;
-    border-inline-end: 1px solid #e5e6eb;
+    border-inline-end: 1px solid var(--admin-border);
 }
 
-.fi-sidebar-item-btn {
-    border-radius: 4px;
-    margin-inline: 4px;
+.fi-sidebar-nav {
+    padding-top: 16px;
+    padding-bottom: 24px;
+    gap: 0;
 }
 
-.fi-sidebar-item.fi-active .fi-sidebar-item-btn,
-.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-btn {
-    background-color: #e8f3ff !important;
-    color: #165dff !important;
+.fi-sidebar-nav-groups {
+    gap: 2px;
 }
 
-.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
-.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-icon {
-    color: #165dff !important;
+/* —— 一级菜单（分组标题） —— */
+.fi-sidebar-group-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 0;
+    margin-inline: 0;
+    padding: 14px 12px 14px 16px;
+    min-height: 48px;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fi-sidebar-group-btn > .fi-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--admin-text-secondary) !important;
 }
 
 .fi-sidebar-group-label {
-    color: #86909c;
-    font-size: 12px;
-    text-transform: none;
-    letter-spacing: 0;
+    flex: 1;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--admin-text-secondary);
 }
 
+.fi-sidebar-group-collapse-btn {
+    margin-inline-start: auto;
+    flex-shrink: 0;
+}
+
+.fi-sidebar-group-btn:hover {
+    background-color: #fafafa;
+}
+
+.fi-sidebar-group-btn:hover .fi-sidebar-group-label,
+.fi-sidebar-group-btn:hover > .fi-icon {
+    color: var(--admin-primary) !important;
+}
+
+.fi-sidebar-group.fi-active > .fi-sidebar-group-btn {
+    background-color: var(--admin-primary-light);
+}
+
+.fi-sidebar-group.fi-active > .fi-sidebar-group-btn::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 3px;
+    background-color: var(--admin-primary);
+}
+
+.fi-sidebar-group.fi-active > .fi-sidebar-group-btn > .fi-icon,
+.fi-sidebar-group.fi-active > .fi-sidebar-group-btn .fi-sidebar-group-label {
+    color: var(--admin-primary) !important;
+}
+
+/* —— 二级菜单（分组内子项） —— */
+.fi-main-sidebar .fi-sidebar-group:has(.fi-sidebar-group-btn) .fi-sidebar-group-items .fi-sidebar-item-btn {
+    padding: 10px 12px 10px 44px;
+    min-height: 44px;
+}
+
+/* —— 工作台等独立一级菜单 —— */
+.fi-main-sidebar .fi-sidebar-group:not(:has(.fi-sidebar-group-btn)) > .fi-sidebar-group-items {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.fi-main-sidebar .fi-sidebar-group:not(:has(.fi-sidebar-group-btn)) .fi-sidebar-item {
+    list-style: none;
+}
+
+.fi-main-sidebar .fi-sidebar-group:not(:has(.fi-sidebar-group-btn)) .fi-sidebar-item-btn {
+    width: 100%;
+    padding: 14px 12px 14px 16px;
+    min-height: 48px;
+}
+
+/* —— 侧边栏时钟 —— */
+.admin-sidebar-clock {
+    padding: 8px 4px 20px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-sidebar-clock-time {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--admin-text);
+    letter-spacing: 0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+.admin-sidebar-clock-date {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--admin-text-muted);
+    line-height: 1.4;
+}
+
+/* —— 菜单项 —— */
+.fi-main-sidebar .fi-sidebar-item-btn {
+    justify-content: flex-start !important;
+}
+
+.fi-sidebar-item-btn {
+    border-radius: 0;
+    margin-inline: 0;
+    padding: 14px 12px 14px 16px;
+    min-height: 48px;
+    gap: 12px;
+}
+
+.fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-item-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--admin-text-secondary) !important;
+}
+
+.fi-sidebar-item-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--admin-text-secondary);
+}
+
+.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover {
+    background-color: #fafafa !important;
+}
+
+.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover .fi-sidebar-item-label,
+.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn:hover > .fi-icon {
+    color: var(--admin-primary) !important;
+}
+
+/* 激活态：浅绿底 + 翠绿文字/图标 + 左侧竖条 */
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn {
+    background-color: var(--admin-primary-light) !important;
+    color: var(--admin-primary) !important;
+    border-radius: 0;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn::before,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 3px;
+    background-color: var(--admin-primary);
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn > .fi-icon,
+.fi-sidebar-item.fi-active .fi-sidebar-item-icon,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-icon {
+    color: var(--admin-primary) !important;
+}
+
+.fi-sidebar-item.fi-active > .fi-sidebar-item-btn > .fi-sidebar-item-label,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items > .fi-sidebar-item-btn > .fi-sidebar-item-label {
+    color: var(--admin-primary) !important;
+    font-weight: 500;
+}
+
+/* 分组内子项缩进线改为翠绿激活色 */
+.fi-sidebar-item.fi-active .fi-sidebar-item-grouped-border-part,
+.fi-sidebar-item.fi-sidebar-item-has-active-child-items .fi-sidebar-item-grouped-border-part {
+    background-color: var(--admin-primary) !important;
+}
+
+/* 二级菜单隐藏分组圆点连线 */
+.fi-main-sidebar .fi-sidebar-group:has(.fi-sidebar-group-btn) .fi-sidebar-item-grouped-border {
+    display: none;
+}
+
+/* —— 内容区卡片 —— */
 .fi-section,
 .fi-ta-ctn,
 .fi-fo-repeater {
-    border-radius: 4px;
-    border-color: #e5e6eb !important;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+    border-color: var(--admin-border) !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .fi-page-header-heading {
     font-weight: 600;
-    color: #1d2129;
+    color: var(--admin-text);
 }
 
 .fi-btn.fi-color-primary {
@@ -60,7 +243,7 @@ html.fi {
 }
 
 .fi-simple-page {
-    background-color: #f2f3f5;
+    background-color: var(--admin-bg);
 }
 
 .fi-simple-page .fi-simple-main {
@@ -83,23 +266,23 @@ html.fi {
     gap: 8px;
     padding: 20px 12px;
     background: #fff;
-    border: 1px solid #e5e6eb;
-    border-radius: 4px;
+    border: 1px solid var(--admin-border);
+    border-radius: 6px;
     text-decoration: none;
-    color: #4e5969;
+    color: var(--admin-text-secondary);
     transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
 }
 
 .admin-quick-card:hover {
-    border-color: #165dff;
-    color: #165dff;
-    box-shadow: 0 2px 8px rgba(22, 93, 255, 0.12);
+    border-color: var(--admin-primary);
+    color: var(--admin-primary);
+    box-shadow: 0 2px 8px rgba(43, 164, 113, 0.12);
 }
 
 .admin-quick-card svg {
     width: 28px;
     height: 28px;
-    color: #165dff;
+    color: var(--admin-primary);
 }
 
 .admin-quick-card span {
@@ -110,13 +293,13 @@ html.fi {
 .admin-welcome {
     font-size: 20px;
     font-weight: 600;
-    color: #1d2129;
+    color: var(--admin-text);
     margin-bottom: 4px;
 }
 
 .admin-welcome-sub {
     font-size: 14px;
-    color: #86909c;
+    color: var(--admin-text-muted);
     margin-bottom: 0;
 }
 
@@ -140,4 +323,9 @@ html.fi {
 
 #company-page-settings.fi-sc-tabs > .fi-sc-tabs-tab.fi-active {
     width: 100%;
+}
+
+/* 侧边栏收起时隐藏时钟文字 */
+.fi-sidebar:not(.fi-sidebar-open) .admin-sidebar-clock {
+    display: none;
 }

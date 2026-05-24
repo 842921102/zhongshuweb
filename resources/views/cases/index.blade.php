@@ -4,6 +4,9 @@
 
 @section('content')
 @php
+    $bannerPc = media_url($pageSettings->banner_image_pc);
+    $bannerMobile = media_url($pageSettings->banner_image_mobile) ?: $bannerPc;
+    $heroHeight = $pageSettings->banner_height ?: 420;
     $pageTitle = $pageSettings->meta_title ?: ($pageSettings->page_title.' - '.$siteName);
 @endphp
 
@@ -20,12 +23,27 @@
 @endpush
 
 <div class="cs-page">
-    <header class="cs-hero-head">
-        <h1>{{ $pageSettings->page_title }}</h1>
-        @if($pageSettings->page_subtitle)
-            <p>{{ $pageSettings->page_subtitle }}</p>
+    <section class="cs-hero" style="--cs-hero-height: {{ $heroHeight }}px" aria-label="{{ $pageSettings->page_title }}">
+        @if($bannerPc)
+            <div class="cs-hero-media"
+                 aria-hidden="true"
+                 data-banner-bg
+                 data-banner-pc="{{ $bannerPc }}"
+                 @if($bannerMobile) data-banner-mobile="{{ $bannerMobile }}" @endif
+                 style="background-image:url('{{ $bannerPc }}')"></div>
+        @else
+            <div class="cs-hero-media cs-hero-media--fallback" aria-hidden="true"></div>
         @endif
-    </header>
+        <div class="cs-hero-overlay" aria-hidden="true"></div>
+        <div class="cs-hero-container">
+            <div class="cs-hero-content">
+                <h1>{{ $pageSettings->page_title }}</h1>
+                @if($pageSettings->page_subtitle)
+                    <p>{{ $pageSettings->page_subtitle }}</p>
+                @endif
+            </div>
+        </div>
+    </section>
 
     @if($featuredCases->isNotEmpty())
         <section class="cs-featured" data-cs-featured aria-label="精选案例">

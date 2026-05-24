@@ -15,7 +15,7 @@ class JoinUsController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
 
         return view('join-us.index', (new JoinUsPageService($locale))->indexData(
             categorySlug: $request->query('category'),
@@ -24,7 +24,7 @@ class JoinUsController extends Controller
 
     public function apply(Request $request): JsonResponse
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $settings = JoinPageSetting::forLocale($locale);
 
         $validator = Validator::make($request->all(), [

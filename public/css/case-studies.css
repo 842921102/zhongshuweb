@@ -20,35 +20,92 @@ body.case-studies-page {
   color: var(--cs-text);
 }
 
-/* 页头 */
-.cs-hero-head {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 24px 32px;
-  text-align: center;
+/* 顶部 Banner */
+.cs-hero {
+  position: relative;
+  height: var(--cs-hero-height, 420px);
+  min-height: var(--cs-hero-height, 420px);
+  overflow: hidden;
+  color: #fff;
+  background: #0a1628;
 }
 
-.cs-hero-head h1 {
+.cs-hero-media {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cs-hero-media--fallback {
+  background:
+    radial-gradient(circle at 72% 18%, rgba(0, 168, 90, 0.28), transparent 42%),
+    linear-gradient(115deg, #05080d 0%, #101828 55%, #0a1628 100%);
+}
+
+.cs-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 8, 13, 0.82) 0%,
+    rgba(16, 24, 40, 0.45) 52%,
+    rgba(16, 24, 40, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+.cs-hero-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 24px 48px;
+}
+
+.cs-hero-content {
+  max-width: 760px;
+}
+
+.cs-hero-content h1 {
   margin: 0 0 16px;
-  font-size: clamp(28px, 4vw, 48px);
+  font-size: clamp(32px, 4.5vw, 52px);
   font-weight: 600;
+  line-height: 1.12;
   letter-spacing: -0.02em;
 }
 
-.cs-hero-head p {
-  margin: 0 auto;
-  max-width: 720px;
-  font-size: 16px;
+.cs-hero-content p {
+  margin: 0;
+  max-width: 640px;
+  font-size: clamp(15px, 1.6vw, 17px);
   line-height: 1.75;
-  color: var(--cs-text-soft);
+  color: rgba(255, 255, 255, 0.86);
   white-space: pre-wrap;
+}
+
+@media (max-width: 767px) {
+  .cs-hero-container {
+    padding: 88px 20px 40px;
+    align-items: flex-end;
+  }
 }
 
 /* 精选轮播 */
 .cs-featured {
   max-width: 1200px;
-  margin: 0 auto 24px;
+  margin: 32px auto 24px;
   padding: 0 24px;
+}
+
+@media (max-width: 767px) {
+  .cs-featured {
+    margin-top: 24px;
+  }
 }
 
 .cs-featured__shell {

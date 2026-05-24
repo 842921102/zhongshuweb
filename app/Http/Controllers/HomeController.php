@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index(Request $request): View
     {
-        $locale = $request->query('lang', 'zh-cn');
+        $locale = current_lang();
         $service = new HomePageService($locale);
 
         return view('home.official', $service->data());

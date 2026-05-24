@@ -10,7 +10,7 @@
   --home-color-border: #e5e7eb;
   --home-color-surface: #f9fafb;
   --home-color-surface-alt: #f3f4f6;
-  --home-color-footer: #101828;
+  --home-color-footer: #05080d;
   --home-color-footer-soft: #99a1af;
   --home-color-accent: #fac107;
   --home-color-white: #ffffff;
@@ -24,15 +24,6 @@
   --home-shell-gap: 48px;
   --home-transition: 220ms ease;
 }
-.home-page .site-header {
-  background: transparent;
-}
-
-
-.home-page .site-header.is-scrolled {
-  background: #fff;
-}
-
 .hero {
   position: relative;
   height: 100vh;

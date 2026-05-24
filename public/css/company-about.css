@@ -7,38 +7,6 @@ body.company-about-page {
   padding-bottom: 0;
 }
 
-.company-about-page .site-header-spacer {
-  height: 80px;
-}
-
-body.company-about-page .site-header {
-  --site-header-bg-scrolled: rgba(255, 255, 255, 0.96);
-  --site-header-fg-scrolled: #101828;
-  --site-header-icon-filter-scrolled: brightness(0) invert(0);
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--home-color-border, #e5e7eb);
-}
-
-body.company-about-page .site-header .site-header__nav-link,
-body.company-about-page .site-header .site-header__lang {
-  color: #101828;
-}
-
-body.company-about-page .site-header .site-header__nav-link img,
-body.company-about-page .site-header .site-header__icon-button img,
-body.company-about-page .site-header .site-header__lang img {
-  filter: brightness(0) invert(0);
-}
-
-body.company-about-page .site-header .site-header__brand-logo--scrolled {
-  opacity: 1;
-}
-
-body.company-about-page .site-header .site-header__brand-logo--default {
-  opacity: 0;
-}
-
 .about-page {
   --about-primary: var(--theme-default-color, #00a85a);
   --about-primary-dark: var(--home-color-primary-dark, #05763a);
@@ -203,6 +171,21 @@ body.company-about-page .site-header .site-header__brand-logo--default {
 
 .about-section--gray {
   background: var(--about-bg);
+}
+
+/* 企业文化与品牌荣誉紧邻时，去掉重复的大间距 */
+.about-culture:has(+ .about-honors-section) {
+  padding-bottom: 0;
+}
+
+.about-culture + .about-honors-section {
+  padding-top: 48px;
+}
+
+@media (min-width: 1024px) {
+  .about-culture + .about-honors-section {
+    padding-top: 56px;
+  }
 }
 
 .about-section--dark {
