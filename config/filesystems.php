@@ -60,6 +60,24 @@ return [
             'report' => false,
         ],
 
+        /*
+        | 腾讯云 COS（S3 兼容），运行时由 BusinessCosSetting + CosStorageService 注入
+        */
+        'cos' => [
+            'driver' => 's3',
+            'key' => '',
+            'secret' => '',
+            'region' => 'ap-guangzhou',
+            'bucket' => '',
+            'url' => null,
+            'endpoint' => 'https://cos.ap-guangzhou.myqcloud.com',
+            'use_path_style_endpoint' => false,
+            'root' => 'uploads',
+            'visibility' => 'public',
+            'throw' => false,
+            'report' => false,
+        ],
+
     ],
 
     /*

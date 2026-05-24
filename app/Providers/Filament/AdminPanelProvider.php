@@ -46,7 +46,6 @@ class AdminPanelProvider extends PanelProvider
                 $this->collapsedNavGroup('关于我们', Heroicon::OutlinedBuildingOffice2),
                 $this->collapsedNavGroup('技术支持', Heroicon::OutlinedWrenchScrewdriver),
                 $this->collapsedNavGroup('加入我们', Heroicon::OutlinedUserPlus),
-                $this->collapsedNavGroup('内容管理', Heroicon::OutlinedDocumentText),
                 $this->collapsedNavGroup('系统设置', Heroicon::OutlinedCog6Tooth),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')

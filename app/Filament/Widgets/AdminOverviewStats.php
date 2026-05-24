@@ -18,8 +18,6 @@ class AdminOverviewStats extends StatsOverviewWidget
 {
     protected static ?int $sort = 2;
 
-    protected ?string $heading = '数据概览';
-
     protected int|string|array $columnSpan = 'full';
 
     protected function getStats(): array

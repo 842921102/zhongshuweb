@@ -12,9 +12,16 @@ class Dashboard extends BaseDashboard
 
     protected static ?string $navigationLabel = '工作台';
 
-    protected static ?string $title = '工作台';
+    protected static ?string $title = '';
 
     protected static ?int $navigationSort = -2;
+
+    public function getHeading(): ?string
+    {
+        $user = auth()->user();
+
+        return '欢迎回来，'.($user?->name ?: '管理员');
+    }
 
     public static function canAccess(): bool
     {

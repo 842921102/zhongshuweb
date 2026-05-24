@@ -7,7 +7,7 @@ use App\Models\Banner;
 use App\Models\CaseStudy;
 use App\Models\Category;
 use App\Models\HomeSection;
-use App\Models\Page;
+use App\Models\CompanyPageSetting;
 use App\Models\Product;
 use App\Models\SitePartner;
 use App\Models\SiteStatistic;
@@ -98,7 +98,7 @@ class HomePageService
                 ->limit(4)
                 ->get(),
             'articles' => $this->homeArticles(),
-            'about' => Page::byKey('about', $this->locale),
+            'about' => CompanyPageSetting::forLocale($this->locale),
         ]);
     }
 

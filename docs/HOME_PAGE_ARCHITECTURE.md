@@ -10,7 +10,7 @@
 | 项目案例 | `section.case-studies` | `case_studies` | 首页：`is_home_show`；列表页 `/cases` 见下表 |
 | 合作伙伴 | `section.partners` | `site_partners` + `site_statistics` | 伙伴最多 12；指标 4 条 `is_home_show` |
 | 新闻资讯 | `section.news` | `articles` | 优先 `is_home_show`，否则最新 3 条已发布 |
-| 关于我们 | `section.about` | `pages` | `page_key=about`, `is_published` |
+| 关于我们 | `section.about` | `company_page_settings` | `intro_*`、`hero_media_url` |
 | Footer | `footer.site-footer` | `site_settings` + `site_footer_links` | 键值配置 + 分组链接 |
 | 顶部导航 | `header.site-header__nav` | `site_nav_menus` | 顶级项 `parent_id IS NULL`；`product_mega` 类型联动产品分类下拉 |
 | 模块标题/开关 | `section-heading` | `home_sections` | `section_key` 对应 hero/solutions/products… |
@@ -24,7 +24,6 @@
 | site_banners | **banners** | 已扩展 `image_mobile`, `locale` |
 | product_categories | **categories** | 已扩展 `parent_id`, 封面/图标/首页标记等 |
 | news_articles | **articles** | 已扩展 `is_home_show`, `sort_order`, `locale` |
-| site_pages | **pages** | 已扩展 `page_key`, `excerpt`, `button_*` |
 | site_settings | **site_settings** | 原有键值表，存站点/页脚/Logo |
 
 ## 3. 已新增字段（迁移 `2026_05_22_120000_extend_homepage_cms_schema`）
@@ -32,8 +31,6 @@
 - **banners**: `image_mobile`, `locale`
 - **categories**: `parent_id`, `subtitle`, `description`, `icon`, `cover_image`, `link`, `is_home_show`, `is_home_featured`, `is_station_tab`, `locale`
 - **articles**: `is_home_show`, `sort_order`, `locale`
-- **pages**: `page_key`, `excerpt`, `button_text`, `button_url`, `locale`
-
 ## 4. 新增表
 
 - **products** — 产品列表
@@ -78,9 +75,9 @@
 | 官网管理 | 轮播图、首页模块、合作伙伴、数据指标、**菜单管理** |
 | 产品管理 | 产品分类、产品列表 |
 | 案例管理 | 案例列表 |
-| 内容管理 | 新闻资讯 |
+| 新闻管理 | 新闻资讯 |
+| 关于我们 | 公司介绍页设置 |
 | 系统设置 | 站点配置、页脚链接 |
-| （页面） | pages — 维护 `page_key=about` 关于我们 |
 
 ## 6. 前端模板读取方式
 

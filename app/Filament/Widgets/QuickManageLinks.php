@@ -14,7 +14,6 @@ use App\Filament\Resources\SiteSettings\SiteSettingResource;
 use App\Filament\Resources\SupportServiceRequests\SupportServiceRequestResource;
 use App\Services\AdminSubmissionStats;
 use Filament\Widgets\Widget;
-use Illuminate\Support\Facades\Auth;
 
 class QuickManageLinks extends Widget
 {
@@ -94,10 +93,4 @@ class QuickManageLinks extends Widget
         ]);
     }
 
-    public function getUserName(): string
-    {
-        $user = Auth::user();
-
-        return $user?->name ?? '管理员';
-    }
 }

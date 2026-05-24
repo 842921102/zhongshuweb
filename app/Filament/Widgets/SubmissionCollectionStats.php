@@ -13,8 +13,6 @@ class SubmissionCollectionStats extends StatsOverviewWidget
 
     protected ?string $heading = '前台数据收集';
 
-    protected ?string $description = '官网表单与简历投递汇总，待处理项请尽快跟进';
-
     protected int|string|array $columnSpan = 'full';
 
     public static function canView(): bool

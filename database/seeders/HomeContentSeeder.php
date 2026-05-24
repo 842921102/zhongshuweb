@@ -10,7 +10,6 @@ use App\Models\CaseStudy;
 use App\Models\CaseStudyCategory;
 use App\Models\Category;
 use App\Models\HomeSection;
-use App\Models\Page;
 use App\Models\Product;
 use App\Models\SiteFooterLink;
 use App\Models\SiteSocialLink;
@@ -34,7 +33,6 @@ class HomeContentSeeder extends Seeder
         $this->seedPartners();
         $this->seedStatistics();
         $this->seedNews();
-        $this->seedAbout();
         $this->seedFooterLinks();
         $this->seedSocialLinks();
     }
@@ -298,23 +296,6 @@ class HomeContentSeeder extends Seeder
             ]);
             $article->save();
         }
-    }
-
-    protected function seedAbout(): void
-    {
-        Page::query()->updateOrCreate(
-            ['page_key' => 'about', 'locale' => 'zh-cn'],
-            [
-                'title' => '关于众鼠科技',
-                'slug' => 'about',
-                'subtitle' => '以智能清洁设备研发制造，推动城市空间服务升级。',
-                'excerpt' => '众鼠科技是一家集研发、制造、销售与服务于一体的智能设备企业，围绕城市环卫、物业保洁、园区服务、商业空间等场景，提供智能化、数字化、全流程的清洁设备解决方案。',
-                'cover_image' => '/home-assets/69e9ff102a425.jpg',
-                'button_text' => '了解我们',
-                'button_url' => '#',
-                'is_published' => true,
-            ]
-        );
     }
 
     protected function seedFooterLinks(): void

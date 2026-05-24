@@ -10,6 +10,13 @@ if (! function_exists('media_url')) {
     }
 }
 
+if (! function_exists('upload_disk')) {
+    function upload_disk(): string
+    {
+        return \App\Services\CosStorageService::uploadDisk();
+    }
+}
+
 if (! function_exists('current_lang')) {
     function current_lang(string $fallback = 'zh-cn'): string
     {

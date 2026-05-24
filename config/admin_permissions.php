@@ -207,12 +207,6 @@ return [
             'model' => \App\Models\JoinWelfareCard::class,
             'sort' => 80,
         ],
-        'pages' => [
-            'label' => '单页内容',
-            'group' => '内容管理',
-            'model' => \App\Models\Page::class,
-            'sort' => 10,
-        ],
         'site_settings' => [
             'label' => '站点配置',
             'group' => '系统设置',
@@ -230,6 +224,12 @@ return [
             'group' => '系统设置',
             'model' => \App\Models\SiteSocialLink::class,
             'sort' => 30,
+        ],
+        'business_cos_settings' => [
+            'label' => '业务配置',
+            'group' => '系统设置',
+            'model' => \App\Models\BusinessCosSetting::class,
+            'sort' => 35,
         ],
         'admin_users' => [
             'label' => '用户管理',

@@ -1,13 +1,13 @@
 # 官网 CMS（Laravel + Filament）
 
-基于 **Laravel 13** 与 **Filament 4** 的企业官网内容管理系统，包含后台管理与供前端调用的 REST API。
+基于 **Laravel 13** 与 **Filament 4** 的企业官网内容管理系统，包含后台管理与 Blade 官网前台。
 
 ## 功能模块
 
 | 模块 | 说明 |
 |------|------|
 | **首页模块** | 轮播图、首页模块开关/标题、产品分类、产品、案例、合作伙伴、数据指标、新闻等 |
-| 单页内容 | 关于我们、服务介绍等静态页面 |
+| **关于我们** | 公司介绍页配置（首页「关于」区块同步读取） |
 | 新闻动态 | 文章发布、分类、推荐、SEO（首页新闻区自动读取） |
 | 文章分类 | 新闻栏目分类 |
 | 轮播图 | 首页/各区块 Banner，支持定时展示 |
@@ -51,17 +51,11 @@ php artisan serve
 
 > 生产环境请修改密码：`php artisan make:filament-user`
 
-## 公开 API（供官网前端调用）
+## 公开 API
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/v1/settings` | 站点配置（按分组） |
-| GET | `/api/v1/banners?position=home` | 轮播图 |
-| GET | `/api/v1/pages` | 已发布页面列表 |
-| GET | `/api/v1/pages/{slug}` | 单页详情 |
-| GET | `/api/v1/categories` | 文章分类 |
-| GET | `/api/v1/articles` | 文章列表（支持 `category`、`featured`、`page`） |
-| GET | `/api/v1/articles/{slug}` | 文章详情 |
+| GET | `/api/search?keyword=` | 顶部导航站内搜索（产品、分类、案例、新闻） |
 
 ### 读取站点配置（PHP）
 
