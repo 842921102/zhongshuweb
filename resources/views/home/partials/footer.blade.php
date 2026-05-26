@@ -3,7 +3,7 @@
     $footerLogo = media_url($footer['logo'] ?? null, asset('home-assets/69e9d8260dd85.png'));
     $socialLinks = $footer['social'] ?? [];
 @endphp
-<footer class="site-footer new_xz screen-section" id="home-footer">
+<footer class="site-footer" id="site-footer">
     <div class="site-shell site-footer__top site-footer__top--desktop">
         <div class="site-footer__brand">
             <a href="{{ localized_route('home', [], $locale ?? null) }}" aria-label="前往首页">

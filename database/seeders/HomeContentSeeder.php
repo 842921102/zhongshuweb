@@ -301,17 +301,16 @@ class HomeContentSeeder extends Seeder
     protected function seedFooterLinks(): void
     {
         $groups = [
-            ['products', '产品中', [
+            ['products', '产品中心', [
                 ['无人转运车', '/products'],
                 ['遥控割草机', '/products'],
             ]],
             ['solutions', '解决方案', [
-                ['招商加盟', '/cases'],
-                ['应用案例', '/cases'],
+                ['行业方案', '/industry-cases'],
+                ['客户案例', '/cases'],
             ]],
             ['about', '关于我们', [
                 ['公司介绍', '/about'],
-                ['应用案例', '/cases'],
                 ['新闻资讯', '/news'],
                 ['加入我们', '/join-us'],
                 ['联系我们', '/about#contact'],

@@ -1,0 +1,77 @@
+/**
+ * 全站页脚 — 与首页一致；内页加固，避免 main 区域 .new_xz 等规则影响页脚布局与配色。
+ */
+
+.site-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.site-layout > .site-main {
+  flex: 1 0 auto;
+}
+
+.site-footer {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--site-footer-bg, var(--home-color-footer, #05080d));
+  color: var(--site-footer-fg, var(--home-color-white, #fff));
+}
+
+.site-footer .site-footer__col h3,
+.site-footer .site-footer__accordion summary {
+  color: var(--site-footer-fg, var(--home-color-white, #fff));
+}
+
+.site-footer .site-footer__col a,
+.site-footer .site-footer__accordion-body a {
+  color: #99a1af;
+}
+
+.site-footer .site-footer__col a:hover,
+.site-footer .site-footer__accordion-body a:hover {
+  color: var(--site-footer-fg, var(--home-color-white, #fff));
+}
+
+.site-footer .site-footer__brand p,
+.site-footer .site-footer__contact li,
+.site-footer .site-footer__legal {
+  color: #99a1af;
+}
+
+/* 桌面：四列栅格（品牌 + 3 组链接） */
+@media (min-width: 750px) {
+  .site-footer__top.site-footer__top--desktop {
+    display: grid;
+    grid-template-columns: minmax(260px, 1.35fr) repeat(3, minmax(0, 1fr));
+    gap: 48px 40px;
+  }
+
+  .site-footer__mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 750px) {
+  .site-footer__top.site-footer__top--desktop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 32px;
+  }
+
+  .site-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* 手机：手风琴导航 */
+@media (max-width: 749px) {
+  .site-footer__top--desktop {
+    display: none;
+  }
+
+  .site-footer__mobile {
+    display: block;
+  }
+}

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\AdminPermissionRegistry;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -63,6 +64,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->roles()
             ->whereHas('permissions', fn ($query) => $query->where('name', $name))
             ->exists();
+    }
+
+    public function canAccessModule(string $module, string $action = 'view'): bool
+    {
+        return AdminPermissionRegistry::checkUserModulePermission($this, $module, $action) === true;
     }
 
     /**

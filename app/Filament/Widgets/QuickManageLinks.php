@@ -14,6 +14,7 @@ use App\Filament\Resources\SiteSettings\SiteSettingResource;
 use App\Filament\Resources\SupportServiceRequests\SupportServiceRequestResource;
 use App\Services\AdminSubmissionStats;
 use Filament\Widgets\Widget;
+use Illuminate\Support\Facades\Gate;
 
 class QuickManageLinks extends Widget
 {
@@ -23,14 +24,26 @@ class QuickManageLinks extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
+    public static function canView(): bool
+    {
+        $widget = new static;
+
+        return count($widget->getLinks()) > 0;
+    }
+
     /**
      * @return array<int, array{label: string, url: string, icon: string}>
      */
     public function getLinks(): array
     {
+        $user = auth()->user();
         $links = [];
 
-        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_JOIN)) {
+        if (! $user) {
+            return $links;
+        }
+
+        if (AdminSubmissionStats::userCanView($user, AdminSubmissionStats::MODULE_JOIN)) {
             $links[] = [
                 'label' => '简历投递',
                 'url' => JoinApplicationResource::getUrl(),
@@ -38,7 +51,7 @@ class QuickManageLinks extends Widget
             ];
         }
 
-        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_PRODUCT)) {
+        if (AdminSubmissionStats::userCanView($user, AdminSubmissionStats::MODULE_PRODUCT)) {
             $links[] = [
                 'label' => '产品咨询',
                 'url' => ProductConsultationResource::getUrl(),
@@ -46,7 +59,7 @@ class QuickManageLinks extends Widget
             ];
         }
 
-        if (AdminSubmissionStats::userCanView(auth()->user(), AdminSubmissionStats::MODULE_SUPPORT)) {
+        if (AdminSubmissionStats::userCanView($user, AdminSubmissionStats::MODULE_SUPPORT)) {
             $links[] = [
                 'label' => '售后申请',
                 'url' => SupportServiceRequestResource::getUrl(),
@@ -54,43 +67,28 @@ class QuickManageLinks extends Widget
             ];
         }
 
-        return array_merge($links, [
-            [
-                'label' => '轮播图',
-                'url' => BannerResource::getUrl(),
-                'icon' => 'photo',
-            ],
-            [
-                'label' => '首页模块',
-                'url' => HomeSectionResource::getUrl(),
-                'icon' => 'layout',
-            ],
-            [
-                'label' => '菜单管理',
-                'url' => SiteNavMenuResource::getUrl(),
-                'icon' => 'menu',
-            ],
-            [
-                'label' => '产品分类',
-                'url' => CategoryResource::getUrl(),
-                'icon' => 'folder',
-            ],
-            [
-                'label' => '产品列表',
-                'url' => ProductResource::getUrl(),
-                'icon' => 'cube',
-            ],
-            [
-                'label' => '新闻资讯',
-                'url' => ArticleResource::getUrl(),
-                'icon' => 'news',
-            ],
-            [
-                'label' => '站点设置',
-                'url' => SiteSettingResource::getUrl(),
-                'icon' => 'cog',
-            ],
-        ]);
-    }
+        $candidates = [
+            ['label' => '轮播图', 'resource' => BannerResource::class, 'icon' => 'photo'],
+            ['label' => '首页模块', 'resource' => HomeSectionResource::class, 'icon' => 'layout'],
+            ['label' => '菜单管理', 'resource' => SiteNavMenuResource::class, 'icon' => 'menu'],
+            ['label' => '产品分类', 'resource' => CategoryResource::class, 'icon' => 'folder'],
+            ['label' => '产品列表', 'resource' => ProductResource::class, 'icon' => 'cube'],
+            ['label' => '新闻资讯', 'resource' => ArticleResource::class, 'icon' => 'news'],
+            ['label' => '站点设置', 'resource' => SiteSettingResource::class, 'icon' => 'cog'],
+        ];
 
+        foreach ($candidates as $item) {
+            $model = $item['resource']::getModel();
+
+            if (Gate::forUser($user)->check('viewAny', $model)) {
+                $links[] = [
+                    'label' => $item['label'],
+                    'url' => $item['resource']::getUrl(),
+                    'icon' => $item['icon'],
+                ];
+            }
+        }
+
+        return $links;
+    }
 }

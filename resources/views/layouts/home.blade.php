@@ -20,12 +20,13 @@
     @stack('head')
     <link rel="stylesheet" href="{{ asset('css/site-responsive.css') }}">
     <link rel="stylesheet" href="{{ asset('css/site-typography.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/site-footer.css') }}">
 </head>
 <body class="site-layout has-immersive-header @if(request()->routeIs('home')) is-home-index home-page @endif @yield('body_class')">
 <div class="site-layout @if(request()->routeIs('home')) is-home-index home-page @endif">
     @include('home.partials.header')
     <div class="site-header-spacer" aria-hidden="true"></div>
-    <main class="new_xz">
+    <main class="site-main new_xz">
         @yield('content')
     </main>
     @include('home.partials.footer')

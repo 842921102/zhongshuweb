@@ -62,16 +62,9 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
 
-            $permission = AdminPermissionRegistry::permissionName(
-                $module,
-                AdminPermissionRegistry::mapPolicyAbility($ability),
-            );
+            $action = AdminPermissionRegistry::mapPolicyAbility($ability);
 
-            if (! AdminPermissionRegistry::permissionExists($permission)) {
-                return null;
-            }
-
-            return $user->hasPermission($permission);
+            return AdminPermissionRegistry::checkUserModulePermission($user, $module, $action);
         });
 
         FilamentView::registerRenderHook(

@@ -16,7 +16,7 @@ class SiteFooterLinkForm
                 ->label('分组')
                 ->required()
                 ->options([
-                    'products' => '产品中',
+                    'products' => '产品中心',
                     'solutions' => '解决方案',
                     'about' => '关于我们',
                 ])
@@ -26,7 +26,7 @@ class SiteFooterLinkForm
                 ->required()
                 ->maxLength(64)
                 ->default(fn ($get) => match ($get('group_key')) {
-                    'products' => '产品中',
+                    'products' => '产品中心',
                     'solutions' => '解决方案',
                     'about' => '关于我们',
                     default => '',

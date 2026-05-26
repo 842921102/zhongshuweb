@@ -32,7 +32,7 @@ class SiteNavMenu extends Model
 
     /** @var list<string> */
     public const SYSTEM_KEYS = [
-        'home', 'product_mega', 'industry_cases', 'case_center', 'about', 'culture', 'news', 'support', 'joinus',
+        'home', 'product_mega', 'industry_cases', 'case_center', 'about', 'news', 'support', 'joinus',
     ];
 
     /** @var array<string, string> */
@@ -40,9 +40,8 @@ class SiteNavMenu extends Model
         'home' => '首页 (home)',
         'product_mega' => '产品下拉 (product_mega)',
         'industry_cases' => '解决方案 /industry-cases (industry_cases)',
-        'case_center' => '招商加盟 /cases (case_center)',
+        'case_center' => '客户案例 /cases (case_center)',
         'about' => '关于我们页 (about)',
-        'culture' => '企业文化 (culture)',
         'news' => '新闻 (news)',
         'support' => '技术支持 (support)',
         'joinus' => '加入我们 (joinus)',
@@ -159,10 +158,10 @@ class SiteNavMenu extends Model
             [
                 'menu_key' => 'case_center',
                 'menu_type' => self::TYPE_LINK,
-                'label' => '招商加盟',
+                'label' => '客户案例',
                 'url' => '/cases',
                 'route_keys' => 'case,cases',
-                'search_keywords' => '招商加盟 案例 cases',
+                'search_keywords' => '客户案例 项目案例 cases',
                 'sort_order' => 4,
             ],
             [
@@ -170,18 +169,9 @@ class SiteNavMenu extends Model
                 'menu_type' => self::TYPE_LINK,
                 'label' => '关于我们',
                 'url' => '/about',
-                'route_keys' => 'about',
-                'search_keywords' => '关于我们 公司简介 about',
+                'route_keys' => 'about,culture',
+                'search_keywords' => '关于我们 公司简介 企业文化 荣誉 about',
                 'sort_order' => 5,
-            ],
-            [
-                'menu_key' => 'culture',
-                'menu_type' => self::TYPE_LINK,
-                'label' => '企业文化及荣誉',
-                'url' => '/about#culture',
-                'route_keys' => 'culture',
-                'search_keywords' => '企业文化 荣誉 culture',
-                'sort_order' => 6,
             ],
             [
                 'menu_key' => 'news',
@@ -190,7 +180,7 @@ class SiteNavMenu extends Model
                 'url' => '/news',
                 'route_keys' => 'news',
                 'search_keywords' => '新闻资讯 news',
-                'sort_order' => 7,
+                'sort_order' => 6,
             ],
             [
                 'menu_key' => 'support',
@@ -199,7 +189,7 @@ class SiteNavMenu extends Model
                 'url' => '/support',
                 'route_keys' => 'support',
                 'search_keywords' => '技术支持 support',
-                'sort_order' => 8,
+                'sort_order' => 7,
             ],
             [
                 'menu_key' => 'joinus',
@@ -208,7 +198,7 @@ class SiteNavMenu extends Model
                 'url' => '/join-us',
                 'route_keys' => 'joinus',
                 'search_keywords' => '加入我们 招聘 joinus',
-                'sort_order' => 9,
+                'sort_order' => 8,
             ],
         ];
 

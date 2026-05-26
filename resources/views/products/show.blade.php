@@ -113,7 +113,7 @@
         </section>
     @endif
 
-    @if($detailHero || $product->summary || $gallery !== [] || $features !== [])
+    @if($detailHeroPc || $detailHeroMobile || $product->displayImage() || $product->summary || $gallery !== [] || $features !== [])
         <section class="product-details">
             <div class="product-shell">
                 <div class="section-heading product-details-heading">

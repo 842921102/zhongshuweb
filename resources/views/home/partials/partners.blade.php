@@ -25,14 +25,16 @@
 
     @if($statistics->isNotEmpty())
         <div class="partners__band">
-            <img src="{{ asset('home-assets/home-partners-bg.png') }}" alt="合作伙伴数据背景">
-            <div class="site-shell partners__stats">
-                @foreach($statistics as $stat)
-                    <div class="partners__stat reveal">
-                        <strong>{{ $stat->displayValue() }}</strong>
-                        <span>{{ $stat->label }}</span>
-                    </div>
-                @endforeach
+            <img src="{{ asset('home-assets/home-partners-bg.png') }}" alt="合作伙伴数据背景" aria-hidden="true">
+            <div class="site-shell">
+                <div class="partners__stats" role="list">
+                    @foreach($statistics as $stat)
+                        <div class="partners__stat reveal" role="listitem">
+                            <strong>{{ $stat->displayValue() }}</strong>
+                            <span>{{ $stat->label }}</span>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     @endif

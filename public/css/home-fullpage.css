@@ -9,12 +9,12 @@
     scroll-margin-top: 72px;
 }
 
-.is-home-index .section.solutions.screen-section .site-shell,
-.is-home-index .section.products.screen-section .site-shell,
-.is-home-index .section.case-studies.screen-section .site-shell,
-.is-home-index .section.partners.screen-section .site-shell,
-.is-home-index .section.news.screen-section .site-shell,
-.is-home-index .section.about.screen-section .site-shell {
+.is-home-index .section.solutions.screen-section > .site-shell,
+.is-home-index .section.products.screen-section > .site-shell,
+.is-home-index .section.case-studies.screen-section > .site-shell,
+.is-home-index .section.partners.screen-section > .site-shell,
+.is-home-index .section.news.screen-section > .site-shell,
+.is-home-index .section.about.screen-section > .site-shell {
     width: 100%;
     flex: 1;
     display: flex;
@@ -31,7 +31,7 @@
     min-height: 0;
 }
 
-.is-home-index .site-footer.screen-section {
+.is-home-index .site-footer {
     min-height: auto;
 }
 

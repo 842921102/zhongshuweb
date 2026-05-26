@@ -303,7 +303,7 @@ picture img,
    手机 ≤768px
    ═══════════════════════════════════════ */
 @media (max-width: 768px) {
-  .site-layout .new_xz {
+  .site-layout main.site-main {
     overflow-x: clip;
   }
 
@@ -401,9 +401,19 @@ picture img,
   .is-home-index .solutions-grid,
   .is-home-index .products__list,
   .is-home-index .partners__grid,
-  .is-home-index .news__grid,
-  .is-home-index .partners__stats {
+  .is-home-index .news__grid {
     grid-template-columns: 1fr;
+  }
+
+  .is-home-index .partners__stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px 36px;
+  }
+
+  .is-home-index .partners__stat {
+    flex: 0 1 calc(50% - 24px);
   }
 
   .is-home-index .products__tabs {
@@ -884,6 +894,9 @@ picture img,
   }
 
   .is-home-index .partners__stats {
-    gap: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px 28px;
   }
 }

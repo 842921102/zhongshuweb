@@ -28,7 +28,7 @@ class SiteFooterLinksTable
                 SelectFilter::make('group_key')
                     ->label('分组')
                     ->options([
-                        'products' => '产品中',
+                        'products' => '产品中心',
                         'solutions' => '解决方案',
                         'about' => '关于我们',
                     ]),

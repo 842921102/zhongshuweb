@@ -3,7 +3,7 @@ body.case-studies-page {
   background: var(--home-color-surface, #f9fafb);
 }
 
-.case-studies-page .new_xz {
+.case-studies-page main.site-main {
   padding-bottom: 0;
 }
 
