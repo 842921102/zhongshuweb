@@ -16,6 +16,9 @@ body.company-about-page {
   --about-muted: var(--home-color-text-muted, #6a7282);
   --about-line: var(--home-color-border, #e5e7eb);
   --about-bg: var(--home-color-surface, #f9fafb);
+  --about-map-ocean: #fff;
+  --about-map-land: #e8eaed;
+  --about-map-land-stroke: #d5dbe3;
   --about-dark: #05080d;
   --about-shadow: var(--home-shadow-soft, 0 20px 50px rgba(16, 24, 40, 0.08));
   --about-radius-lg: var(--home-radius-lg, 24px);
@@ -23,54 +26,13 @@ body.company-about-page {
   font-family: var(--site-font-family);
 }
 
-/* 区块标题 — 与首页 section-heading 一致 */
-.about-section-head {
-  max-width: 760px;
-  margin-bottom: 56px;
-}
-
-.about-section-head--center {
+/* 区块标题 — 统一居中（与「品牌荣誉」about-title-block 一致） */
+.about-section-head.about-title-block {
+  max-width: none;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 40px;
   text-align: center;
-}
-
-.about-section-head h2 {
-  margin: 0 0 18px;
-  font-size: clamp(2rem, 3vw, 3rem);
-  font-weight: 300;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  color: var(--about-ink);
-}
-
-.about-section-head p {
-  margin: 0;
-  font-size: clamp(0.875rem, 1.4vw, 1rem);
-  line-height: 1.75;
-  color: var(--about-text);
-}
-
-.about-section--dark .about-section-head p {
-  color: rgba(255, 255, 255, 0.68);
-}
-
-.about-kicker {
-  display: inline-block;
-  margin-bottom: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--about-primary);
-}
-
-.about-kicker--dark {
-  color: var(--about-primary);
-}
-
-.about-section--dark .about-kicker {
-  color: #3fe28d;
 }
 
 /* 顶部全宽 Banner */
@@ -129,24 +91,12 @@ body.company-about-page {
   }
 }
 
-.about-section--profile .about-section-head {
-  margin-bottom: 40px;
-}
-
-/* 「关于众鼠」标题 — 居中 + 英文副标 + 绿色短下划线 */
-.about-title-block {
-  max-width: none;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-}
-
+/* 英文眉标 + 主标题 + 绿色短下划线 */
 .about-title-block__eyebrow {
   margin: 0 0 14px;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--about-primary);
 }
 
@@ -167,6 +117,27 @@ body.company-about-page {
   margin: 18px auto 0;
   border-radius: 2px;
   background: var(--about-primary);
+}
+
+.about-title-block__lead {
+  max-width: 720px;
+  margin: -16px auto 40px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--about-text);
+}
+
+.about-title-block__lead--on-dark {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.about-title-block--dark .about-title-block__eyebrow {
+  color: #3fe28d;
+}
+
+.about-title-block--dark .about-title-block__title {
+  color: #fff;
 }
 
 .about-section--gray {
@@ -190,10 +161,6 @@ body.company-about-page {
 
 .about-section--dark {
   background: var(--about-dark);
-  color: #fff;
-}
-
-.about-section--dark .about-section-head h2 {
   color: #fff;
 }
 
@@ -363,24 +330,13 @@ body.company-about-page {
 
 /* Tab 切换（服务站 / 企业文化） */
 .about-switch__toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
   margin-bottom: 32px;
-}
-
-@media (min-width: 1024px) {
-  .about-switch__toolbar {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 48px;
-  }
 }
 
 .about-switch__tabs {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 24px 32px;
 }
 
@@ -403,34 +359,6 @@ body.company-about-page {
 
 .about-switch__tab.is-active {
   border-bottom-color: var(--about-primary);
-}
-
-.about-switch__heading {
-  text-align: left;
-}
-
-@media (min-width: 1024px) {
-  .about-switch__heading {
-    text-align: right;
-    flex: 0 0 auto;
-    max-width: 480px;
-  }
-}
-
-.about-switch__eyebrow {
-  margin: 0 0 8px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: var(--about-primary);
-}
-
-.about-switch__title {
-  margin: 0;
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 600;
-  line-height: 1.25;
-  color: var(--about-ink);
 }
 
 .about-switch__panel {
@@ -562,14 +490,6 @@ body.company-about-page {
 }
 
 /* 企业文化 */
-.about-culture__lead {
-  max-width: 820px;
-  margin: 0 0 28px;
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--about-text);
-}
-
 .about-culture__card {
   display: flex;
   flex-direction: column;
@@ -681,15 +601,6 @@ body.company-about-page {
 }
 
 /* 品牌荣誉 — 资质/奖牌图片墙 */
-.about-honors__lead {
-  max-width: 720px;
-  margin: -16px auto 40px;
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.75;
-  color: var(--about-text);
-}
-
 .about-honors-gallery {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -939,56 +850,316 @@ body.company-about-page {
   color: var(--about-text);
 }
 
-/* Responsive */
-@media (max-width: 980px) {
-  .about-intro-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .about-banner__media {
-    min-height: 280px;
-    max-height: 52vh;
-  }
-
-  .about-cap-grid,
-  .about-team-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .about-team-lead {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 28px;
-  }
-
-  .about-stat-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
+/* 全球化布局 — 与上下白底区块连成一体 */
+.about-section--global {
+  padding-top: 48px;
+  padding-bottom: 80px;
+  background: var(--about-map-ocean);
 }
 
-@media (max-width: 640px) {
-  .about-banner__media {
-    min-height: 220px;
-    max-height: 44vh;
-  }
-
-  .about-section {
-    padding: 74px 0;
-  }
-
-  .about-intro-card,
-  .about-cap-card {
-    padding: 26px;
-  }
-
-  .about-cap-grid,
-  .about-stat-grid,
-  .about-team-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .about-path__item {
-    grid-template-columns: 1fr;
+@media (min-width: 1024px) {
+  .about-section--global {
+    padding-top: 64px;
   }
 }
+
+@media (min-width: 1024px) {
+  .about-section--global {
+    padding-bottom: 100px;
+  }
+}
+
+.about-global__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px 48px;
+  margin: 0 auto 40px;
+}
+
+.about-global__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.about-global__stat strong {
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--about-primary);
+}
+
+.about-global__stat span {
+  font-size: 14px;
+  color: var(--about-muted);
+}
+
+.about-global__map-wrap {
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.about-global__map {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  min-height: 280px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .about-global__map {
+    min-height: 360px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-global__map {
+    min-height: 440px;
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .about-global__map {
+    min-height: 500px;
+  }
+}
+
+.about-global__map-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.about-global__map-svg,
+.about-global__map-bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.about-global__map-bg {
+  object-fit: cover;
+  object-position: center;
+}
+
+.about-global__map-svg .about-global__country {
+  fill: var(--about-map-land);
+  stroke: var(--about-map-land-stroke);
+  stroke-width: 0.4;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.35s ease;
+}
+
+.about-global__map-svg.is-map-ready .about-global__country {
+  animation: about-global-land-in 0.6s ease backwards;
+}
+
+.about-global__map-svg.is-map-ready .about-global__country:nth-child(3n) {
+  animation-delay: 0.05s;
+}
+
+.about-global__map-svg.is-map-ready .about-global__country:nth-child(3n + 1) {
+  animation-delay: 0.12s;
+}
+
+.about-global__map-svg.is-map-ready .about-global__country:nth-child(3n + 2) {
+  animation-delay: 0.18s;
+}
+
+@keyframes about-global-land-in {
+  from {
+    opacity: 0;
+    fill: var(--about-map-ocean);
+  }
+
+  to {
+    opacity: 1;
+    fill: var(--about-map-land);
+  }
+}
+
+.about-global__markers {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.about-global__marker {
+  position: absolute;
+  left: var(--marker-x, 50%);
+  top: var(--marker-y, 50%);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.about-global__marker[data-marker-lat]:not(.is-positioned) {
+  opacity: 0;
+}
+
+.about-global__marker--right {
+  flex-direction: row;
+}
+
+.about-global__marker--left {
+  flex-direction: row-reverse;
+}
+
+.about-global__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--about-primary);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--about-primary) 22%, transparent);
+}
+
+.about-global__marker-label {
+  position: relative;
+  margin: 0 10px;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(16, 24, 40, 0.1);
+  white-space: nowrap;
+}
+
+.about-global__marker-label::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 1px;
+  background: var(--about-primary);
+  opacity: 0.55;
+}
+
+.about-global__marker--right .about-global__marker-label::before {
+  right: 100%;
+  margin-right: 2px;
+}
+
+.about-global__marker--left .about-global__marker-label::before {
+  left: 100%;
+  margin-left: 2px;
+}
+
+.about-global__marker-label strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--about-ink);
+  line-height: 1.3;
+}
+
+.about-global__marker-label span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--about-muted);
+  line-height: 1.35;
+}
+
+.about-global__facilities {
+  margin-top: 8px;
+}
+
+.about-global__facilities-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 20px 24px;
+  background: var(--about-bg);
+  border-radius: 999px;
+}
+
+@media (min-width: 768px) {
+  .about-global__facilities-inner {
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: 48px;
+    padding: 24px 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-global__facilities-inner {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 28px 40px;
+  }
+}
+
+.about-global__facility {
+  text-align: center;
+  padding: 4px 8px;
+}
+
+.about-global__facility-value {
+  display: block;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--about-primary);
+}
+
+.about-global__facility-title {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--about-ink);
+}
+
+.about-global__facility-locs {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--about-muted);
+}
+
+/* 滚动进入视口后逐项显现 */
+.about-global [data-global-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-global [data-global-reveal].is-revealed {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.about-global__marker[data-global-reveal] {
+  transform: translate(-50%, -50%) scale(0.92);
+}
+
+.about-global__marker[data-global-reveal].is-revealed {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-global [data-global-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .about-global__marker[data-global-reveal] {
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* 响应式见 public/css/site-responsive.css */

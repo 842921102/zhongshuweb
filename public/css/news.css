@@ -441,42 +441,4 @@ a.news-pagination-item:hover {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-@media (max-width: 1024px) {
-  .news-featured-card .news-block-link {
-    grid-template-columns: 1fr;
-  }
-
-  .news-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .news-grid--related {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .news-content {
-    padding: 40px 0 72px;
-  }
-
-  .news-grid,
-  .news-grid--related {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .news-featured-body {
-    padding: 28px 24px;
-  }
-
-  .news-card-body {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 640px) {
-  .news-page {
-    --news-shell: calc(100% - 32px);
-  }
-}
+/* 响应式见 public/css/site-responsive.css */

@@ -77,10 +77,16 @@ class ArticleForm
                             ->label('正文')
                             ->columnSpanFull(),
                         FileUpload::make('cover_image')
-                            ->label('封面图')
+                            ->label('封面图（PC / 默认）')
+                            ->image()
+                            ->directory('articles')
+                            ->disk('public'),
+                        FileUpload::make('cover_image_mobile')
+                            ->label('封面图（手机端，可选）')
                             ->image()
                             ->directory('articles')
                             ->disk('public')
+                            ->helperText('留空则小屏使用 PC 封面')
                             ->columnSpanFull(),
                     ]),
                 ]),

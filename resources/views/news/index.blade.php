@@ -26,15 +26,14 @@
 
 @section('content')
 <div class="news-main">
-    <section class="news-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px">
-        @if($bannerPc)
-            <div class="news-hero-media" aria-hidden="true"
-                 data-banner-bg
-                 data-banner-pc="{{ $bannerPc }}"
-                 @if($bannerMobile) data-banner-mobile="{{ $bannerMobile }}" @endif
-                 style="background-image:url('{{ $bannerPc }}')"></div>
-        @endif
-        <div class="news-hero-container" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px"></div>
+    <section class="news-hero site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px">
+        <x-responsive-bg
+            :pc="$pageSettings->banner_image_pc"
+            :mobile="$pageSettings->banner_image_mobile"
+            class="news-hero-media"
+            aria-hidden="true"
+        />
+        <div class="news-hero-container site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px"></div>
     </section>
 
     <section class="news-content">
@@ -60,9 +59,14 @@
             @if($featuredArticle)
                 <article class="news-featured-card">
                     <a href="{{ $featuredArticle->url() }}" class="news-block-link" aria-labelledby="news-featured-title">
-                        @if($featuredArticle->cover_image)
+                        @if($featuredArticle->cover_image || $featuredArticle->cover_image_mobile)
                             <div class="news-featured-media">
-                                <img src="{{ media_url($featuredArticle->cover_image) }}" alt="" width="1600" height="1067" decoding="async" aria-hidden="true">
+                                <x-responsive-image
+                                    :pc="$featuredArticle->cover_image"
+                                    :mobile="$featuredArticle->cover_image_mobile"
+                                    decorative
+                                    decoding="async"
+                                />
                             </div>
                         @endif
                         <div class="news-featured-body">

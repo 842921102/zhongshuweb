@@ -56,7 +56,7 @@
                 <label class="site-header__search-title" for="siteHeaderSearchInput">站内搜索</label>
                 <div class="site-header__search-field">
                     <img src="{{ asset('home-assets/home-search.svg') }}" alt="" aria-hidden="true">
-                    <input id="siteHeaderSearchInput" class="site-header__search-input" type="search" name="keyword" placeholder="搜索产品、案例、新闻" autocomplete="off" data-search-input>
+                    <input id="siteHeaderSearchInput" class="site-header__search-input" type="search" name="keyword" placeholder="搜索产品、解决方案、新闻" autocomplete="off" data-search-input>
                     <button class="site-header__search-submit" type="submit">搜索</button>
                 </div>
                 <p class="site-header__search-status" data-search-status>输入关键词快速找到对应页面。</p>

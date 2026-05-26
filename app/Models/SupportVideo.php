@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
-    'locale', 'title', 'cover_image', 'video_url', 'duration_label', 'tag',
+    'locale', 'title', 'cover_image', 'cover_image_mobile', 'video_url', 'duration_label', 'tag',
     'play_count', 'sort_order', 'is_active',
 ])]
 class SupportVideo extends Model

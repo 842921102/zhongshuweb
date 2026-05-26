@@ -23,11 +23,15 @@
 
 @section('content')
 <div class="news-main newsdetail-main">
-    @if($coverUrl)
-        <section class="news-hero newsdetail-banner" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px">
-            <div class="news-hero-media newsdetail-banner-media" aria-hidden="true"
-                 style="background-image:url('{{ $coverUrl }}')"></div>
-            <div class="news-hero-container" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px"></div>
+    @if($article->cover_image || $article->cover_image_mobile)
+        <section class="news-hero newsdetail-banner site-responsive-hero" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px">
+            <x-responsive-bg
+                :pc="$article->cover_image"
+                :mobile="$article->cover_image_mobile"
+                class="news-hero-media newsdetail-banner-media"
+                aria-hidden="true"
+            />
+            <div class="news-hero-container site-responsive-hero" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px"></div>
         </section>
     @endif
 
@@ -57,11 +61,11 @@
             <h1 class="newsdetail-title">{{ $article->title }}</h1>
 
             @if($article->content)
-                <div class="newsdetail-content">
+                <div class="newsdetail-content cms-rich-content">
                     {!! $article->content !!}
                 </div>
             @elseif($article->summary)
-                <div class="newsdetail-content">
+                <div class="newsdetail-content cms-rich-content">
                     <p>{{ $article->summary }}</p>
                 </div>
             @endif

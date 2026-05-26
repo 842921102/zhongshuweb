@@ -69,6 +69,18 @@ return [
             'model' => \App\Models\ProductPageSetting::class,
             'sort' => 40,
         ],
+        'industry_solutions' => [
+            'label' => '解决方案列表',
+            'group' => '解决方案',
+            'model' => \App\Models\IndustrySolution::class,
+            'sort' => 10,
+        ],
+        'industry_solution_page_settings' => [
+            'label' => '解决方案页设置',
+            'group' => '解决方案',
+            'model' => \App\Models\IndustrySolutionPageSetting::class,
+            'sort' => 20,
+        ],
         'case_study_categories' => [
             'label' => '案例分类',
             'group' => '案例管理',

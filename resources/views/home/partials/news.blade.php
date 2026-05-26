@@ -12,7 +12,13 @@
             @foreach($articles as $article)
                 <article class="news-card reveal">
                     <div class="news-card__media">
-                        <img src="{{ media_url($article->cover_image, asset('home-assets/69eb3db6a3bc9.png')) }}" alt="{{ $article->title }}" loading="lazy">
+                        <x-responsive-image
+                            :pc="$article->cover_image"
+                            :mobile="$article->cover_image_mobile"
+                            fallback="home-assets/69eb3db6a3bc9.png"
+                            :alt="$article->title"
+                            loading="lazy"
+                        />
                     </div>
                     <div class="news-card__body">
                         <div class="news-card__meta">

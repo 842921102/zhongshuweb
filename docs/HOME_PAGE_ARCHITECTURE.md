@@ -31,6 +31,9 @@
 - **banners**: `image_mobile`, `locale`
 - **categories**: `parent_id`, `subtitle`, `description`, `icon`, `cover_image`, `link`, `is_home_show`, `is_home_featured`, `is_station_tab`, `locale`
 - **articles**: `is_home_show`, `sort_order`, `locale`
+- **categories / products / articles**（`2026_05_26_100000_add_responsive_cover_images`）: `cover_image_mobile`；产品另增 `home_image_mobile`
+- **case_studies / join_page_settings / company_page_settings / support_videos / products**（`2026_05_26_120000_add_responsive_media_extended`）: 各模块 `*_mobile` 封面/背景字段
+
 ## 4. 新增表
 
 - **products** — 产品列表
@@ -97,6 +100,13 @@ home/partials/footer.blade.php
 
 图片 URL：`media_url($path, $fallback)` — 支持 `/home-assets/`、storage、外链。
 
+响应式图片（≤968px 与 `site-layout.js` 一致）：
+
+- 组件：`<x-responsive-image pc="" mobile="" fallback="" />`、`<x-responsive-bg />`（背景图）
+- 逻辑：`App\Support\ResponsiveMedia` / `responsive_media()`；有独立手机图时用原生 `<picture><source media="(max-width: 968px)">`
+- 后台：分类 / 产品 / 文章 / 案例 / 招聘 / 关于我们 / 支持视频 / 轮播图 等可分别上传 PC 图与手机图；手机图留空则自动用 PC 图
+- 文字：`public/css/site-typography.css`（仅 max-width）统一缩小标题、正文、按钮与 `.cms-rich-content` 富文本
+
 ## 7. 禁止写死的内容
 
 - 轮播图、分类、产品、案例、伙伴 Logo、统计数字、新闻列表、关于文案、页脚联系方式与链接
@@ -105,11 +115,12 @@ home/partials/footer.blade.php
 
 可保留为静态资源：SVG 图标、`home.js` / `site-layout.js`、空列表 CSS（`products__list:empty`）。
 
-## 8. 分屏样式
+## 8. 分屏与响应式
 
-- 保留官网 `home-common.css` / `home.css` 与原有 class（hero、products__tab、case-card 等）
-- 叠加 `public/css/home-fullpage.css`：各 `section.screen-section` 使用 `min-height: 100vh`
-- 移动端 `min-height: auto` 避免过高
+- 保留官网 `home-common.css` / `home.css` 与原有 class（hero、products__tab、case-card 等）— **PC（>1024px）默认不变**
+- 叠加 `public/css/home-fullpage.css`：各 `section.screen-section` 使用 `min-height: 100vh`（仅首页）
+- 全站响应式覆盖：`public/css/site-responsive.css`，在 `layouts/home.blade.php` 中位于各页 `@stack('head')` **之后**加载，仅含 `@media (max-width: …)` 规则
+- 断点：1024 平板 / 768 手机 / 640 小屏；顶栏与 Banner 图切换 JS 仍为 **968px**（`site-layout.js`）
 
 ## 本地预览
 

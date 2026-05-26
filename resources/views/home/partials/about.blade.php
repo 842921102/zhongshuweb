@@ -8,10 +8,14 @@
         ])
     </div>
     <div class="about__visual reveal">
-        @php
-            $aboutImage = $about?->intro_side_image ?: $about?->hero_media_url;
-        @endphp
-        <img src="{{ media_url($aboutImage, asset('home-assets/69e9ff102a425.jpg')) }}" alt="{{ $about?->intro_title ?? '关于众鼠科技' }}" class="about__image" loading="lazy">
+        <x-responsive-image
+            :pc="$about?->intro_side_image ?: $about?->hero_media_url"
+            :mobile="$about?->intro_side_image_mobile ?? $about?->hero_media_mobile ?? null"
+            fallback="home-assets/69e9ff102a425.jpg"
+            :alt="$about?->intro_title ?? '关于众鼠科技'"
+            class="about__image"
+            loading="lazy"
+        />
         @if($about?->intro_body)
             <div class="about__panel">
                 <p>{{ \Illuminate\Support\Str::limit(strip_tags($about->intro_body), 280) }}</p>

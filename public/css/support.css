@@ -594,43 +594,4 @@
   color: var(--support-primary);
 }
 
-@media (max-width: 1024px) {
-  .support-video-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .support-service-shell {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 768px) {
-  .support-doc-item {
-    grid-template-columns: 1fr;
-  }
-
-  .support-doc-action {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .support-video-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .support-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .support-docs-heading {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-@media (max-width: 640px) {
-  .support-hero-media img[data-banner-mobile] {
-    content: attr(data-banner-mobile);
-  }
-}
+/* 响应式见 public/css/site-responsive.css */

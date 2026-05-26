@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
-    'parent_id', 'name', 'slug', 'subtitle', 'description', 'icon', 'cover_image',
+    'parent_id', 'name', 'slug', 'subtitle', 'description', 'icon', 'cover_image', 'cover_image_mobile',
     'link', 'sort_order', 'is_active', 'is_home_show', 'is_home_featured',
     'is_station_tab', 'locale',
 ])]
@@ -81,5 +81,15 @@ class Category extends Model
     public function isRoot(): bool
     {
         return $this->parent_id === null;
+    }
+
+    public function coverPcPath(): ?string
+    {
+        return $this->cover_image ?: $this->icon;
+    }
+
+    public function coverMobilePath(): ?string
+    {
+        return $this->cover_image_mobile;
     }
 }

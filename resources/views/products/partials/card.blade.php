@@ -7,7 +7,12 @@
     <div class="product-card-inner">
     <a href="{{ $product->url() }}" class="product-card-media" aria-label="{{ $product->name }}">
         @if($product->displayImage())
-            <img src="{{ media_url($product->displayImage()) }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+            <x-responsive-image
+                :pc="$product->displayImage()"
+                :mobile="$product->displayImageMobile()"
+                :alt="$product->name"
+                loading="lazy"
+            />
         @endif
     </a>
     <div class="product-card-body">

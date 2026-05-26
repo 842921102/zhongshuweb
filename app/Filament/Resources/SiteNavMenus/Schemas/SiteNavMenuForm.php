@@ -29,7 +29,7 @@ class SiteNavMenuForm
                             ->live(),
                         Select::make('menu_key')
                             ->label('系统标识')
-                            ->options(static::menuKeyOptions())
+                            ->options(fn (?SiteNavMenu $record): array => static::menuKeyOptions($record))
                             ->searchable()
                             ->nullable()
                             ->disabled(fn (?SiteNavMenu $record): bool => $record?->isSystem() ?? false)
@@ -97,17 +97,14 @@ class SiteNavMenuForm
     }
 
     /** @return array<string, string> */
-    protected static function menuKeyOptions(): array
+    protected static function menuKeyOptions(?SiteNavMenu $record = null): array
     {
-        return [
-            'home' => '首页 (home)',
-            'product_mega' => '产品下拉 (product_mega)',
-            'case_center' => '招商加盟 /cases (case_center)',
-            'about' => '关于我们页 (about)',
-            'culture' => '企业文化 (culture)',
-            'news' => '新闻 (news)',
-            'support' => '技术支持 (support)',
-            'joinus' => '加入我们 (joinus)',
-        ];
+        $options = SiteNavMenu::SYSTEM_KEY_LABELS;
+
+        if ($record?->menu_key && ! isset($options[$record->menu_key])) {
+            $options[$record->menu_key] = $record->menu_key.' ('.$record->menu_key.')';
+        }
+
+        return $options;
     }
 }

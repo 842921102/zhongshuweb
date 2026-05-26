@@ -25,7 +25,11 @@
                 <div class="products__panel {{ $index === 0 ? 'is-active' : '' }}" data-product-panel="{{ $panel['tab']->domKey() }}">
                     @if($featured)
                         <div class="products__feature reveal">
-                            <img src="{{ media_url($featured->displayImage()) }}" alt="{{ $featured->name }}">
+                            <x-responsive-image
+                                :pc="$featured->displayImage()"
+                                :mobile="$featured->displayImageMobile()"
+                                :alt="$featured->name"
+                            />
                             <div class="products__feature-content">
                                 <h3>{{ $featured->model_no ?: $featured->name }}</h3>
                                 <p>{{ $featured->subtitle ?: $featured->name }}</p>
@@ -39,7 +43,12 @@
                     <div class="products__list">
                         @foreach($others as $product)
                             <article class="product-mini-card reveal">
-                                <img src="{{ media_url($product->displayImage()) }}" alt="{{ $product->name }}">
+                                <x-responsive-image
+                                    :pc="$product->displayImage()"
+                                    :mobile="$product->displayImageMobile()"
+                                    :alt="$product->name"
+                                    loading="lazy"
+                                />
                                 <a class="product-mini-card__content" href="{{ $product->detail_url ?: '#' }}">
                                     <h3>{{ $product->model_no ?: $product->name }}</h3>
                                     <p>{{ $product->subtitle ?: $product->summary }}</p>

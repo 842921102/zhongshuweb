@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 #[Fillable([
     'title', 'slug', 'category_id', 'region', 'scene_type', 'summary', 'excerpt',
-    'cover_image', 'content', 'product_tags', 'detail_url', 'sort_order',
+    'cover_image', 'cover_image_mobile', 'content', 'product_tags', 'detail_url', 'sort_order',
     'is_home_show', 'is_featured', 'is_active', 'locale',
     'published_at', 'meta_title', 'meta_description',
 ])]

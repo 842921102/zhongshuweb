@@ -155,9 +155,4 @@ body.productdetail-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .si
   font-size: 14px;
 }
 
-@media (max-width: 640px) {
-  .product-banner__controls {
-    right: 16px;
-    bottom: 16px;
-  }
-}
+/* 响应式见 public/css/site-responsive.css */

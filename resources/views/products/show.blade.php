@@ -9,8 +9,9 @@
     $categoryLabel = $product->categoryPillLabel();
     $gallery = $product->detailGalleryList();
     $features = $product->detailFeatureList();
-    $detailHero = media_url($product->detail_hero_image) ?: $heroImage;
-    $contactBg = media_url($product->contact_bg_image);
+    $detailHeroPc = $product->detail_hero_image;
+    $detailHeroMobile = $product->detail_hero_image_mobile;
+    $contactBgStyle = responsive_bg_style($product->contact_bg_image, $product->contact_bg_image_mobile);
     $rightsTitle = $rights['title'] ?? null;
     $rightsTime = $rights['time_range'] ?? null;
     $rightsNotice = $rights['notice'] ?? null;
@@ -127,9 +128,14 @@
                     @endif
                 </div>
 
-                @if($detailHero)
+                @if($detailHeroPc || $detailHeroMobile || $product->displayImage())
                     <article class="details-hero-card">
-                        <img src="{{ $detailHero }}" alt="{{ $product->name }}" loading="lazy" decoding="async">
+                        <x-responsive-image
+                            :pc="$detailHeroPc ?: $product->displayImage()"
+                            :mobile="$detailHeroMobile"
+                            :alt="$product->name"
+                            loading="lazy"
+                        />
                     </article>
                 @endif
 
@@ -232,7 +238,7 @@
                     @if($rightsNotice)
                         <div class="product-rights-notice"><p>{{ $rightsNotice }}</p></div>
                     @endif
-                    <div class="product-rights-content">
+                    <div class="product-rights-content cms-rich-content">
                         <div class="product-rights-groups">
                             @foreach($rightsHighlights as $item)
                                 @if(filled($item['html'] ?? $item['text'] ?? null))
@@ -271,10 +277,8 @@
     @endif
 
     <section class="product-contact">
-        @if($contactBg)
-            <div class="product-contact-media" aria-hidden="true">
-                <img src="{{ $contactBg }}" alt="" loading="lazy" decoding="async">
-            </div>
+        @if($contactBgStyle)
+            <div class="product-contact-media has-responsive-bg" style="{{ $contactBgStyle }}" aria-hidden="true"></div>
         @endif
         <div class="product-contact-shell">
             <div class="product-contact-copy">

@@ -55,7 +55,7 @@ php artisan serve
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/search?keyword=` | 顶部导航站内搜索（产品、分类、案例、新闻） |
+| GET | `/api/search?keyword=` | 顶部导航站内搜索（产品、分类、行业案例、案例、新闻） |
 
 ### 读取站点配置（PHP）
 

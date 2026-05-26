@@ -31,8 +31,13 @@
                         $mobile = $posterMobile;
                     @endphp
                     @if($pc)
-                        <img src="{{ $pc }}" alt="" class="hero__image" data-banner-img
-                             data-banner-pc="{{ $pc }}" data-banner-mobile="{{ $mobile }}">
+                        <x-responsive-image
+                            :pc="$banner->image"
+                            :mobile="$banner->image_mobile"
+                            class="hero__image"
+                            decorative
+                            :fetchpriority="$isFirst ? 'high' : null"
+                        />
                     @endif
                 @endif
             </div>

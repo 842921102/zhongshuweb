@@ -3,6 +3,7 @@
 use App\Http\Controllers\CaseStudyController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IndustrySolutionController;
 use App\Http\Controllers\JoinUsController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProductController;
@@ -16,6 +17,9 @@ Route::get('/about', [CompanyController::class, 'index'])->name('about.index');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/{product}/consult', [ProductController::class, 'consult'])->name('products.consult');
+
+Route::get('/industry-cases', [IndustrySolutionController::class, 'index'])->name('industry-cases.index');
+Route::get('/industry-cases/{slug}', [IndustrySolutionController::class, 'show'])->name('industry-cases.show');
 
 Route::get('/news', [NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{article}', [NewsController::class, 'show'])->name('news.show');

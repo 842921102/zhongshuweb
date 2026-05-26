@@ -3,6 +3,7 @@
     $imageMobile = $imageMobile ?? null;
     $videoUrl = $videoUrl ?? null;
     $poster = $poster ?? $imagePc;
+    $posterMobile = $posterMobile ?? $imageMobile;
     $alt = $alt ?? '';
     $height = isset($height) && (int) $height > 0 ? (int) $height : null;
     $ariaLabel = $ariaLabel ?? null;
@@ -13,13 +14,14 @@
 <div class="product-banner" @if($height) style="--product-banner-height: {{ $height }}px" @endif>
     <div class="product-banner__media" @if($ariaLabel) aria-label="{{ $ariaLabel }}" @else aria-hidden="true" @endif>
         @if($hasImage)
-            <img class="product-banner__image"
-                 src="{{ $imagePc }}"
-                 alt="{{ $alt }}"
-                 @if($hasVideo) aria-hidden="true" @endif
-                 @if($imageMobile) data-banner-img data-banner-pc="{{ $imagePc }}" data-banner-mobile="{{ $imageMobile }}" @endif
-                 decoding="async"
-                 @if($fetchpriority ?? false) fetchpriority="high" @endif>
+            <x-responsive-image
+                :pc="$imagePc"
+                :mobile="$imageMobile"
+                :alt="$alt"
+                class="product-banner__image"
+                :decorative="$hasVideo"
+                :fetchpriority="($fetchpriority ?? false) ? 'high' : null"
+            />
         @endif
         @if($hasVideo)
             <video id="{{ $videoId }}"
@@ -27,8 +29,8 @@
                    src="{{ $videoUrl }}"
                    @if($poster) poster="{{ $poster }}" @endif
                    data-banner-video-pc="{{ $videoUrl }}"
-                   data-banner-video-mobile="{{ $videoUrl }}"
-                   @if($poster) data-banner-poster-pc="{{ $poster }}" data-banner-poster-mobile="{{ $poster }}" @endif
+                   data-banner-video-mobile="{{ $videoMobile ?? $videoUrl }}"
+                   @if($poster) data-banner-poster-pc="{{ $poster }}" data-banner-poster-mobile="{{ $posterMobile ?? $poster }}" @endif
                    autoplay muted loop playsinline></video>
             <div class="product-banner__controls">
                 <button type="button"

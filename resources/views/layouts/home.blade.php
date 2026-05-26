@@ -18,6 +18,8 @@
         }
     </style>
     @stack('head')
+    <link rel="stylesheet" href="{{ asset('css/site-responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/site-typography.css') }}">
 </head>
 <body class="site-layout has-immersive-header @if(request()->routeIs('home')) is-home-index home-page @endif @yield('body_class')">
 <div class="site-layout @if(request()->routeIs('home')) is-home-index home-page @endif">

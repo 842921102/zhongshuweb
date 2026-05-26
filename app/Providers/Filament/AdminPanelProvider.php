@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 $this->collapsedNavGroup('官网管理', Heroicon::OutlinedGlobeAlt),
                 $this->collapsedNavGroup('产品管理', Heroicon::OutlinedCube),
+                $this->collapsedNavGroup('解决方案', Heroicon::OutlinedLightBulb),
                 $this->collapsedNavGroup('案例管理', Heroicon::OutlinedBriefcase),
                 $this->collapsedNavGroup('新闻管理', Heroicon::OutlinedNewspaper),
                 $this->collapsedNavGroup('关于我们', Heroicon::OutlinedBuildingOffice2),

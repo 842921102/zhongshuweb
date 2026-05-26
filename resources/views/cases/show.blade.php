@@ -16,7 +16,12 @@
 
     @if($case->cover_image)
         <div class="cs-detail__cover">
-            <img src="{{ media_url($case->cover_image) }}" alt="{{ $case->title }}">
+            <x-responsive-image
+                :pc="$case->cover_image"
+                :mobile="$case->cover_image_mobile"
+                :alt="$case->title"
+                fetchpriority="high"
+            />
         </div>
     @endif
 
@@ -35,7 +40,7 @@
         </div>
     @endif
 
-    <div class="cs-detail__content">
+    <div class="cs-detail__content cms-rich-content">
         @if($case->content)
             {!! $case->content !!}
         @elseif($case->listExcerpt())
@@ -52,7 +57,12 @@
                 @foreach($relatedCases as $related)
                     <a class="cs-card" href="{{ $related->url() }}">
                         <div class="cs-card__media">
-                            <img src="{{ media_url($related->cover_image) }}" alt="{{ $related->title }}" loading="lazy">
+                            <x-responsive-image
+                                :pc="$related->cover_image"
+                                :mobile="$related->cover_image_mobile"
+                                :alt="$related->title"
+                                loading="lazy"
+                            />
                         </div>
                         <div class="cs-card__body">
                             <h3>{{ $related->title }}</h3>

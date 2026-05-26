@@ -47,8 +47,10 @@ class CategoryForm
                 TextInput::make('subtitle')->label('副标题')->maxLength(255),
                 Textarea::make('description')->label('描述')->columnSpanFull(),
                 FileUpload::make('icon')->label('图标')->image()->directory('categories')->disk('public'),
-                FileUpload::make('cover_image')->label('封面图')->image()->directory('categories')->disk('public')->columnSpanFull(),
-                TextInput::make('link')->label('链接')->maxLength(255),
+                FileUpload::make('cover_image')->label('封面图（PC / 默认）')->image()->directory('categories')->disk('public'),
+                FileUpload::make('cover_image_mobile')->label('封面图（手机端，可选）')->image()->directory('categories')->disk('public')
+                    ->helperText('留空则小屏使用 PC 封面；建议竖版或更聚焦主体'),
+                TextInput::make('link')->label('链接')->maxLength(255)->columnSpanFull(),
                 TextInput::make('sort_order')->label('排序')->numeric()->default(0),
                 Toggle::make('is_home_show')->label('首页展示'),
                 Toggle::make('is_home_featured')->label('首页主推(解决方案大图)'),

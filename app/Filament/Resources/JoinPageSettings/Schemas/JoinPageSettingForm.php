@@ -23,7 +23,9 @@ class JoinPageSettingForm
                         TextInput::make('meta_title')->label('SEO 标题')->maxLength(160),
                         Textarea::make('meta_description')->label('SEO 描述')->rows(2)->columnSpanFull(),
                         TextInput::make('meta_keywords')->label('关键词')->maxLength(255)->columnSpanFull(),
-                        FileUpload::make('hero_image')->label('Hero 背景图')->image()->directory('join-us')->disk('public')->columnSpanFull(),
+                        FileUpload::make('hero_image')->label('Hero 背景（PC / 默认）')->image()->directory('join-us')->disk('public'),
+                        FileUpload::make('hero_image_mobile')->label('Hero 背景（手机端，可选）')->image()->directory('join-us')->disk('public')
+                            ->helperText('留空则小屏使用 PC 图')->columnSpanFull(),
                         TextInput::make('hero_eyebrow')->label('Hero 眉标')->maxLength(120),
                         TextInput::make('hero_title')->label('Hero 标题（主句）')->maxLength(200)->columnSpanFull(),
                         TextInput::make('hero_title_highlight')->label('Hero 标题高亮')->maxLength(120)->columnSpanFull(),
@@ -39,7 +41,9 @@ class JoinPageSettingForm
                         Textarea::make('why_subtitle')->label('副标题')->rows(2)->columnSpanFull(),
                     ]),
                     Section::make('文化')->columns(2)->schema([
-                        FileUpload::make('culture_image')->label('文化区左侧大图')->image()->directory('join-us')->disk('public')->columnSpanFull(),
+                        FileUpload::make('culture_image')->label('文化区大图（PC / 默认）')->image()->directory('join-us')->disk('public'),
+                        FileUpload::make('culture_image_mobile')->label('文化区大图（手机端，可选）')->image()->directory('join-us')->disk('public')
+                            ->columnSpanFull(),
                         TextInput::make('culture_kicker')->label('眉标'),
                         TextInput::make('culture_title')->label('标题'),
                         Textarea::make('culture_subtitle')->label('副标题')->rows(2)->columnSpanFull(),

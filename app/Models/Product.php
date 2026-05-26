@@ -11,9 +11,9 @@ use Illuminate\Support\Str;
 
 #[Fillable([
     'category_id', 'name', 'slug', 'model_no', 'subtitle', 'summary', 'meta_title', 'meta_description', 'metrics',
-    'cover_image', 'home_image', 'hero_video', 'hero_poster',
-    'showcase_images', 'detail_hero_image', 'detail_gallery', 'detail_features',
-    'spec_groups', 'spec_document', 'rights_content', 'contact_bg_image',
+    'cover_image', 'cover_image_mobile', 'home_image', 'home_image_mobile', 'hero_video', 'hero_poster',
+    'showcase_images', 'detail_hero_image', 'detail_hero_image_mobile', 'detail_gallery', 'detail_features',
+    'spec_groups', 'spec_document', 'rights_content', 'contact_bg_image', 'contact_bg_image_mobile',
     'detail_url', 'sort_order',
     'is_home_show', 'is_home_featured', 'is_active', 'locale',
 ])]
@@ -65,6 +65,11 @@ class Product extends Model
     public function displayImage(): ?string
     {
         return $this->home_image ?: $this->cover_image;
+    }
+
+    public function displayImageMobile(): ?string
+    {
+        return $this->home_image_mobile ?: $this->cover_image_mobile;
     }
 
     public function url(): string

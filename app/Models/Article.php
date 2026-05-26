@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
-    'category_id', 'title', 'slug', 'summary', 'content', 'cover_image',
+    'category_id', 'title', 'slug', 'summary', 'content', 'cover_image', 'cover_image_mobile',
     'author', 'seo_title', 'seo_description', 'is_published', 'is_featured',
     'is_home_show', 'sort_order', 'locale', 'views', 'published_at',
 ])]

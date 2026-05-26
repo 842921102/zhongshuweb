@@ -4,8 +4,8 @@
 
 @php
     $s = $pageSettings;
-    $heroImage = media_url($s->hero_image);
-    $cultureImage = media_url($s->culture_image);
+    $heroBgStyle = responsive_bg_style($s->hero_image, $s->hero_image_mobile);
+    $cultureBgStyle = responsive_bg_style($s->culture_image, $s->culture_image_mobile);
     $pageTitle = $s->meta_title ?: ('加入我们 - '.$siteName);
     $mailto = $s->contact_email ? 'mailto:'.$s->contact_email : '#contact';
 @endphp
@@ -35,7 +35,7 @@
 
 @section('content')
 <div class="join-main">
-    <section class="join-hero" @if($heroImage) style="--join-hero-image:url('{{ $heroImage }}')" @endif>
+    <section class="join-hero @if($heroBgStyle) has-responsive-bg @endif" @if($heroBgStyle) style="{{ $heroBgStyle }}" @endif>
         <div class="join-shell">
             <div class="join-hero-content">
                 @if($s->hero_eyebrow)
@@ -79,7 +79,7 @@
         </section>
     @endif
 
-    @if($cultureCards->isNotEmpty() || $cultureImage)
+    @if($cultureCards->isNotEmpty() || $cultureBgStyle)
         <section class="join-section">
             <div class="join-shell">
                 <div class="join-section-head">
@@ -88,7 +88,7 @@
                     @if($s->culture_subtitle)<p>{{ $s->culture_subtitle }}</p>@endif
                 </div>
                 <div class="join-culture-layout">
-                    <div class="join-culture-image" @if($cultureImage) style="background-image:url('{{ $cultureImage }}')" @endif aria-hidden="true"></div>
+                    <div class="join-culture-image @if($cultureBgStyle) has-responsive-bg @endif" @if($cultureBgStyle) style="{{ $cultureBgStyle }}" @endif aria-hidden="true"></div>
                     <div class="join-culture-cards">
                         @foreach($cultureCards as $card)
                             <article class="join-culture-card">

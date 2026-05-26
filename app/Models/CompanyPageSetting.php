@@ -9,16 +9,26 @@ use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'locale', 'meta_title', 'meta_description',
-    'hero_media_url', 'hero_media_type', 'hero_poster_url',
+    'hero_media_url', 'hero_media_mobile', 'hero_media_type', 'hero_poster_url', 'hero_poster_mobile',
+    'banner_enabled',
     'intro_eyebrow', 'intro_title', 'intro_body',
-    'intro_visual_title', 'intro_visual_text', 'intro_side_image',
+    'intro_visual_title', 'intro_visual_text', 'intro_side_image', 'intro_side_image_mobile',
+    'intro_enabled',
+    'global_layout_enabled', 'global_layout_title',
+    'global_layout_stats', 'global_layout_markers', 'global_layout_facilities', 'global_layout_map_image',
     'global_metrics',
     'capabilities_eyebrow', 'capabilities_title', 'capabilities_lead', 'capabilities',
+    'capabilities_enabled',
     'global_station_eyebrow', 'global_station_heading', 'service_stations',
+    'service_stations_enabled',
     'timeline_eyebrow', 'timeline_title', 'timeline_lead',
+    'timeline_enabled',
     'culture_eyebrow', 'culture_title', 'culture_mission_text',
+    'culture_enabled',
     'honors_eyebrow', 'honors_title', 'honors_subtitle',
+    'honors_enabled',
     'team_eyebrow', 'team_title', 'team_tech_subtitle',
+    'team_enabled',
 ])]
 class CompanyPageSetting extends Model
 {
@@ -27,10 +37,81 @@ class CompanyPageSetting extends Model
     protected function casts(): array
     {
         return [
+            'banner_enabled' => 'boolean',
+            'intro_enabled' => 'boolean',
+            'global_layout_enabled' => 'boolean',
+            'global_layout_stats' => JsonArrayCast::class,
+            'global_layout_markers' => JsonArrayCast::class,
+            'global_layout_facilities' => JsonArrayCast::class,
+            'capabilities_enabled' => 'boolean',
+            'service_stations_enabled' => 'boolean',
+            'timeline_enabled' => 'boolean',
+            'culture_enabled' => 'boolean',
+            'honors_enabled' => 'boolean',
+            'team_enabled' => 'boolean',
             'global_metrics' => JsonArrayCast::class,
             'capabilities' => JsonArrayCast::class,
             'service_stations' => JsonArrayCast::class,
         ];
+    }
+
+    public function showsBanner(): bool
+    {
+        return (bool) ($this->banner_enabled ?? true);
+    }
+
+    public function showsIntro(): bool
+    {
+        return (bool) ($this->intro_enabled ?? true);
+    }
+
+    public function showsGlobalLayout(): bool
+    {
+        return (bool) ($this->global_layout_enabled ?? true);
+    }
+
+    public function showsCapabilities(): bool
+    {
+        return (bool) ($this->capabilities_enabled ?? true);
+    }
+
+    /** @return array{title: string, stats: list<array{value: string, label: string}>, markers: list<array<string, mixed>>, facilities: list<array<string, string>>} */
+    public function normalizedGlobalLayout(): array
+    {
+        $defaults = \App\Support\CompanyAboutContent::globalLayout();
+
+        return [
+            'title' => filled($this->global_layout_title) ? (string) $this->global_layout_title : $defaults['title'],
+            'stats' => ! empty($this->global_layout_stats) ? $this->global_layout_stats : $defaults['stats'],
+            'markers' => ! empty($this->global_layout_markers) ? $this->global_layout_markers : $defaults['markers'],
+            'facilities' => ! empty($this->global_layout_facilities) ? $this->global_layout_facilities : $defaults['facilities'],
+            'map_image' => $this->global_layout_map_image,
+        ];
+    }
+
+    public function showsServiceStations(): bool
+    {
+        return (bool) ($this->service_stations_enabled ?? true);
+    }
+
+    public function showsTimeline(): bool
+    {
+        return (bool) ($this->timeline_enabled ?? true);
+    }
+
+    public function showsCulture(): bool
+    {
+        return (bool) ($this->culture_enabled ?? true);
+    }
+
+    public function showsHonors(): bool
+    {
+        return (bool) ($this->honors_enabled ?? true);
+    }
+
+    public function showsTeam(): bool
+    {
+        return (bool) ($this->team_enabled ?? true);
     }
 
     /** @return list<array{icon: string, title: string, text: string}> */
@@ -95,6 +176,20 @@ class CompanyPageSetting extends Model
             'team_eyebrow' => 'Our Team',
             'team_title' => '团队介绍',
             'team_tech_subtitle' => '我们技术团队人员介绍',
+            'banner_enabled' => true,
+            'intro_enabled' => true,
+            'global_layout_enabled' => true,
+            'global_layout_title' => '全球化布局',
+            'global_layout_stats' => \App\Support\CompanyAboutContent::globalLayout()['stats'],
+            'global_layout_markers' => \App\Support\CompanyAboutContent::globalLayout()['markers'],
+            'global_layout_facilities' => \App\Support\CompanyAboutContent::globalLayout()['facilities'],
+            'global_layout_map_image' => null,
+            'capabilities_enabled' => true,
+            'service_stations_enabled' => true,
+            'timeline_enabled' => true,
+            'culture_enabled' => true,
+            'honors_enabled' => true,
+            'team_enabled' => true,
         ];
     }
 

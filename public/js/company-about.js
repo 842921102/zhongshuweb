@@ -30,4 +30,62 @@
   }
 
   document.querySelectorAll('[data-cp-tabs]').forEach(initTabSwitch);
+
+  function initGlobalLayoutReveal() {
+    var section = document.querySelector('[data-about-global]');
+    if (!section) {
+      return;
+    }
+
+    var items = Array.prototype.slice.call(section.querySelectorAll('[data-global-reveal]'));
+    items.sort(function (a, b) {
+      return Number(a.getAttribute('data-global-order') || 0) - Number(b.getAttribute('data-global-order') || 0);
+    });
+
+    if (!items.length) {
+      return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      items.forEach(function (el) {
+        el.classList.add('is-revealed');
+      });
+      return;
+    }
+
+    var revealed = false;
+
+    function revealAll() {
+      if (revealed) {
+        return;
+      }
+      revealed = true;
+      items.forEach(function (el, index) {
+        window.setTimeout(function () {
+          el.classList.add('is-revealed');
+        }, index * 140);
+      });
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      revealAll();
+      return;
+    }
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            revealAll();
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+    );
+
+    observer.observe(section);
+  }
+
+  initGlobalLayoutReveal();
 })();

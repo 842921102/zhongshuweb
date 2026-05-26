@@ -4,9 +4,35 @@ use App\Support\MediaUrl;
 use Illuminate\Support\Arr;
 
 if (! function_exists('media_url')) {
-    function media_url(?string $path, ?string $fallback = null): ?string
+    function media_url(mixed $path, ?string $fallback = null): ?string
     {
         return MediaUrl::resolve($path, $fallback);
+    }
+}
+
+if (! function_exists('responsive_media')) {
+    /**
+     * @return array{src: ?string, pc: ?string, mobile: ?string, use_picture: bool}
+     */
+    function responsive_media(?string $pc, ?string $mobile = null, ?string $fallback = null): array
+    {
+        return \App\Support\ResponsiveMedia::resolve($pc, $mobile, $fallback);
+    }
+}
+
+if (! function_exists('responsive_bg_style')) {
+    /** CSS 变量：配合 .has-responsive-bg 在 ≤968px 切换背景图 */
+    function responsive_bg_style(?string $pc, ?string $mobile = null, ?string $fallback = null): string
+    {
+        $media = responsive_media($pc, $mobile, $fallback);
+        if (blank($media['src'])) {
+            return '';
+        }
+
+        $pcUrl = str_replace("'", "\\'", (string) $media['pc']);
+        $mobileUrl = str_replace("'", "\\'", (string) ($media['mobile'] ?? $media['pc']));
+
+        return "--responsive-bg-pc:url('{$pcUrl}');--responsive-bg-mobile:url('{$mobileUrl}');";
     }
 }
 

@@ -63,13 +63,22 @@ class CaseStudyForm
                             ->label('详情正文')
                             ->columnSpanFull(),
                         FileUpload::make('cover_image')
-                            ->label('封面图')
+                            ->label('封面图（PC / 默认）')
+                            ->image()
+                            ->directory('cases')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->maxSize(5120)
+                            ->imagePreviewHeight('160'),
+                        FileUpload::make('cover_image_mobile')
+                            ->label('封面图（手机端，可选）')
                             ->image()
                             ->directory('cases')
                             ->disk('public')
                             ->visibility('public')
                             ->maxSize(5120)
                             ->imagePreviewHeight('160')
+                            ->helperText('留空则小屏使用 PC 封面')
                             ->columnSpanFull(),
                         TagsInput::make('product_tags')
                             ->label('关联产品标签')

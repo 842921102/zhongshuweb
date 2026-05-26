@@ -643,31 +643,4 @@
   border: 0;
 }
 
-@media (max-width: 1024px) {
-  .details-gallery,
-  .detail-feature-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .product-contact-shell {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .product-hero-grid {
-    padding: 100px 20px 48px;
-  }
-
-  .details-gallery,
-  .detail-feature-grid,
-  .product-form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .specs-table-head,
-  .specs-table-row {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-}
+/* 响应式见 public/css/site-responsive.css */

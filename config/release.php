@@ -5,9 +5,9 @@
  */
 return [
 
-    'version' => env('APP_RELEASE_VERSION', '2026.05.22.1'),
+    'version' => env('APP_RELEASE_VERSION', '2026.05.26.1'),
 
-    'label' => env('APP_RELEASE_LABEL', '案例页Banner、全站菜单与页脚'),
+    'label' => env('APP_RELEASE_LABEL', '行业案例、关于我们全球化布局、站内搜索与响应式图片'),
 
     'published_at' => env('APP_RELEASE_AT'),
 

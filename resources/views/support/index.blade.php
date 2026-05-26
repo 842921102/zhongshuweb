@@ -35,16 +35,17 @@
 
 @section('content')
 <div class="support-main new_xz">
-    <section class="support-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px">
-        @if($heroPc)
-            <div class="support-hero-media">
-                <img src="{{ $heroPc }}" alt="技术支持" decoding="async"
-                     data-banner-img
-                     data-banner-pc="{{ $heroPc }}"
-                     @if($heroMobile) data-banner-mobile="{{ $heroMobile }}" @endif>
-            </div>
-        @endif
-        <div class="support-hero-container" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px"></div>
+    <section class="support-hero site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px">
+        <div class="support-hero-media">
+            <x-responsive-image
+                :pc="$settings->hero_image_pc"
+                :mobile="$settings->hero_image_mobile"
+                class="support-hero-media__img"
+                alt="技术支持"
+                decoding="async"
+            />
+        </div>
+        <div class="support-hero-container site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px"></div>
     </section>
 
     <section class="support-docs">
@@ -119,7 +120,12 @@
                     <article class="support-video-card support-reveal">
                         <div class="support-video-media">
                             @if($video->cover_image)
-                                <img src="{{ media_url($video->cover_image) }}" alt="{{ $video->title }}" width="600" height="400" loading="lazy" decoding="async">
+                                <x-responsive-image
+                                    :pc="$video->cover_image"
+                                    :mobile="$video->cover_image_mobile"
+                                    :alt="$video->title"
+                                    loading="lazy"
+                                />
                             @endif
                             <button class="support-video-play" type="button"
                                     data-video-id="{{ $video->id }}"

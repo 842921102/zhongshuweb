@@ -46,9 +46,11 @@ class ProductForm
                 ]),
                 Tab::make('列表展示')->schema([
                     Section::make('产品列表卡片')->description('对应前台 /products 网格卡片')->schema([
-                        FileUpload::make('cover_image')->label('封面图')->image()->directory('products')->disk('public'),
-                        FileUpload::make('home_image')->label('列表大图')->image()->directory('products')->disk('public')
+                        FileUpload::make('cover_image')->label('封面图（PC / 默认）')->image()->directory('products')->disk('public'),
+                        FileUpload::make('cover_image_mobile')->label('封面图（手机端，可选）')->image()->directory('products')->disk('public'),
+                        FileUpload::make('home_image')->label('列表大图（PC / 默认）')->image()->directory('products')->disk('public')
                             ->helperText('优先用于列表与卡片展示'),
+                        FileUpload::make('home_image_mobile')->label('列表大图（手机端，可选）')->image()->directory('products')->disk('public'),
                         Repeater::make('metrics')
                             ->label('卡片参数（数值 + 说明）')
                             ->schema([
@@ -74,7 +76,8 @@ class ProductForm
                         ->helperText('详情页「产品展示」区块；未上传时使用列表大图'),
                 ]),
                 Tab::make('图文详情')->schema([
-                    FileUpload::make('detail_hero_image')->label('详情主图')->image()->directory('products/detail')->disk('public')->columnSpanFull(),
+                    FileUpload::make('detail_hero_image')->label('详情主图（PC / 默认）')->image()->directory('products/detail')->disk('public'),
+                    FileUpload::make('detail_hero_image_mobile')->label('详情主图（手机端，可选）')->image()->directory('products/detail')->disk('public')->columnSpanFull(),
                     FileUpload::make('detail_gallery')->label('详情图集')->image()->multiple()->reorderable()
                         ->directory('products/detail')->disk('public')->columnSpanFull(),
                     Repeater::make('detail_features')->label('亮点')->schema([
@@ -109,7 +112,9 @@ class ProductForm
                     ])->columns(2),
                 ]),
                 Tab::make('咨询联系')->schema([
-                    FileUpload::make('contact_bg_image')->label('联系区背景图')->image()
+                    FileUpload::make('contact_bg_image')->label('联系区背景（PC / 默认）')->image()
+                        ->directory('products/contact')->disk('public'),
+                    FileUpload::make('contact_bg_image_mobile')->label('联系区背景（手机端，可选）')->image()
                         ->directory('products/contact')->disk('public')->columnSpanFull(),
                 ]),
                 Tab::make('发布设置')->schema([

@@ -24,13 +24,13 @@
 
 <div class="cs-page">
     <section class="cs-hero" style="--cs-hero-height: {{ $heroHeight }}px" aria-label="{{ $pageSettings->page_title }}">
-        @if($bannerPc)
-            <div class="cs-hero-media"
-                 aria-hidden="true"
-                 data-banner-bg
-                 data-banner-pc="{{ $bannerPc }}"
-                 @if($bannerMobile) data-banner-mobile="{{ $bannerMobile }}" @endif
-                 style="background-image:url('{{ $bannerPc }}')"></div>
+        @if($bannerPc || $pageSettings->banner_image_pc)
+            <x-responsive-bg
+                :pc="$pageSettings->banner_image_pc"
+                :mobile="$pageSettings->banner_image_mobile"
+                class="cs-hero-media"
+                aria-hidden="true"
+            />
         @else
             <div class="cs-hero-media cs-hero-media--fallback" aria-hidden="true"></div>
         @endif
@@ -51,7 +51,13 @@
                 <div class="cs-featured__shell cs-featured__slide {{ $i === 0 ? 'is-active' : '' }}" data-cs-featured-slide>
                     <div class="cs-featured__media">
                         <a href="{{ $item->url() }}">
-                            <img src="{{ media_url($item->cover_image) }}" alt="{{ $item->title }}" loading="{{ $i === 0 ? 'eager' : 'lazy' }}">
+                            <x-responsive-image
+                                :pc="$item->cover_image"
+                                :mobile="$item->cover_image_mobile"
+                                :alt="$item->title"
+                                :fetchpriority="$i === 0 ? 'high' : null"
+                                :loading="$i === 0 ? null : 'lazy'"
+                            />
                         </a>
                     </div>
                     <div>
@@ -110,7 +116,12 @@
                 @forelse($cases as $case)
                     <a class="cs-card" href="{{ $case->url() }}">
                         <div class="cs-card__media">
-                            <img src="{{ media_url($case->cover_image) }}" alt="{{ $case->title }}" loading="lazy">
+                            <x-responsive-image
+                                :pc="$case->cover_image"
+                                :mobile="$case->cover_image_mobile"
+                                :alt="$case->title"
+                                loading="lazy"
+                            />
                         </div>
                         <div class="cs-card__body">
                             <h3>{{ $case->title }}</h3>

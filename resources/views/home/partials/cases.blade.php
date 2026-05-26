@@ -11,7 +11,13 @@
         <article class="case-card reveal">
             @foreach($cases as $index => $case)
                 <div class="case-card__slide {{ $index === 0 ? 'is-active' : '' }}" data-case-slide>
-                    <img src="{{ media_url($case->cover_image) }}" alt="{{ $case->title }}" class="case-card__base">
+                    <x-responsive-image
+                        :pc="$case->cover_image"
+                        :mobile="$case->cover_image_mobile"
+                        :alt="$case->title"
+                        class="case-card__base"
+                        loading="lazy"
+                    />
                     <div class="case-card__shade"></div>
                     <div class="case-card__content">
                         <h3>{{ $case->title }}</h3>

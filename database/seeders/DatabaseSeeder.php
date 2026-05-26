@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
             CompanyAboutSeeder::class,
             SupportSeeder::class,
             JoinUsSeeder::class,
+            IndustrySolutionSeeder::class,
             RolePermissionSeeder::class,
         ]);
 
         \App\Models\ProductPageSetting::forLocale('zh-cn');
+        \App\Models\IndustrySolutionPageSetting::forLocale('zh-cn');
     }
 }

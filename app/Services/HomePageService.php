@@ -30,7 +30,10 @@ class HomePageService
             ->orderBy('sort_order')
             ->get();
 
-        $featuredRoot = $rootCategories->firstWhere('is_home_featured', true)
+        $featuredRoot = $rootCategories
+            ->filter(fn (Category $c) => $c->is_home_featured)
+            ->sortBy(fn (Category $c) => [filled($c->cover_image) ? 0 : 1, $c->sort_order])
+            ->first()
             ?? $rootCategories->first();
 
         $gridRoots = $rootCategories->filter(

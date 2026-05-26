@@ -9,7 +9,14 @@
 
         @if($solutionsFeatured)
             <article class="solutions-hero solutions-hero--fullbleed reveal">
-                <img src="{{ media_url($solutionsFeatured->cover_image) }}" alt="{{ $solutionsFeatured->name }}" class="solutions-hero__image">
+                <x-responsive-image
+                    :pc="$solutionsFeatured->coverPcPath()"
+                    :mobile="$solutionsFeatured->coverMobilePath()"
+                    :fallback="$solutionsFeatured->icon"
+                    :alt="$solutionsFeatured->name"
+                    class="solutions-hero__image"
+                    loading="lazy"
+                />
                 <div class="solutions-hero__content">
                     <h3>{{ $solutionsFeatured->name }}</h3>
                     <p>{{ $solutionsFeatured->subtitle }}</p>
@@ -22,7 +29,13 @@
             <div class="solutions-grid">
                 @foreach($solutionsGrid as $category)
                     <article class="solution-card reveal">
-                        <img src="{{ media_url($category->cover_image) }}" alt="{{ $category->name }}">
+                        <x-responsive-image
+                            :pc="$category->coverPcPath()"
+                            :mobile="$category->coverMobilePath()"
+                            :fallback="$category->icon"
+                            :alt="$category->name"
+                            loading="lazy"
+                        />
                         <div class="solution-card__content">
                             <h3>{{ $category->name }}</h3>
                             <span>{{ $category->subtitle }}</span>

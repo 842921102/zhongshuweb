@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\CaseStudy;
 use App\Models\Category;
+use App\Models\IndustrySolution;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ class SiteController extends Controller
         }
 
         $like = '%'.$keyword.'%';
+        $perType = max(2, (int) ceil($limit / 5));
 
         $items = collect()
             ->merge(
@@ -38,7 +40,7 @@ class SiteController extends Controller
                             ->orWhere('model_no', 'like', $like);
                     })
                     ->orderBy('sort_order')
-                    ->limit($limit)
+                    ->limit($perType)
                     ->get()
                     ->map(fn (Product $product) => [
                         'title' => $product->name,
@@ -52,12 +54,31 @@ class SiteController extends Controller
                     ->active()
                     ->where('name', 'like', $like)
                     ->orderBy('sort_order')
-                    ->limit($limit)
+                    ->limit($perType)
                     ->get()
                     ->map(fn (Category $category) => [
                         'title' => $category->name,
                         'type' => 'product_category',
                         'url' => localized_route('products.index', ['category' => $category->slug], $locale),
+                    ])
+            )
+            ->merge(
+                IndustrySolution::query()
+                    ->forLocale($locale)
+                    ->active()
+                    ->published()
+                    ->where(function ($query) use ($like): void {
+                        $query->where('title', 'like', $like)
+                            ->orWhere('summary', 'like', $like)
+                            ->orWhere('excerpt', 'like', $like);
+                    })
+                    ->orderBy('sort_order')
+                    ->limit($perType)
+                    ->get()
+                    ->map(fn (IndustrySolution $solution) => [
+                        'title' => $solution->title,
+                        'type' => 'industry',
+                        'url' => $solution->url(),
                     ])
             )
             ->merge(
@@ -71,7 +92,7 @@ class SiteController extends Controller
                             ->orWhere('excerpt', 'like', $like);
                     })
                     ->orderByDesc('published_at')
-                    ->limit($limit)
+                    ->limit($perType)
                     ->get()
                     ->map(fn (CaseStudy $caseStudy) => [
                         'title' => $caseStudy->title,
@@ -88,7 +109,7 @@ class SiteController extends Controller
                             ->orWhere('summary', 'like', $like);
                     })
                     ->orderByDesc('published_at')
-                    ->limit($limit)
+                    ->limit($perType)
                     ->get()
                     ->map(fn (Article $article) => [
                         'title' => $article->title,

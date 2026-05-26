@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'locale', 'meta_title', 'meta_description', 'meta_keywords',
-    'hero_image', 'culture_image',
+    'hero_image', 'hero_image_mobile', 'culture_image', 'culture_image_mobile',
     'hero_eyebrow', 'hero_title', 'hero_title_highlight', 'hero_description',
     'hero_cta_primary', 'hero_cta_secondary',
     'why_kicker', 'why_title', 'why_subtitle',

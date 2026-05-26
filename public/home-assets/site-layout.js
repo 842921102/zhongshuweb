@@ -57,6 +57,9 @@
         return path === '/';
       case 'product':
         return path === '/products' || path.indexOf('/products/') === 0;
+      case 'industry':
+      case 'industry-cases':
+        return path === '/industry-cases' || path.indexOf('/industry-cases/') === 0;
       case 'case':
       case 'cases':
         return path === '/cases' || path.indexOf('/cases/') === 0;
@@ -435,6 +438,9 @@
         break;
       case 'product_category':
         typeLabel = '产品分类';
+        break;
+      case 'industry':
+        typeLabel = '解决方案';
         break;
       case 'case':
         typeLabel = '案例';
@@ -830,20 +836,40 @@
     return pcUrl || mobileUrl || '';
   }
 
+  function bindBannerImgFallback(el, pc, mobile) {
+    var pcUrl = String(pc || '').trim();
+    var mobileUrl = String(mobile || '').trim();
+    if (!pcUrl || pcUrl === mobileUrl) {
+      return;
+    }
+    el.onerror = function () {
+      if (pcUrl && el.getAttribute('src') !== pcUrl) {
+        el.onerror = null;
+        el.setAttribute('src', pcUrl);
+      }
+    };
+  }
+
   function escapeCssUrl(url) {
     return String(url).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
   }
 
   function applyResponsiveBannerMedia() {
-    Array.prototype.forEach.call(document.querySelectorAll('[data-banner-img]'), function (el) {
-      var url = pickBannerUrl(el.getAttribute('data-banner-pc'), el.getAttribute('data-banner-mobile'));
+    var imgNodes = document.querySelectorAll('[data-banner-img], [data-responsive-img]');
+    Array.prototype.forEach.call(imgNodes, function (el) {
+      var pc = el.getAttribute('data-banner-pc');
+      var mobile = el.getAttribute('data-banner-mobile');
+      var url = pickBannerUrl(pc, mobile);
       if (!url || el.getAttribute('src') === url) {
+        bindBannerImgFallback(el, pc, mobile);
         return;
       }
+      bindBannerImgFallback(el, pc, mobile);
       el.setAttribute('src', url);
     });
 
-    Array.prototype.forEach.call(document.querySelectorAll('[data-banner-bg]'), function (el) {
+    var bgNodes = document.querySelectorAll('[data-banner-bg], [data-responsive-bg]');
+    Array.prototype.forEach.call(bgNodes, function (el) {
       var url = pickBannerUrl(el.getAttribute('data-banner-pc'), el.getAttribute('data-banner-mobile'));
       if (!url) {
         return;

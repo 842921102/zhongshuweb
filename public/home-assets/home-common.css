@@ -31,6 +31,11 @@ html.is-product-dropdown-open {
   --home-shell-width: 1600px;
   --home-shell-gap: 48px;
   --home-transition: 220ms ease;
+  /* 全站断点（导航/Banner JS 用 968，见 site-layout.js） */
+  --site-bp-nav: 968px;
+  --site-bp-tablet: 1024px;
+  --site-bp-mobile: 768px;
+  --site-bp-mobile-sm: 640px;
 }
 
 * {

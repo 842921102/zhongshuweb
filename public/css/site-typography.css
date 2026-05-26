@@ -1,0 +1,258 @@
+/**
+ * 全站文字响应式（仅 max-width，PC 默认字号不变）
+ * 配合 site-responsive.css 使用
+ */
+
+/* ── 平板 ≤1024px ── */
+@media (max-width: 1024px) {
+  .section-heading {
+    margin-bottom: 56px;
+    gap: 20px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+  }
+
+  .section-heading p {
+    font-size: clamp(0.8125rem, 1.8vw, 0.9375rem);
+    line-height: 1.65;
+    max-width: 640px;
+  }
+
+  .about-section-head h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .about-section-head p {
+    font-size: clamp(0.875rem, 1.6vw, 1rem);
+  }
+
+  .news-section-title,
+  .newsdetail-related-title,
+  .support-section-title,
+  .product-section-title,
+  .join-section-head h2 {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+  }
+
+  .button {
+    min-height: 48px;
+    padding: 0 24px;
+    font-size: 15px;
+  }
+
+  .button--small {
+    min-height: 40px;
+    font-size: 14px;
+  }
+}
+
+/* ── 手机 ≤768px ── */
+@media (max-width: 768px) {
+  .section {
+    padding-top: 80px;
+  }
+
+  .section-heading {
+    margin-bottom: 40px;
+    gap: 16px;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    line-height: 1.2;
+  }
+
+  .section-heading p {
+    font-size: clamp(0.8125rem, 3.5vw, 0.9375rem);
+    line-height: 1.7;
+    padding: 0 4px;
+  }
+
+  /* 首页模块文案 */
+  .is-home-index .hero__copy h1 {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+  }
+
+  .is-home-index .hero__copy p {
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
+    line-height: 1.65;
+  }
+
+  .is-home-index .solutions-hero__content h3,
+  .is-home-index .solution-card__content h3 {
+    font-size: clamp(1.5rem, 6vw, 2.25rem);
+  }
+
+  .is-home-index .solutions-hero__content > p:last-of-type,
+  .is-home-index .solution-card__content span {
+    font-size: clamp(0.875rem, 3.5vw, 1rem);
+  }
+
+  .is-home-index .products__feature-content h3,
+  .is-home-index .case-card__content h3 {
+    font-size: clamp(1.375rem, 5.5vw, 1.75rem);
+  }
+
+  .is-home-index .news-card__body h3 {
+    font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+  }
+
+  .is-home-index .about__panel h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .is-home-index .about__panel p {
+    font-size: clamp(0.875rem, 3.5vw, 1rem);
+    line-height: 1.75;
+  }
+
+  .is-home-index .partners__stats strong {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* 内页标题 */
+  .cs-hero-content h1 {
+    font-size: clamp(1.625rem, 7vw, 2.25rem);
+  }
+
+  .cs-hero-content p {
+    font-size: clamp(0.875rem, 3.5vw, 1rem);
+  }
+
+  .join-hero h1 {
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+    line-height: 1.15;
+  }
+
+  .join-hero-content > p {
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
+    line-height: 1.7;
+  }
+
+  .join-section-head h2,
+  .join-why-card h3,
+  .join-culture-card h3 {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+  }
+
+  .join-section-head p,
+  .join-why-card p,
+  .join-culture-card p {
+    font-size: clamp(0.875rem, 3.5vw, 0.9375rem);
+    line-height: 1.65;
+  }
+
+  .product-hero-copy h1,
+  .newsdetail-title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .product-hero-desc,
+  .news-featured-desc,
+  .news-card-desc {
+    font-size: clamp(0.875rem, 3.5vw, 1rem);
+    line-height: 1.7;
+  }
+
+  .news-featured-title,
+  .news-card-title {
+    font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+  }
+
+  .support-section-title,
+  .product-details-heading h2,
+  .product-specs h2 {
+    font-size: clamp(1.375rem, 5vw, 1.75rem);
+  }
+
+  .about-title-block__title {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .about-intro-card p,
+  .about-cap-card p {
+    font-size: clamp(0.9375rem, 3.5vw, 1rem);
+    line-height: 1.75;
+  }
+
+  .about-stat strong {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  /* 富文本正文 */
+  .cms-rich-content,
+  .newsdetail-content,
+  .cs-detail__content,
+  .product-rights-content {
+    font-size: clamp(0.9375rem, 3.5vw, 1rem);
+    line-height: 1.8;
+  }
+
+  .cms-rich-content h2,
+  .newsdetail-content h2,
+  .cs-detail__content h2 {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+    margin: 1.5em 0 0.75em;
+  }
+
+  .cms-rich-content h3,
+  .newsdetail-content h3,
+  .cs-detail__content h3 {
+    font-size: clamp(1.125rem, 4.5vw, 1.3125rem);
+  }
+
+  .cms-rich-content p,
+  .newsdetail-content p,
+  .cs-detail__content p {
+    margin-bottom: 1em;
+  }
+
+  .site-footer__col h3,
+  .site-footer__accordion summary {
+    font-size: clamp(0.9375rem, 3.5vw, 1rem);
+  }
+
+  .site-footer__col a,
+  .site-footer__col li,
+  .site-footer__accordion-body a {
+    font-size: clamp(0.8125rem, 3.2vw, 0.875rem);
+  }
+}
+
+/* ── 小屏 ≤640px ── */
+@media (max-width: 640px) {
+  .section-heading h2 {
+    font-size: clamp(1.375rem, 7vw, 1.75rem);
+  }
+
+  .button {
+    min-height: 44px;
+    font-size: 14px;
+  }
+
+  .is-home-index .hero__button,
+  .is-home-index .button--primary {
+    min-height: 44px;
+    padding: 0 20px;
+  }
+
+  .product-card-title,
+  .product-card-metrics {
+    font-size: 14px;
+  }
+
+  .cs-card__body h3 {
+    font-size: 16px;
+  }
+
+  .join-job-card h3 {
+    font-size: 17px;
+  }
+
+  .support-doc-item strong,
+  .support-video-title {
+    font-size: 15px;
+  }
+}

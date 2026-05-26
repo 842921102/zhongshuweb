@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\HomeSection;
+use App\Models\IndustrySolution;
 use App\Models\Product;
 use Tests\TestCase;
 
@@ -37,6 +38,39 @@ class SiteApiTest extends TestCase
                 'type' => 'product',
             ])
             ->assertJsonCount(1, 'data.items');
+    }
+
+    public function test_search_endpoint_returns_matching_industry_solutions(): void
+    {
+        IndustrySolution::query()->create([
+            'title' => '环卫市政行业方案',
+            'slug' => 'sanitation-search-test',
+            'summary' => '城市道路清洁',
+            'locale' => 'zh-cn',
+            'is_active' => true,
+            'sort_order' => 1,
+        ]);
+
+        $this->assertDatabaseHas('industry_solutions', [
+            'slug' => 'sanitation-search-test',
+        ]);
+
+        $response = $this->getJson('/api/search?keyword='.urlencode('环卫'));
+
+        $response->assertOk()
+            ->assertJsonPath('code', 1)
+            ->assertJsonFragment([
+                'title' => '环卫市政行业方案',
+                'type' => 'industry',
+            ]);
+    }
+
+    public function test_search_endpoint_returns_empty_items_for_blank_keyword(): void
+    {
+        $this->getJson('/api/search?keyword=')
+            ->assertOk()
+            ->assertJsonPath('code', 1)
+            ->assertJsonPath('data.items', []);
     }
 
     public function test_home_sections_allow_same_section_key_in_multiple_locales(): void

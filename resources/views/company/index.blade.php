@@ -6,12 +6,15 @@
 @php
     $pageTitle = $settings->meta_title ?: ('关于我们 - '.$siteName);
     $heroUrl = media_url($settings->hero_media_url, asset('home-assets/69e9ff102a425.jpg'));
+    $heroUrlMobile = media_url($settings->hero_media_mobile) ?: $heroUrl;
     $heroPoster = media_url($settings->hero_poster_url, $heroUrl);
+    $heroPosterMobile = media_url($settings->hero_poster_mobile) ?: $heroPoster;
     $isVideo = $settings->hero_media_type === 'video' && filled($settings->hero_media_url);
     $metrics = $settings->global_metrics;
     $stations = $settings->normalizedServiceStations();
     $introParagraphs = array_filter(array_map('trim', preg_split("/\r\n|\n|\r/", (string) $settings->intro_body)));
-    $introImage = media_url($settings->intro_side_image, $heroUrl);
+    $introImagePc = $settings->intro_side_image ?: $settings->hero_media_url;
+    $introVisualBg = responsive_bg_style($introImagePc, $settings->intro_side_image_mobile, $settings->hero_media_url);
 @endphp
 
 @push('head')
@@ -28,29 +31,39 @@
 
 <div class="about-page">
     {{-- 顶部 Banner（全宽原图/原视频，无遮罩） --}}
+    @if($settings->showsBanner())
     <section class="about-banner" aria-label="关于我们">
         @if($isVideo)
-            <video class="about-banner__media" autoplay muted loop playsinline poster="{{ $heroPoster }}">
-                <source src="{{ $heroUrl }}" type="video/mp4">
+            <video class="about-banner__media"
+                   autoplay muted loop playsinline
+                   poster="{{ $heroPoster }}"
+                   data-banner-poster-pc="{{ $heroPoster }}"
+                   data-banner-poster-mobile="{{ $heroPosterMobile }}">
+                <source src="{{ $heroUrl }}" type="video/mp4"
+                        data-banner-video-pc="{{ $heroUrl }}"
+                        data-banner-video-mobile="{{ $heroUrlMobile }}">
             </video>
         @else
-            <img class="about-banner__media"
-                 src="{{ $heroUrl }}"
-                 alt="{{ $settings->intro_title ?: '关于我们' }}"
-                 loading="eager"
-                 decoding="async">
+            <x-responsive-image
+                :pc="$settings->hero_media_url"
+                :mobile="$settings->hero_media_mobile"
+                fallback="home-assets/69e9ff102a425.jpg"
+                :alt="$settings->intro_title ?: '关于我们'"
+                class="about-banner__media"
+                fetchpriority="high"
+            />
         @endif
     </section>
+    @endif
 
     {{-- 公司简介（上移 10px 与 Banner 衔接） --}}
+    @if($settings->showsIntro())
     <section class="about-section about-section--profile">
         <div class="site-shell">
-            <div class="about-section-head about-title-block">
-                @if($settings->intro_eyebrow)
-                    <p class="about-title-block__eyebrow">{{ $settings->intro_eyebrow }}</p>
-                @endif
-                <h2 class="about-title-block__title">{{ $settings->intro_title ?: '关于众鼠' }}</h2>
-            </div>
+            @include('company.partials.section-title', [
+                'eyebrow' => $settings->intro_eyebrow,
+                'title' => $settings->intro_title ?: '关于众鼠',
+            ])
             <div class="about-intro-grid">
                 <div class="about-intro-card">
                     @forelse($introParagraphs as $paragraph)
@@ -71,7 +84,8 @@
                         </div>
                     @endif
                 </div>
-                <div class="about-intro-visual" style="--about-intro-image: url('{{ $introImage }}')">
+                <div class="about-intro-visual @if($introVisualBg) has-responsive-bg @endif"
+                     @if($introVisualBg) style="{{ $introVisualBg }}" @else style="--about-intro-image: url('{{ media_url($introImagePc, asset('home-assets/69e9ff102a425.jpg')) }}')" @endif>
                     @if($settings->intro_visual_title || $settings->intro_visual_text)
                         <div class="about-intro-visual__text">
                             @if($settings->intro_visual_title)
@@ -86,22 +100,22 @@
             </div>
         </div>
     </section>
+    @endif
+
+    {{-- 全球化布局（公司简介下方，滚动逐项动效） --}}
+    @if($settings->showsGlobalLayout())
+        @include('company.partials.global-layout', ['settings' => $settings])
+    @endif
 
     {{-- 核心能力 --}}
-    @if(count($capabilities))
+    @if($settings->showsCapabilities() && count($capabilities))
         <section class="about-section about-section--gray">
             <div class="site-shell">
-                <div class="about-section-head about-section-head--center">
-                    @if($settings->capabilities_eyebrow)
-                        <div class="about-kicker about-kicker--dark">{{ $settings->capabilities_eyebrow }}</div>
-                    @endif
-                    @if($settings->capabilities_title)
-                        <h2>{{ $settings->capabilities_title }}</h2>
-                    @endif
-                    @if($settings->capabilities_lead)
-                        <p>{{ $settings->capabilities_lead }}</p>
-                    @endif
-                </div>
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->capabilities_eyebrow,
+                    'title' => $settings->capabilities_title,
+                    'lead' => $settings->capabilities_lead,
+                ])
                 <div class="about-cap-grid">
                     @foreach($capabilities as $item)
                     <article class="about-cap-card">
@@ -116,9 +130,13 @@
     @endif
 
     {{-- 服务站 --}}
-    @if(count($stations))
+    @if($settings->showsServiceStations() && count($stations))
         <section class="about-section">
             <div class="site-shell">
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->global_station_eyebrow,
+                    'title' => $settings->global_station_heading,
+                ])
                 <div class="about-switch" data-cp-tabs>
                     <div class="about-switch__toolbar">
                         <div class="about-switch__tabs" role="tablist" aria-label="服务站">
@@ -129,12 +147,6 @@
                                         role="tab"
                                         aria-selected="{{ $i === 0 ? 'true' : 'false' }}">{{ $station['tab_label'] ?? '' }}</button>
                             @endforeach
-                        </div>
-                        <div class="about-switch__heading">
-                            @if($settings->global_station_eyebrow)
-                                <p class="about-switch__eyebrow">{{ $settings->global_station_eyebrow }}</p>
-                            @endif
-                            <h2 class="about-switch__title">{{ $settings->global_station_heading }}</h2>
                         </div>
                     </div>
                     <div class="about-switch__panels">
@@ -174,20 +186,15 @@
     @endif
 
     {{-- 发展路径 --}}
-    @if($pathSteps->isNotEmpty())
+    @if($settings->showsTimeline() && $pathSteps->isNotEmpty())
         <section class="about-section about-section--dark">
             <div class="site-shell">
-                <div class="about-section-head">
-                    @if($settings->timeline_eyebrow)
-                        <div class="about-kicker">{{ $settings->timeline_eyebrow }}</div>
-                    @endif
-                    @if($settings->timeline_title)
-                        <h2>{{ $settings->timeline_title }}</h2>
-                    @endif
-                    @if($settings->timeline_lead)
-                        <p>{{ $settings->timeline_lead }}</p>
-                    @endif
-                </div>
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->timeline_eyebrow,
+                    'title' => $settings->timeline_title,
+                    'lead' => $settings->timeline_lead,
+                    'theme' => 'dark',
+                ])
                 <div class="about-path">
                     @foreach($pathSteps as $index => $step)
                         <div class="about-path__item">
@@ -209,9 +216,14 @@
     @endif
 
     {{-- 企业文化（Tab 切换，布局同服务站） --}}
-    @if($cultureValues->isNotEmpty())
+    @if($settings->showsCulture() && $cultureValues->isNotEmpty())
         <section class="about-section about-section--gray about-culture" id="culture">
             <div class="site-shell">
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->culture_eyebrow,
+                    'title' => $settings->culture_title ?: '企业文化',
+                    'lead' => $settings->culture_mission_text,
+                ])
                 <div class="about-switch" data-cp-tabs>
                     <div class="about-switch__toolbar">
                         <div class="about-switch__tabs" role="tablist" aria-label="企业文化">
@@ -223,16 +235,7 @@
                                         aria-selected="{{ $i === 0 ? 'true' : 'false' }}">{{ $value->label }}</button>
                             @endforeach
                         </div>
-                        <div class="about-switch__heading">
-                            @if($settings->culture_eyebrow)
-                                <p class="about-switch__eyebrow">{{ $settings->culture_eyebrow }}</p>
-                            @endif
-                            <h2 class="about-switch__title">{{ $settings->culture_title ?: '企业文化' }}</h2>
-                        </div>
                     </div>
-                    @if($settings->culture_mission_text)
-                        <p class="about-culture__lead">{{ $settings->culture_mission_text }}</p>
-                    @endif
                     <div class="about-switch__panels">
                         @foreach($cultureValues as $i => $value)
                             <article class="about-switch__panel {{ $i === 0 ? 'is-active' : '' }}"
@@ -275,18 +278,14 @@
     @endif
 
     {{-- 品牌荣誉（资质 / 奖牌 / 证书图片墙） --}}
-    @if($honors->isNotEmpty())
+    @if($settings->showsHonors() && $honors->isNotEmpty())
         <section class="about-section about-section--gray about-honors-section">
             <div class="site-shell">
-                <div class="about-section-head about-title-block">
-                    @if($settings->honors_eyebrow)
-                        <p class="about-title-block__eyebrow">{{ $settings->honors_eyebrow }}</p>
-                    @endif
-                    <h2 class="about-title-block__title">{{ $settings->honors_title ?: '品牌荣誉' }}</h2>
-                </div>
-                @if($settings->honors_subtitle)
-                    <p class="about-honors__lead">{{ $settings->honors_subtitle }}</p>
-                @endif
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->honors_eyebrow,
+                    'title' => $settings->honors_title ?: '品牌荣誉',
+                    'lead' => $settings->honors_subtitle,
+                ])
                 <ul class="about-honors-gallery">
                     @foreach($honors as $honor)
                         <li class="about-honor-card">
@@ -316,15 +315,13 @@
     @endif
 
     {{-- 团队介绍 --}}
-    @if($teamFeatured || $teamMembers->isNotEmpty())
+    @if($settings->showsTeam() && ($teamFeatured || $teamMembers->isNotEmpty()))
         <section class="about-section">
             <div class="site-shell">
-                <div class="about-section-head about-title-block">
-                    @if($settings->team_eyebrow)
-                        <p class="about-title-block__eyebrow">{{ $settings->team_eyebrow }}</p>
-                    @endif
-                    <h2 class="about-title-block__title">{{ $settings->team_title ?: '团队介绍' }}</h2>
-                </div>
+                @include('company.partials.section-title', [
+                    'eyebrow' => $settings->team_eyebrow,
+                    'title' => $settings->team_title ?: '团队介绍',
+                ])
 
                 @if($teamFeatured)
                     <article class="about-team-lead">

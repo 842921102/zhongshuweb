@@ -34,7 +34,8 @@ class SupportVideoResource extends Resource
     {
         return $schema->components([
             TextInput::make('title')->label('标题')->required()->maxLength(200),
-            FileUpload::make('cover_image')->label('封面图')->image()->directory('support/videos')->disk('public')->columnSpanFull(),
+            FileUpload::make('cover_image')->label('封面图（PC / 默认）')->image()->directory('support/videos')->disk('public'),
+            FileUpload::make('cover_image_mobile')->label('封面图（手机端，可选）')->image()->directory('support/videos')->disk('public')->columnSpanFull(),
             FileUpload::make('video_url')->label('视频 MP4')->acceptedFileTypes(['video/mp4', 'video/webm'])->directory('support/videos')->disk('public')->required()->columnSpanFull(),
             TextInput::make('duration_label')->label('时长')->placeholder('02:00'),
             TextInput::make('tag')->label('标签')->placeholder('宣传视频'),

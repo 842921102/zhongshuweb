@@ -514,3 +514,10 @@ body.case-studies-page {
 .cs-detail__content :first-child {
   margin-top: 0;
 }
+
+.cs-detail__content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 响应式见 public/css/site-responsive.css */
