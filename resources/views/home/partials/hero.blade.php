@@ -63,7 +63,7 @@
             @endforeach
         </div>
     @endif
-    <button class="hero__scroll" type="button" aria-label="向下滚动探索更多" data-scroll-target="#home-solutions">
+    <button class="hero__scroll" type="button" aria-label="向下滚动探索更多" data-scroll-target="{{ $heroScrollTarget ?? '#home-solutions' }}">
         <span style="letter-spacing: -0.15px;line-height: 20px;">向下滚动探索更多</span>
         <img src="{{ asset('home-assets/home-scroll-down.svg') }}" alt="">
     </button>

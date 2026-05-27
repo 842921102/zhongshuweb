@@ -68,8 +68,12 @@ class HomePageService
             ];
         });
 
+        $orderedSections = HomeSection::sortedEnabled($sections);
+
         return array_merge((new SiteLayoutService($this->locale))->shared(), [
             'sections' => $sections,
+            'orderedSections' => $orderedSections,
+            'heroScrollTarget' => HomeSection::heroScrollTarget($sections),
             'banners' => Banner::query()
                 ->forLocale($this->locale)
                 ->active()

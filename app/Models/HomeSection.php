@@ -15,6 +15,28 @@ class HomeSection extends Model
 {
     use HasLocale;
 
+    /** @var array<string, string> section_key => 前台锚点 id */
+    public const SECTION_ANCHORS = [
+        'hero' => 'home-hero',
+        'solutions' => 'home-solutions',
+        'products' => 'home-products',
+        'cases' => 'home-case',
+        'partners' => 'home-partners',
+        'news' => 'home-news',
+        'about' => 'home-about',
+    ];
+
+    /** @var array<string, string> section_key => Blade 局部视图 */
+    public const SECTION_PARTIALS = [
+        'hero' => 'home.partials.hero',
+        'solutions' => 'home.partials.solutions',
+        'products' => 'home.partials.products',
+        'cases' => 'home.partials.cases',
+        'partners' => 'home.partials.partners',
+        'news' => 'home.partials.news',
+        'about' => 'home.partials.about',
+    ];
+
     /** @var array<string, array{section_name: string, hint: string}> */
     public const DEFINITIONS = [
         'hero' => [
@@ -81,6 +103,46 @@ class HomeSection extends Model
     public function isHero(): bool
     {
         return $this->section_key === 'hero';
+    }
+
+    public function anchorId(): string
+    {
+        return self::SECTION_ANCHORS[$this->section_key] ?? 'home-'.$this->section_key;
+    }
+
+    public function partialView(): ?string
+    {
+        return self::SECTION_PARTIALS[$this->section_key] ?? null;
+    }
+
+    /**
+     * @param  array<string, self>  $sections
+     * @return list<self>
+     */
+    public static function sortedEnabled(array $sections): array
+    {
+        return collect($sections)
+            ->sortBy(fn (self $section) => [$section->sort_order, $section->id])
+            ->filter(fn (self $section) => $section->isEnabled())
+            ->values()
+            ->all();
+    }
+
+    /**
+     * 首屏「向下滚动」目标：排序后紧跟 hero 的第一个已启用模块。
+     *
+     * @param  array<string, self>  $sections
+     */
+    public static function heroScrollTarget(array $sections): string
+    {
+        $ordered = self::sortedEnabled($sections);
+        $next = collect($ordered)->first(fn (self $section) => $section->section_key !== 'hero');
+
+        if ($next !== null) {
+            return '#'.$next->anchorId();
+        }
+
+        return '#'.(self::SECTION_ANCHORS['about'] ?? 'home-about');
     }
 
     /**
