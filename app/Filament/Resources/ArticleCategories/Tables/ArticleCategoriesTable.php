@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\ArticleCategories\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -24,19 +22,13 @@ class ArticleCategoriesTable
                 TextColumn::make('slug')->label('标识')->badge()->copyable(),
                 TextColumn::make('articles_count')->label('文章数')->counts('articles')->badge(),
                 TextColumn::make('locale')->label('语言')->badge(),
-                IconColumn::make('is_active')->label('启用')->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->filters([
                 TernaryFilter::make('is_active')->label('启用'),
                 SelectFilter::make('locale')->label('语言')->options(['zh-cn' => '中文', 'en-us' => 'English']),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

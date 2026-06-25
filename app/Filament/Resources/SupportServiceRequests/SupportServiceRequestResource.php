@@ -5,6 +5,7 @@ namespace App\Filament\Resources\SupportServiceRequests;
 use App\Filament\Resources\SupportServiceRequests\Pages\EditSupportServiceRequest;
 use App\Filament\Resources\SupportServiceRequests\Pages\ManageSupportServiceRequests;
 use App\Models\SupportServiceRequest;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -81,10 +82,8 @@ class SupportServiceRequestResource extends Resource
                     ->label('状态')
                     ->options(SupportServiceRequest::statusLabels()),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('处理'),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(replicate: false, editLabel: '处理'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

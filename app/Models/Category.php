@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Support\SiteLayoutCache;
+use App\Models\Concerns\HasOverlayCopyColors;
 use App\Support\UniqueSlug;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,12 +14,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'parent_id', 'name', 'slug', 'subtitle', 'description', 'icon', 'cover_image', 'cover_image_mobile',
-    'link', 'sort_order', 'is_active', 'is_home_show', 'is_home_featured',
-    'is_station_tab', 'locale',
+    'link', 'overlay_title_color', 'overlay_subtitle_color', 'sort_order', 'is_active', 'is_home_show', 'is_home_featured',
+    'is_station_tab', 'show_in_catalog', 'locale',
 ])]
 class Category extends Model
 {
     use HasLocale;
+    use HasOverlayCopyColors;
 
     protected function casts(): array
     {
@@ -26,6 +29,7 @@ class Category extends Model
             'is_home_show' => 'boolean',
             'is_home_featured' => 'boolean',
             'is_station_tab' => 'boolean',
+            'show_in_catalog' => 'boolean',
         ];
     }
 
@@ -36,6 +40,9 @@ class Category extends Model
                 $category->slug = UniqueSlug::for($category, $category->name, 'category');
             }
         });
+
+        static::saved(fn () => SiteLayoutCache::forget());
+        static::deleted(fn () => SiteLayoutCache::forget());
     }
 
     public function parent(): BelongsTo
@@ -71,6 +78,20 @@ class Category extends Model
     public function scopeStationTabs(Builder $query): Builder
     {
         return $query->whereNotNull('parent_id')->where('is_station_tab', true);
+    }
+
+    public function scopeCatalogTabs(Builder $query): Builder
+    {
+        return $query->whereNotNull('parent_id')->where('show_in_catalog', true);
+    }
+
+    public function scopeHierarchicalOrder(Builder $query): Builder
+    {
+        return $query
+            ->orderByRaw('COALESCE(parent_id, id)')
+            ->orderByRaw('CASE WHEN parent_id IS NULL THEN 0 ELSE 1 END')
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     public function domKey(): string

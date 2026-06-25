@@ -5,8 +5,14 @@
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     scroll-margin-top: 72px;
+}
+
+.is-home-index .section.solutions.screen-section {
+    min-height: auto;
+    align-items: stretch;
 }
 
 .is-home-index .section.solutions.screen-section > .site-shell,
@@ -15,7 +21,10 @@
 .is-home-index .section.partners.screen-section > .site-shell,
 .is-home-index .section.news.screen-section > .site-shell,
 .is-home-index .section.about.screen-section > .site-shell {
-    width: 100%;
+    width: var(--site-page-shell);
+    max-width: calc(100% - (var(--home-shell-gap) * 2));
+    margin-inline: auto;
+    align-self: center;
     flex: 1;
     display: flex;
     flex-direction: column;

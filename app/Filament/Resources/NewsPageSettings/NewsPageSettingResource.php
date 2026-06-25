@@ -6,6 +6,7 @@ use App\Filament\Resources\NewsPageSettings\Pages\EditNewsPageSetting;
 use App\Filament\Resources\NewsPageSettings\Pages\ListNewsPageSettings;
 use App\Filament\Resources\NewsPageSettings\Schemas\NewsPageSettingForm;
 use App\Models\NewsPageSetting;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -41,9 +42,8 @@ class NewsPageSettingResource extends Resource
                 \Filament\Tables\Columns\TextColumn::make('meta_title')->label('SEO 标题'),
                 \Filament\Tables\Columns\TextColumn::make('locale')->label('语言')->badge(),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('编辑'),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

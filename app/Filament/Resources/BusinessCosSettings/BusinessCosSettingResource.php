@@ -6,6 +6,7 @@ use App\Filament\Resources\BusinessCosSettings\Pages\EditBusinessCosSetting;
 use App\Filament\Resources\BusinessCosSettings\Pages\ListBusinessCosSettings;
 use App\Filament\Resources\BusinessCosSettings\Schemas\BusinessCosSettingForm;
 use App\Models\BusinessCosSetting;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -39,12 +40,11 @@ class BusinessCosSettingResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            \Filament\Tables\Columns\IconColumn::make('is_enabled')->label('已启用')->boolean(),
+            \Filament\Tables\Columns\ToggleColumn::make('is_enabled')->label('已启用'),
             \Filament\Tables\Columns\TextColumn::make('region')->label('地域'),
             \Filament\Tables\Columns\TextColumn::make('bucket')->label('Bucket'),
-        ])->recordActions([
-            \Filament\Actions\EditAction::make(),
-        ]);
+        ])
+            ->recordActions(ResourceTableActions::recordActions(replicate: false, delete: false));
     }
 
     public static function getPages(): array

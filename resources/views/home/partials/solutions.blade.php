@@ -6,26 +6,28 @@
             'defaultHighlight' => '解决方案',
             'defaultSubtitle' => '从城市道路到室内空间，从垃圾收集到数据管理，提供完整的智能环卫生态系统。',
         ])
+    </div>
 
-        @if($solutionsFeatured)
-            <article class="solutions-hero solutions-hero--fullbleed reveal">
-                <x-responsive-image
-                    :pc="$solutionsFeatured->coverPcPath()"
-                    :mobile="$solutionsFeatured->coverMobilePath()"
-                    :fallback="$solutionsFeatured->icon"
-                    :alt="$solutionsFeatured->name"
-                    class="solutions-hero__image"
-                    loading="lazy"
-                />
-                <div class="solutions-hero__content">
-                    <h3>{{ $solutionsFeatured->name }}</h3>
-                    <p>{{ $solutionsFeatured->subtitle }}</p>
-                    <a class="button button--primary" href="{{ $solutionsFeatured->link ?: '#home-products' }}">了解详情</a>
-                </div>
-            </article>
-        @endif
+    @if($solutionsFeatured)
+        <article class="solutions-hero solutions-hero--fullbleed reveal">
+            <x-responsive-image
+                :pc="$solutionsFeatured->coverPcPath()"
+                :mobile="$solutionsFeatured->coverMobilePath()"
+                :fallback="$solutionsFeatured->icon"
+                :alt="$solutionsFeatured->name"
+                class="solutions-hero__image"
+                loading="lazy"
+            />
+            <div class="solutions-hero__content copy-interactive copy-interactive--on-dark overlay-copy"@if($style = $solutionsFeatured->overlayCopyStyle()) style="{{ $style }}"@endif>
+                <h3>{{ $solutionsFeatured->name }}</h3>
+                <p>{{ $solutionsFeatured->subtitle }}</p>
+                <a class="button button--primary" href="{{ $solutionsFeatured->link ?: '#home-products' }}">了解详情</a>
+            </div>
+        </article>
+    @endif
 
-        @if($solutionsGrid->isNotEmpty())
+    @if($solutionsGrid->isNotEmpty())
+        <div class="site-shell solutions__grid-shell">
             <div class="solutions-grid">
                 @foreach($solutionsGrid as $category)
                     <article class="solution-card reveal">
@@ -37,13 +39,15 @@
                             loading="lazy"
                         />
                         <div class="solution-card__content">
-                            <h3>{{ $category->name }}</h3>
-                            <span>{{ $category->subtitle }}</span>
-                            <a class="button button--primary button--small" href="{{ $category->link ?: '#home-products' }}">了解详情</a>
+                            <div class="solution-card__panel overlay-copy"@if($style = $category->overlayCopyStyle()) style="{{ $style }}"@endif>
+                                <h3>{{ $category->name }}</h3>
+                                <span>{{ $category->subtitle }}</span>
+                                <a class="button button--primary button--small" href="{{ $category->link ?: '#home-products' }}">了解详情</a>
+                            </div>
                         </div>
                     </article>
                 @endforeach
             </div>
-        @endif
-    </div>
+        </div>
+    @endif
 </section>

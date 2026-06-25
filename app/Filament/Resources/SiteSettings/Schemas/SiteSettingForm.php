@@ -29,6 +29,7 @@ class SiteSettingForm
                         'general' => '基本信息',
                         'contact' => '联系方式',
                         'seo' => 'SEO',
+                        'header' => '顶栏',
                         'footer' => '页脚',
                     ])
                     ->default('general')
@@ -54,7 +55,7 @@ class SiteSettingForm
                     ->label('图片')
                     ->image()
                     ->directory('settings')
-                    ->disk('public')
+                    ->disk(upload_disk())
                     ->visible(fn ($get) => $get('type') === 'image')
                     ->columnSpanFull(),
             ]);

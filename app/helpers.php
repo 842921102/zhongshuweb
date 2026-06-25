@@ -3,6 +3,21 @@
 use App\Support\MediaUrl;
 use Illuminate\Support\Arr;
 
+if (! function_exists('versioned_asset')) {
+    function versioned_asset(string $path): string
+    {
+        $relative = ltrim($path, '/');
+        $version = \App\Support\ReleaseInfo::version();
+        $fullPath = public_path($relative);
+
+        if (is_file($fullPath)) {
+            $version .= '.'.filemtime($fullPath);
+        }
+
+        return asset($path).'?v='.rawurlencode($version);
+    }
+}
+
 if (! function_exists('media_url')) {
     function media_url(mixed $path, ?string $fallback = null): ?string
     {

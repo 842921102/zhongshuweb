@@ -62,28 +62,4 @@
         });
     });
   }
-
-  var filterLinks = document.querySelectorAll('.join-job-filter-link');
-  var jobCards = document.querySelectorAll('.join-job-card[data-join-category]');
-
-  if (filterLinks.length && jobCards.length) {
-    filterLinks.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        var cat = link.getAttribute('data-join-category');
-        if (!cat || link.classList.contains('is-active')) {
-          return;
-        }
-        if (link.getAttribute('href') && link.getAttribute('href').indexOf('category=') !== -1) {
-          return;
-        }
-        e.preventDefault();
-        filterLinks.forEach(function (l) { l.classList.remove('is-active'); });
-        link.classList.add('is-active');
-        jobCards.forEach(function (card) {
-          var match = cat === 'all' || card.getAttribute('data-join-category') === cat;
-          card.classList.toggle('is-hidden', !match);
-        });
-      });
-    });
-  }
 })();

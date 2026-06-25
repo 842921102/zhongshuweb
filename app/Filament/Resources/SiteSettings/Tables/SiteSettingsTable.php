@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources\SiteSettings\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -28,13 +26,7 @@ class SiteSettingsTable
                     ->label('值')
                     ->limit(50),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

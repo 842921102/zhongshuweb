@@ -5,7 +5,7 @@
   --ic-primary-soft: rgba(0, 168, 90, 0.12);
   --ic-text: rgba(0, 0, 0, 0.9);
   --ic-text-muted: rgba(0, 0, 0, 0.6);
-  --ic-container: min(1330px, calc(100% - 48px));
+  --ic-container: var(--site-page-shell);
   --ic-header-offset: 80px;
   --ic-subnav-height: 64px;
 }
@@ -32,17 +32,9 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
 .ic-hero {
   position: relative;
   width: 100%;
-  min-height: max(var(--ic-banner-height, 640px), 72vh);
-  max-height: 900px;
   overflow: hidden;
   color: #fff;
   background: #0a1628;
-}
-
-@supports (height: 100dvh) {
-  .ic-hero {
-    min-height: max(var(--ic-banner-height, 640px), 85dvh);
-  }
 }
 
 .ic-hero__media {
@@ -67,18 +59,13 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
 }
 
 .ic-hero__bg--fallback {
-  background: linear-gradient(135deg, #05763a 0%, #00a85a 48%, #0a1628 100%);
+  background: #101828;
 }
 
 .ic-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(5, 8, 13, 0.78) 0%,
-    rgba(16, 24, 40, 0.42) 52%,
-    rgba(16, 24, 40, 0.55) 100%
-  );
+  background: rgba(5, 8, 13, 0.28);
   pointer-events: none;
   z-index: 1;
 }
@@ -89,9 +76,9 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
   display: flex;
   align-items: center;
   min-height: inherit;
-  max-width: var(--ic-container);
+  width: var(--ic-container);
   margin: 0 auto;
-  padding: calc(var(--ic-header-offset) + 24px) 24px 56px;
+  padding: calc(var(--ic-header-offset) + 24px) 0 56px;
 }
 
 .ic-hero__content {
@@ -117,12 +104,8 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
 @media (max-width: 767px) {
   .ic-hero__container {
     align-items: flex-end;
-    padding: calc(var(--ic-header-offset) + 16px) 20px 40px;
+    padding: calc(var(--ic-header-offset) + 16px) 0 40px;
     text-align: left;
-  }
-
-  .ic-hero {
-    min-height: max(var(--ic-banner-height, 520px), 78vh);
   }
 }
 
@@ -154,7 +137,7 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
 }
 
 .ic-tabs-inner {
-  max-width: var(--ic-container);
+  width: var(--ic-container);
   margin: 0 auto;
   padding: 16px 0;
 }
@@ -224,7 +207,7 @@ body.industry-cases-page .site-header:not(.is-scrolled):not(.is-hovering-nav) .s
 
 /* 行业区块列表 */
 .ic-list {
-  max-width: var(--ic-container);
+  width: var(--ic-container);
   margin: 0 auto;
   padding: 80px 0 60px;
   display: flex;
@@ -348,7 +331,7 @@ body.industry-cases-detail .site-header:not(.is-scrolled):not(.is-hovering-nav) 
 }
 
 .industry-cases-detail {
-  --ic-detail-container: min(1200px, calc(100% - 48px));
+  --ic-detail-container: var(--site-page-shell);
   --ic-band-pad-y: 48px;
   --ic-scene-pad-y: 40px;
   --ic-pdbg: #f4f6f8;

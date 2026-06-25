@@ -6,7 +6,7 @@
 @php
     $bannerPc = media_url($pageSettings->banner_image_pc);
     $bannerMobile = media_url($pageSettings->banner_image_mobile) ?: $bannerPc;
-    $heroHeight = $pageSettings->banner_height ?: 420;
+    $heroHeight = $pageSettings->banner_height ?: 640;
     $pageTitle = $pageSettings->meta_title ?: ($pageSettings->page_title.' - '.$siteName);
 @endphp
 
@@ -15,15 +15,15 @@
     @if($pageSettings->meta_description)
         <meta name="description" content="{{ $pageSettings->meta_description }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/case-studies.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/case-studies.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/case-studies.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/case-studies.js') }}" defer></script>
 @endpush
 
 <div class="cs-page">
-    <section class="cs-hero" style="--cs-hero-height: {{ $heroHeight }}px" aria-label="{{ $pageSettings->page_title }}">
+    <section class="cs-hero site-page-banner" style="--site-page-banner-height: {{ $heroHeight }}px" aria-label="{{ $pageSettings->page_title }}">
         @if($bannerPc || $pageSettings->banner_image_pc)
             <x-responsive-bg
                 :pc="$pageSettings->banner_image_pc"

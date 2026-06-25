@@ -2,11 +2,9 @@
 
 namespace App\Filament\Resources\SiteFooterLinks\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
@@ -22,7 +20,7 @@ class SiteFooterLinksTable
                 TextColumn::make('group_label')->label('分组'),
                 TextColumn::make('label')->label('链接文字')->searchable(),
                 TextColumn::make('url')->label('地址')->limit(40),
-                IconColumn::make('is_active')->label('启用')->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->filters([
                 SelectFilter::make('group_key')
@@ -33,13 +31,7 @@ class SiteFooterLinksTable
                         'about' => '关于我们',
                     ]),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

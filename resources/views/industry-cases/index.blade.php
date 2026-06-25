@@ -17,15 +17,15 @@
     @if($pageSettings->meta_description)
         <meta name="description" content="{{ $pageSettings->meta_description }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/industry-cases.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/industry-cases.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/industry-cases.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/industry-cases.js') }}" defer></script>
 @endpush
 
 <div class="ic-main new_xz">
-    <section class="ic-hero" style="--ic-banner-height: {{ $bannerHeight }}px" aria-label="{{ $pageSettings->page_title }}">
+    <section class="ic-hero site-page-banner" style="--site-page-banner-height: {{ $bannerHeight }}px" aria-label="{{ $pageSettings->page_title }}">
         <div class="ic-hero__media" aria-hidden="true">
             @if($videoUrl)
                 <video class="ic-hero__video" autoplay muted loop playsinline preload="metadata">

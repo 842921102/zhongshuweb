@@ -65,6 +65,8 @@ class SiteNavMenu extends Model
 
         static::saved($flush);
         static::deleted($flush);
+        static::saved(fn () => \App\Support\SiteLayoutCache::forget());
+        static::deleted(fn () => \App\Support\SiteLayoutCache::forget());
     }
 
     public function parent(): BelongsTo

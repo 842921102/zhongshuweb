@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,19 +15,23 @@ use Illuminate\Database\Eloquent\Model;
 class IndustrySolutionPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
 
-    public static function forLocale(string $locale = 'zh-cn'): self
+    protected static function booted(): void
     {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            [
-                'page_title' => '解决方案',
-                'page_subtitle' => '覆盖环卫市政、园区物业、商业空间等多行业的智能清洁应用实践',
-                'detail_button_text' => '查看方案',
-                'meta_title' => '解决方案 - 众鼠科技',
-                'meta_description' => '众鼠科技解决方案：智能清洁装备在环卫、物业、园区、商业等场景的方案与落地实践。',
-                'banner_height' => 640,
-            ]
-        );
+        static::bootRemembersLocaleRow();
+    }
+
+    /** @return array<string, mixed> */
+    public static function defaultAttributes(): array
+    {
+        return [
+            'page_title' => '解决方案',
+            'page_subtitle' => '覆盖环卫市政、园区物业、商业空间等多行业的智能清洁应用实践',
+            'detail_button_text' => '查看方案',
+            'meta_title' => '解决方案 - 众鼠科技',
+            'meta_description' => '众鼠科技解决方案：智能清洁装备在环卫、物业、园区、商业等场景的方案与落地实践。',
+            'banner_height' => 640,
+        ];
     }
 }

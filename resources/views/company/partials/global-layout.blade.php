@@ -11,9 +11,7 @@
 
 @if(!$customMap)
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js" defer></script>
-        <script src="{{ asset('js/company-world-map.js') }}" defer></script>
+        <script src="{{ versioned_asset('js/company-world-map.js') }}" defer></script>
     @endpush
 @endif
 

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\HomeSections\Schemas;
 
 use App\Models\HomeSection;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -82,6 +83,46 @@ class HomeSectionForm
                             ->rows(3)
                             ->maxLength(500)
                             ->columnSpanFull(),
+                    ]),
+                Section::make('关于我们配图')
+                    ->columnSpanFull()
+                    ->description('仅用于首页「关于我们」模块的大图与浮层文案，与「关于我们页面」设置相互独立。')
+                    ->visible(fn (Get $get): bool => $get('section_key') === 'about')
+                    ->schema([
+                        FileUpload::make('visual_image')
+                            ->label('配图（PC / 默认）')
+                            ->image()
+                            ->directory('home-sections/about')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->maxSize(10240)
+                            ->imagePreviewHeight('160')
+                            ->helperText('推荐横版大图，1920×900 左右；留空则回退到「关于我们页面」中的配图'),
+                        FileUpload::make('visual_image_mobile')
+                            ->label('配图（手机端，可选）')
+                            ->image()
+                            ->directory('home-sections/about')
+                            ->disk('public')
+                            ->visibility('public')
+                            ->maxSize(10240)
+                            ->imagePreviewHeight('160')
+                            ->columnSpanFull(),
+                        Textarea::make('visual_text')
+                            ->label('浮层简介')
+                            ->rows(4)
+                            ->maxLength(1000)
+                            ->helperText('显示在图片上的白色文案；留空则回退到关于页「公司简介」摘要')
+                            ->columnSpanFull(),
+                        TextInput::make('visual_button_label')
+                            ->label('按钮文案')
+                            ->maxLength(40)
+                            ->default('了解我们')
+                            ->placeholder('了解我们'),
+                        TextInput::make('visual_button_url')
+                            ->label('按钮链接')
+                            ->maxLength(500)
+                            ->placeholder('/about')
+                            ->helperText('可填 /about 或完整 URL'),
                     ]),
                 Section::make('首屏 Banner 说明')
                     ->columnSpanFull()

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\JoinApplications;
 use App\Filament\Resources\JoinApplications\Pages\EditJoinApplication;
 use App\Filament\Resources\JoinApplications\Pages\ListJoinApplications;
 use App\Models\JoinApplication;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -106,14 +107,8 @@ class JoinApplicationResource extends Resource
                     ->label('状态')
                     ->options(JoinApplication::statusLabels()),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('处理'),
-            ])
-            ->toolbarActions([
-                \Filament\Actions\BulkActionGroup::make([
-                    \Filament\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(replicate: false, editLabel: '处理'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

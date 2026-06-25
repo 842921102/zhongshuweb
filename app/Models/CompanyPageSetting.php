@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\JsonArrayCast;
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +34,12 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
+
+    protected static function booted(): void
+    {
+        static::bootRemembersLocaleRow();
+    }
 
     protected function casts(): array
     {
@@ -128,14 +135,6 @@ class CompanyPageSetting extends Model
         $stations = $this->service_stations;
 
         return ! empty($stations) ? $stations : static::defaultServiceStations();
-    }
-
-    public static function forLocale(string $locale = 'zh-cn'): self
-    {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            static::defaultAttributes($locale)
-        );
     }
 
     /** @return array<string, mixed> */

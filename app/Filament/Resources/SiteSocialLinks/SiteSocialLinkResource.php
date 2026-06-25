@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SiteSocialLinks;
 
 use App\Filament\Resources\SiteSocialLinks\Pages\ManageSiteSocialLinks;
 use App\Models\SiteSocialLink;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -12,8 +13,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -90,12 +91,10 @@ class SiteSocialLinkResource extends Resource
                 TextColumn::make('name')->label('名称'),
                 TextColumn::make('type')->label('类型'),
                 TextColumn::make('url')->label('链接')->limit(30),
-                IconColumn::make('is_active')->label('启用')->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

@@ -74,7 +74,8 @@ picture img,
 .hero__image,
 .solutions-hero__image,
 .product-banner__image,
-.support-hero-media {
+.support-hero__media,
+.support-hero__img {
   display: block;
   max-width: 100%;
 }
@@ -98,14 +99,14 @@ picture img,
   object-fit: cover;
 }
 
-.support-hero .support-hero-media {
+.support-hero .support-hero__media {
   position: absolute;
   inset: 0;
 }
 
-.support-hero-media picture,
-.support-hero-media__img,
-.support-hero-media img {
+.support-hero__media picture,
+.support-hero__media picture img,
+.support-hero__img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -131,21 +132,9 @@ picture img,
    平板 ≤1024px
    ═══════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .news-page {
-    --news-shell: min(1200px, calc(100% - 40px));
-  }
-
   .product-page,
   .productdetail-page {
     --product-shell: min(1200px, calc(100% - 40px));
-  }
-
-  .support-page {
-    --support-shell: min(1200px, calc(100% - 40px));
-  }
-
-  .joinus-page {
-    --join-shell: min(1200px, calc(100% - 40px));
   }
 
   .product-page,
@@ -227,11 +216,6 @@ picture img,
     grid-template-columns: 1fr;
   }
 
-  .about-page .about-banner__media {
-    min-height: 280px;
-    max-height: 52vh;
-  }
-
   /* 新闻 */
   .news-featured-card .news-block-link {
     grid-template-columns: 1fr;
@@ -268,8 +252,18 @@ picture img,
   }
 
   /* 支持 */
-  .support-page .support-video-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .support-page .support-doc-list__head,
+  .support-page .support-doc-row {
+    grid-template-columns: minmax(0, 1.4fr) 100px minmax(0, 0.9fr) 96px;
+  }
+
+  .support-page .support-video-list__head,
+  .support-page .support-video-row {
+    grid-template-columns: 140px minmax(0, 1fr) 120px 108px;
+  }
+
+  .support-page .support-hub__shell {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .support-page .support-service-shell {
@@ -307,39 +301,9 @@ picture img,
     overflow-x: clip;
   }
 
-  .news-page {
-    --news-shell: calc(100% - 32px);
-  }
-
   .product-page,
   .productdetail-page {
     --product-shell: calc(100% - 32px);
-  }
-
-  .support-page {
-    --support-shell: calc(100% - 32px);
-  }
-
-  .joinus-page {
-    --join-shell: calc(100% - 32px);
-  }
-
-  /* 内联高度的页头 Banner */
-  .site-responsive-hero,
-  .news-page .news-hero,
-  .news-page .news-hero-container,
-  .newsdetail-page .news-hero.newsdetail-banner,
-  .newsdetail-page .news-hero.newsdetail-banner .news-hero-container,
-  .support-page .support-hero,
-  .support-page .support-hero-container {
-    height: clamp(260px, 52vw, 360px) !important;
-    min-height: clamp(260px, 52vw, 360px) !important;
-  }
-
-  .case-studies-page .cs-hero {
-    --cs-hero-height: clamp(260px, 52vw, 360px);
-    height: var(--cs-hero-height);
-    min-height: var(--cs-hero-height);
   }
 
   .product-page,
@@ -447,22 +411,10 @@ picture img,
   }
 
   .news-category-tabs {
-    flex-wrap: nowrap;
-    gap: 12px 20px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 12px;
-    margin-bottom: 28px;
-  }
-
-  .news-category-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .news-category-tab {
-    flex: 0 0 auto;
-    white-space: nowrap;
+    gap: 8px;
+    padding-top: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   .news-featured-body {
@@ -618,19 +570,15 @@ picture img,
 
   /* 案例 */
   .case-studies-page .cs-detail {
-    padding: 32px 16px 64px;
+    padding: 32px 0 64px;
   }
 
   .case-studies-page .cs-detail h1 {
     font-size: clamp(22px, 6vw, 28px);
   }
 
-  .case-studies-page .cs-list-inner {
-    padding: 0 16px;
-  }
-
   .case-studies-page .cs-filters {
-    top: 56px;
+    top: 72px;
     padding: 12px 0 20px;
   }
 
@@ -643,7 +591,7 @@ picture img,
   }
 
   .case-studies-page .cs-hero-container {
-    padding: 88px 20px 40px;
+    padding: 88px 0 40px;
     align-items: flex-end;
   }
 
@@ -659,18 +607,89 @@ picture img,
     padding-bottom: 48px;
   }
 
-  .support-page .support-doc-item {
-    grid-template-columns: 1fr;
+  .support-page .support-hero__shell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+    padding-top: 72px;
+    padding-bottom: 48px;
   }
 
-  .support-page .support-doc-action {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+  .support-page .support-hero__stats {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: grid;
   }
 
-  .support-page .support-video-grid {
+  .support-page .support-hub {
+    margin-top: -20px;
+  }
+
+  .support-page .support-hub__shell {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .support-page .support-doc-list__head {
+    display: none;
+  }
+
+  .support-page .support-doc-row {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .support-page .support-doc-list__col--category,
+  .support-page .support-doc-list__col--meta {
+    display: none;
+  }
+
+  .support-page .support-doc-meta--mobile {
+    display: flex;
+    margin-top: 8px;
+  }
+
+  .support-page .support-video-list__head {
+    display: none;
+  }
+
+  .support-page .support-video-row {
+    grid-template-columns: 112px 1fr;
+    grid-template-areas:
+      "video info"
+      "video action";
+    gap: 12px 14px;
+    padding: 16px;
+  }
+
+  .support-page .support-video-list__col--video {
+    grid-area: video;
+  }
+
+  .support-page .support-video-list__col--info {
+    grid-area: info;
+  }
+
+  .support-page .support-video-list__col--action {
+    grid-area: action;
+  }
+
+  .support-page .support-video-list__col--stats {
+    display: none;
+  }
+
+  .support-page .support-video-duration--inline {
+    display: inline-flex;
+    padding: 3px 8px;
+    font-size: 12px;
+    color: var(--support-muted);
+    background: var(--support-surface);
+    border-radius: 999px;
+  }
+
+  .support-page .support-video-thumb {
+    width: 112px;
   }
 
   .support-page .support-form-grid {
@@ -678,8 +697,11 @@ picture img,
   }
 
   .support-page .support-docs-heading {
-    flex-direction: column;
-    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .support-page .support-doc-search {
+    max-width: none;
   }
 
   .support-page .support-doc-filters {
@@ -700,10 +722,6 @@ picture img,
   }
 
   /* 招聘 */
-  .joinus-page .join-hero {
-    min-height: auto;
-  }
-
   .joinus-page .join-hero-content {
     padding: 88px 0 72px;
   }
@@ -731,12 +749,6 @@ picture img,
 
   .about-page .about-section-head h2 {
     font-size: clamp(1.75rem, 6vw, 2.25rem);
-  }
-
-  .about-page .about-banner__media {
-    height: clamp(220px, 48vw, 360px);
-    min-height: 220px;
-    max-height: none;
   }
 
   .about-page .about-intro-card,
@@ -834,10 +846,6 @@ picture img,
     min-height: 200px;
   }
 
-  .case-studies-page .cs-hero {
-    --cs-hero-height: clamp(240px, 50vh, 320px);
-  }
-
   .case-studies-page .cs-list-wrap {
     padding: 28px 0 56px;
   }
@@ -850,11 +858,6 @@ picture img,
   .case-studies-page .cs-card:hover .cs-card__arrow {
     display: none;
     opacity: 0;
-  }
-
-  .about-page .about-banner__media {
-    min-height: 220px;
-    max-height: 44vh;
   }
 
   .about-page .about-section {
@@ -874,8 +877,17 @@ picture img,
     gap: 12px 16px;
   }
 
-  .support-page .support-doc-item {
-    padding: 16px;
+  .support-page .support-doc-row {
+    padding: 14px;
+  }
+
+  .support-page .support-video-row {
+    padding: 14px;
+  }
+
+  .support-page .support-hero__stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .support-page .support-video-modal__dialog {

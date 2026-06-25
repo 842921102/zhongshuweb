@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 
 #[Fillable([
     'section_key', 'section_name', 'title', 'title_highlight', 'subtitle',
+    'visual_image', 'visual_image_mobile', 'visual_text', 'visual_button_label', 'visual_button_url',
     'is_enabled', 'sort_order', 'background_color', 'locale',
 ])]
 class HomeSection extends Model
@@ -65,7 +66,7 @@ class HomeSection extends Model
         ],
         'about' => [
             'section_name' => '关于我们',
-            'hint' => '对应前台 #home-about',
+            'hint' => '对应前台 #home-about；可在此单独配置大图与浮层文案',
         ],
     ];
 

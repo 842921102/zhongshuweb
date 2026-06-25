@@ -312,7 +312,7 @@
     productCardsWrap.innerHTML = items.map(function (item) {
       var hrefRaw = productTrigger ? buildCategoryUrl(productTrigger.getAttribute('href'), item.key || '') : '';
       var href = escapeHtml(hrefRaw || '#');
-      var image = escapeHtml(item.cover_image || '/home/images/smart-equipment.jpg');
+      var image = escapeHtml(item.cover_image || '/home-assets/69eb54ef2b236.png');
       var name = escapeHtml(item.label || '');
       var subtitle = escapeHtml(item.subtitle || '');
 
@@ -354,7 +354,7 @@
     }
     if (productViewAll && productTrigger) {
       var baseUrl = productTrigger.getAttribute('href') || '';
-      productViewAll.setAttribute('href', buildCategoryUrl(baseUrl, 'all:' + categoryKey));
+      productViewAll.setAttribute('href', buildCategoryUrl(baseUrl, categoryKey));
     }
     renderProductCards(categoryKey);
   }

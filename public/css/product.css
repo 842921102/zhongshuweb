@@ -75,6 +75,43 @@
   border-radius: 2px 2px 0 0;
 }
 
+/* 二级分类 Tab — 胶囊样式，缩进于一级下方 */
+.product-tabs-bar--sub {
+  padding-top: 12px;
+  padding-bottom: 4px;
+}
+
+.product-catalog-tabs--sub {
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 0;
+}
+
+.product-catalog-tab--sub {
+  padding: 8px 16px;
+  border: 1px solid var(--product-border);
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 1.2;
+  background: #fff;
+}
+
+.product-catalog-tab--sub:hover {
+  border-color: var(--product-primary);
+  color: var(--product-primary);
+}
+
+.product-catalog-tab--sub.is-active {
+  border-color: var(--product-primary);
+  color: #fff;
+  background: var(--product-primary);
+  font-weight: 500;
+}
+
+.product-catalog-tab--sub.is-active::after {
+  display: none;
+}
+
 /* 产品列表区 */
 .product-page-body {
   padding: 36px 0 80px;
@@ -221,6 +258,10 @@
   text-align: center;
   font-size: 15px;
   color: var(--product-muted);
+}
+
+.product-empty--error {
+  color: #b42318;
 }
 
 .product-card-enter {

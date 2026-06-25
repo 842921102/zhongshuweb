@@ -8,7 +8,7 @@
     @if($case->meta_description)
         <meta name="description" content="{{ $case->meta_description }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/case-studies.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/case-studies.css') }}">
 @endpush
 
 <article class="cs-page cs-detail">

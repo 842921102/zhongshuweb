@@ -1,6 +1,6 @@
 @php
-    $logoDefault = media_url(\App\Models\SiteSetting::get('header_logo_default'), asset('home-assets/69f053450ed94.png'));
-    $logoScrolled = media_url(\App\Models\SiteSetting::get('header_logo_scrolled'), asset('home-assets/69f026d932c50.png'));
+    $logoDefault = media_url($headerLogoDefault ?? null, asset('home-assets/69f053450ed94.png'));
+    $logoScrolled = media_url($headerLogoScrolled ?? null, asset('home-assets/69f026d932c50.png'));
     $productNavJson = $productNavJson ?? ['categories' => [], 'children' => [], 'labels' => ['view_all' => '查看全部']];
     $productCategories = $productNavJson['categories'] ?? [];
     $navMenus = $navMenus ?? collect();
@@ -25,6 +25,15 @@
                 @if($menu->isProductMega())
                     @if(count($productCategories))
                         @include('home.partials.nav-product-mega', ['menu' => $menu, 'productCategories' => $productCategories])
+                    @else
+                        <div class="site-header__nav-link-wrap">
+                            <a class="site-header__nav-link"
+                               href="{{ localized_route('products.index', [], $locale ?? null) }}"
+                               data-route="product"
+                               data-search="产品 product">
+                                <span>{{ $menu->label }}</span>
+                            </a>
+                        </div>
                     @endif
                 @else
                     <div class="site-header__nav-link-wrap">

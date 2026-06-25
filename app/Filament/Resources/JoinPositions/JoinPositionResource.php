@@ -6,6 +6,7 @@ use App\Filament\Resources\JoinPositions\Pages\CreateJoinPosition;
 use App\Filament\Resources\JoinPositions\Pages\EditJoinPosition;
 use App\Filament\Resources\JoinPositions\Pages\ListJoinPositions;
 use App\Models\JoinPosition;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -15,8 +16,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -63,12 +64,10 @@ class JoinPositionResource extends Resource
                 TextColumn::make('title')->label('岗位')->searchable(),
                 TextColumn::make('category.name')->label('分类')->badge(),
                 TextColumn::make('location')->label('地点'),
-                IconColumn::make('is_active')->label('启用')->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ])
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions())
             ->headerActions([
                 \Filament\Actions\CreateAction::make()->label('新增岗位'),
             ]);

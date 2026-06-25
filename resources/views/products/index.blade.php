@@ -12,14 +12,17 @@
 
 @push('head')
     <title>{{ $pageTitle }}</title>
+    @if($bannerPc)
+        <link rel="preload" as="image" href="{{ $bannerPc }}">
+    @endif
     @if($pageSettings->meta_description)
         <meta name="description" content="{{ $pageSettings->meta_description }}">
     @endif
     @if($pageSettings->meta_keywords)
         <meta name="keywords" content="{{ $pageSettings->meta_keywords }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/product-banner.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/product.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/product-banner.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/product.css') }}">
 @endpush
 
 @push('scripts')
@@ -27,8 +30,8 @@
     <script>
         window.productIndexUrl = @json(route('products.index', request()->only('lang')));
     </script>
-    <script src="{{ asset('js/product-banner.js') }}" defer></script>
-    <script src="{{ asset('js/product.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/product-banner.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/product.js') }}" defer></script>
 @endpush
 
 @section('content')
@@ -44,24 +47,46 @@
         ])
     </section>
 
+    @if($catalogTabsEnabled && $catalogTabs->isNotEmpty())
     <div class="product-tabs-bar">
         <div class="product-shell">
-            <div class="product-catalog-tabs" id="productCatalogTabs" role="tablist" aria-label="产品分类筛选">
+            <div class="product-catalog-tabs product-catalog-tabs--root" id="productCatalogTabs" role="tablist" aria-label="产品一级分类">
                 <button type="button"
-                        class="product-catalog-tab {{ str_starts_with($activeCatalogTab, 'all:') ? 'is-active' : '' }}"
-                        data-category="all:{{ $activeSeriesKey }}"
+                        class="product-catalog-tab {{ $activeRoot === 'all' ? 'is-active' : '' }}"
+                        data-root="all"
                         role="tab"
-                        aria-selected="{{ str_starts_with($activeCatalogTab, 'all:') ? 'true' : 'false' }}">{{ $labels['all'] }}</button>
-                @foreach($activeRoot?->children ?? [] as $child)
+                        aria-selected="{{ $activeRoot === 'all' ? 'true' : 'false' }}">{{ $labels['all'] }}</button>
+                @foreach($catalogTabs as $root)
                     <button type="button"
-                            class="product-catalog-tab {{ $activeCatalogTab === $child->domKey() ? 'is-active' : '' }}"
-                            data-category="{{ $child->domKey() }}"
+                            class="product-catalog-tab {{ $activeRoot === $root->domKey() ? 'is-active' : '' }}"
+                            data-root="{{ $root->domKey() }}"
                             role="tab"
-                            aria-selected="{{ $activeCatalogTab === $child->domKey() ? 'true' : 'false' }}">{{ $child->name }}</button>
+                            aria-selected="{{ $activeRoot === $root->domKey() ? 'true' : 'false' }}">{{ $root->name }}</button>
                 @endforeach
             </div>
         </div>
     </div>
+    <div class="product-tabs-bar product-tabs-bar--sub" id="productCatalogSubTabsBar" @if($activeRoot === 'all' || $catalogSubTabs->isEmpty()) hidden @endif>
+        <div class="product-shell">
+            <div class="product-catalog-tabs product-catalog-tabs--sub" id="productCatalogSubTabs" role="tablist" aria-label="产品二级分类">
+                @if($activeRoot !== 'all')
+                    <button type="button"
+                            class="product-catalog-tab product-catalog-tab--sub {{ $activeSub === 'all' ? 'is-active' : '' }}"
+                            data-sub="all"
+                            role="tab"
+                            aria-selected="{{ $activeSub === 'all' ? 'true' : 'false' }}">{{ $labels['all'] }}</button>
+                    @foreach($catalogSubTabs as $child)
+                        <button type="button"
+                                class="product-catalog-tab product-catalog-tab--sub {{ $activeSub === $child->domKey() ? 'is-active' : '' }}"
+                                data-sub="{{ $child->domKey() }}"
+                                role="tab"
+                                aria-selected="{{ $activeSub === $child->domKey() ? 'true' : 'false' }}">{{ $child->name }}</button>
+                    @endforeach
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
 
     <section class="product-page-body" id="productCatalog">
         <div class="product-shell">

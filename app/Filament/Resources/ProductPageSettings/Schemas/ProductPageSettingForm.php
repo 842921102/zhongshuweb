@@ -8,6 +8,7 @@ use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -53,6 +54,12 @@ class ProductPageSettingForm
                         TextInput::make('all_label')->label('分类 Tab「全部」')->default('全部'),
                         TextInput::make('detail_label')->label('卡片「查看详情」')->default('查看详情'),
                         TextInput::make('catalog_empty')->label('无产品 / 下拉无数据提示')->default('暂无产品数据')->columnSpanFull(),
+                        Toggle::make('catalog_tabs_enabled')
+                            ->label('显示产品中心分类 Tab 栏')
+                            ->default(true)
+                            ->helperText('关闭后 /products 页 Banner 下方整行分类 Tab 不显示（仍可按「全部」展示产品列表）')
+                            ->inline(false)
+                            ->columnSpanFull(),
                     ])->columns(2),
                 ]),
                 Tab::make('详情页文案')->schema([

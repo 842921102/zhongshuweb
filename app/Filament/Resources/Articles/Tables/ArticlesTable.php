@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\Articles\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -31,15 +29,9 @@ class ArticlesTable
                     ->badge()
                     ->color('success')
                     ->sortable(),
-                IconColumn::make('is_published')
-                    ->label('已发布')
-                    ->boolean(),
-                IconColumn::make('is_featured')
-                    ->label('主推')
-                    ->boolean(),
-                IconColumn::make('is_home_show')
-                    ->label('首页')
-                    ->boolean(),
+                ToggleColumn::make('is_published')->label('已发布'),
+                ToggleColumn::make('is_featured')->label('主推'),
+                ToggleColumn::make('is_home_show')->label('首页'),
                 TextColumn::make('views')
                     ->label('浏览')
                     ->numeric()
@@ -60,13 +52,7 @@ class ArticlesTable
                     ->label('语言')
                     ->options(['zh-cn' => '中文', 'en-us' => 'English']),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\Roles\Tables;
 
-use Filament\Actions\BulkActionGroup;
+use App\Support\Filament\ResourceTableActions;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Actions\ReplicateAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -40,18 +41,19 @@ class RolesTable
                     ->dateTime('Y-m-d H:i')
                     ->sortable(),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->before(function ($records): void {
-                            if ($records->contains(fn ($record) => $record->is_system)) {
-                                throw new \RuntimeException('系统内置角色不可删除。');
-                            }
-                        }),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(
+                configureDelete: fn (DeleteAction $action) => $action
+                    ->hidden(fn ($record): bool => (bool) $record->is_system),
+                configureReplicate: fn (ReplicateAction $action) => $action
+                    ->hidden(fn ($record): bool => (bool) $record->is_system),
+            ))
+            ->toolbarActions(ResourceTableActions::toolbarActions(
+                configureBulkDelete: fn (DeleteBulkAction $action) => $action
+                    ->before(function ($records): void {
+                        if ($records->contains(fn ($record) => $record->is_system)) {
+                            throw new \RuntimeException('系统内置角色不可删除。');
+                        }
+                    }),
+            ));
     }
 }

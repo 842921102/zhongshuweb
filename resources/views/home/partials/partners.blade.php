@@ -25,7 +25,7 @@
 
     @if($statistics->isNotEmpty())
         <div class="partners__band">
-            <img src="{{ asset('home-assets/home-partners-bg.png') }}" alt="合作伙伴数据背景" aria-hidden="true">
+            <img src="{{ asset('home-assets/home-partners-bg.png') }}" alt="合作伙伴数据背景" aria-hidden="true" loading="lazy" decoding="async">
             <div class="site-shell">
                 <div class="partners__stats" role="list">
                     @foreach($statistics as $stat)

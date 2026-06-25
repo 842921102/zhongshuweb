@@ -19,162 +19,110 @@ class ProductPageService
      */
     public function indexData(?string $categoryParam = null): array
     {
+        $layout = new SiteLayoutService($this->locale);
+        $shared = $layout->shared();
+
         $settings = ProductPageSetting::forLocale($this->locale);
         $labels = $settings->listLabels();
+        $roots = $shared['navCategories'];
 
-        $roots = Category::query()
-            ->forLocale($this->locale)
-            ->active()
-            ->roots()
-            ->with(['children' => fn ($q) => $q->active()->orderBy('sort_order')])
-            ->orderBy('sort_order')
-            ->get();
+        $activeRoot = 'all';
+        $activeSub = null;
+        [$activeRoot, $activeSub] = $this->resolveCategorySelection($categoryParam, $roots);
 
-        $products = Product::query()
-            ->forLocale($this->locale)
-            ->active()
-            ->with('category.parent')
-            ->orderBy('sort_order')
-            ->orderBy('id')
-            ->get();
+        $catalogProducts = $this->loadCatalogProducts($activeRoot, $activeSub, $roots);
 
-        [$activeSeriesKey, $activeCatalogTab] = $this->resolveCategorySelection($categoryParam, $roots);
+        $catalogTabsEnabled = (bool) $settings->catalog_tabs_enabled;
+        $catalogTabs = $catalogTabsEnabled ? $roots : collect();
+        $catalogSubTabs = $this->catalogSubTabsForRoot($activeRoot, $roots);
 
-        $seriesProducts = $this->productsForSeries($products, $activeSeriesKey, $roots);
-        $catalogProducts = $this->productsForCatalogTab($seriesProducts, $activeCatalogTab, $activeSeriesKey);
-
-        $activeRoot = $roots->first(fn (Category $r) => $r->domKey() === $activeSeriesKey) ?? $roots->first();
-
-        return array_merge((new SiteLayoutService($this->locale))->shared(), [
+        return array_merge($shared, [
             'pageSettings' => $settings,
             'labels' => $labels,
-            'activeSeriesKey' => $activeSeriesKey,
-            'activeCatalogTab' => $activeCatalogTab,
             'activeRoot' => $activeRoot,
+            'activeSub' => $activeSub,
+            'catalogTabsEnabled' => $catalogTabsEnabled,
+            'catalogTabs' => $catalogTabs,
+            'catalogSubTabs' => $catalogSubTabs,
             'catalogProducts' => $catalogProducts,
-            'productPageJson' => $this->buildClientJson($roots, $products, $labels, $activeSeriesKey, $activeCatalogTab),
+            'productPageJson' => $this->buildClientJson(
+                $roots,
+                $catalogProducts,
+                $labels,
+                $activeRoot,
+                $activeSub,
+                $catalogTabsEnabled,
+            ),
         ]);
     }
 
     /**
-     * @return array{0: string, 1: string}
+     * @return array{products: list<array<string, mixed>>}
      */
-    private function resolveCategorySelection(?string $param, Collection $roots): array
+    public function catalogJson(?string $categoryParam = null): array
     {
-        $firstRoot = $roots->first();
-        $defaultSeries = $firstRoot?->domKey() ?? 'category-0';
-        $defaultTab = 'all:'.$defaultSeries;
+        $roots = (new SiteLayoutService($this->locale))->shared()['navCategories'];
+        [$activeRoot, $activeSub] = $this->resolveCategorySelection($categoryParam, $roots);
+        $products = $this->loadCatalogProducts($activeRoot, $activeSub, $roots);
 
-        if (blank($param)) {
-            return [$defaultSeries, $defaultTab];
-        }
+        return [
+            'products' => $this->mapProductRows($products),
+        ];
+    }
 
-        if (str_starts_with($param, 'all:')) {
-            $seriesKey = substr($param, 4);
+    /**
+     * @param  Collection<int, Category>  $roots
+     * @return Collection<int, Product>
+     */
+    private function loadCatalogProducts(string $activeRoot, ?string $activeSub, Collection $roots): Collection
+    {
+        $query = $this->catalogProductQuery();
 
-            return [$seriesKey, $param];
-        }
+        if ($activeRoot !== 'all') {
+            $root = $roots->first(fn (Category $r) => $r->domKey() === $activeRoot);
+            if (! $root) {
+                return collect();
+            }
 
-        if (! str_starts_with($param, 'category-')) {
-            $cat = Category::query()->forLocale($this->locale)->where('slug', $param)->first();
-            if ($cat) {
-                $param = $cat->domKey();
+            $categoryIds = $root->children->pluck('id')->push($root->id)->all();
+
+            if (filled($activeSub) && $activeSub !== 'all') {
+                $sub = $root->children->first(fn (Category $c) => $c->domKey() === $activeSub);
+                if (! $sub) {
+                    return collect();
+                }
+                $query->where('category_id', $sub->id);
+            } else {
+                $query->whereIn('category_id', $categoryIds);
             }
         }
 
-        $category = Category::query()
+        return $query->get();
+    }
+
+  /** @return \Illuminate\Database\Eloquent\Builder<Product> */
+    private function catalogProductQuery()
+    {
+        return Product::query()
             ->forLocale($this->locale)
-            ->with('parent')
-            ->get()
-            ->first(fn (Category $c) => $c->domKey() === $param);
-
-        if (! $category) {
-            return [$defaultSeries, $defaultTab];
-        }
-
-        if ($category->isRoot()) {
-            return [$category->domKey(), 'all:'.$category->domKey()];
-        }
-
-        $parent = $category->parent;
-
-        return [$parent?->domKey() ?? $defaultSeries, $category->domKey()];
+            ->active()
+            ->with(['category.parent'])
+            ->select([
+                'id', 'category_id', 'name', 'subtitle', 'model_no', 'slug',
+                'cover_image', 'home_image', 'metrics', 'detail_url',
+                'sort_order', 'locale', 'is_active',
+            ])
+            ->orderBy('sort_order')
+            ->orderBy('id');
     }
 
     /**
      * @param  Collection<int, Product>  $products
-     * @param  Collection<int, Category>  $roots
-     * @return Collection<int, Product>
+     * @return list<array<string, mixed>>
      */
-    private function productsForSeries(Collection $products, string $seriesKey, Collection $roots): Collection
+    private function mapProductRows(Collection $products): array
     {
-        $root = $roots->first(fn (Category $r) => $r->domKey() === $seriesKey);
-        if (! $root) {
-            return collect();
-        }
-
-        $childIds = $root->children->pluck('id')->all();
-
-        return $products->filter(function (Product $p) use ($root, $childIds): bool {
-            $cat = $p->category;
-            if (! $cat) {
-                return false;
-            }
-
-            return $cat->id === $root->id
-                || $cat->parent_id === $root->id
-                || in_array($cat->id, $childIds, true);
-        })->values();
-    }
-
-    /**
-     * @param  Collection<int, Product>  $seriesProducts
-     * @return Collection<int, Product>
-     */
-    private function productsForCatalogTab(Collection $seriesProducts, string $tab, string $seriesKey): Collection
-    {
-        if (str_starts_with($tab, 'all:')) {
-            return $seriesProducts;
-        }
-
-        return $seriesProducts->filter(
-            fn (Product $p) => $p->category && $p->category->domKey() === $tab
-        )->values();
-    }
-
-    /**
-     * @param  Collection<int, Category>  $roots
-     * @param  Collection<int, Product>  $products
-     * @param  array<string, string>  $labels
-     * @return array<string, mixed>
-     */
-    private function buildClientJson(
-        Collection $roots,
-        Collection $products,
-        array $labels,
-        string $activeSeriesKey,
-        string $activeCatalogTab,
-    ): array {
-        $mapCategory = function (Category $c, int $level): array {
-            return [
-                'id' => $c->id,
-                'parent_id' => $c->parent_id ?? 0,
-                'level' => $level,
-                'key' => $c->domKey(),
-                'label' => $c->name,
-                'subtitle' => $c->subtitle,
-                'description' => $c->description ?? $c->subtitle,
-                'icon' => MediaUrl::resolve($c->icon, ''),
-                'cover_image' => MediaUrl::resolve($c->cover_image, ''),
-            ];
-        };
-
-        $megaChildren = [];
-        foreach ($roots as $root) {
-            $megaChildren[$root->domKey()] = $root->children->map(fn (Category $c) => $mapCategory($c, 2))->values()->all();
-        }
-
-        $productRows = $products->map(function (Product $p): array {
+        return $products->map(function (Product $p): array {
             $cat = $p->category;
 
             return [
@@ -191,13 +139,127 @@ class ProductPageService
                 'detailHref' => $p->url(),
             ];
         })->values()->all();
+    }
+
+    /**
+     * @return array{0: string, 1: string|null}
+     */
+    private function resolveCategorySelection(?string $param, Collection $roots): array
+    {
+        if (blank($param) || $param === 'all') {
+            return ['all', null];
+        }
+
+        if (str_starts_with($param, 'all:')) {
+            $rootKey = substr($param, 4);
+
+            if (blank($rootKey) || $rootKey === 'all') {
+                return ['all', null];
+            }
+
+            if ($roots->contains(fn (Category $r) => $r->domKey() === $rootKey)) {
+                return [$rootKey, 'all'];
+            }
+
+            return ['all', null];
+        }
+
+        if (! str_starts_with($param, 'category-')) {
+            $cat = Category::query()
+                ->forLocale($this->locale)
+                ->active()
+                ->where('slug', $param)
+                ->first();
+            if ($cat) {
+                $param = $cat->domKey();
+            }
+        }
+
+        $category = Category::query()
+            ->forLocale($this->locale)
+            ->active()
+            ->with('parent')
+            ->where(function ($query) use ($param): void {
+                if (str_starts_with($param, 'category-') && is_numeric(substr($param, 9))) {
+                    $query->where('id', (int) substr($param, 9));
+                } else {
+                    $query->where('slug', $param);
+                }
+            })
+            ->first();
+
+        if (! $category) {
+            return ['all', null];
+        }
+
+        if ($category->isRoot()) {
+            return [$category->domKey(), 'all'];
+        }
+
+        $parentKey = $category->parent?->domKey();
+
+        if (! $parentKey || ! $roots->contains(fn (Category $r) => $r->domKey() === $parentKey)) {
+            return ['all', null];
+        }
+
+        return [$parentKey, $category->domKey()];
+    }
+
+    /**
+     * @param  Collection<int, Category>  $roots
+     * @return Collection<int, Category>
+     */
+    private function catalogSubTabsForRoot(string $activeRoot, Collection $roots): Collection
+    {
+        if ($activeRoot === 'all') {
+            return collect();
+        }
+
+        $root = $roots->first(fn (Category $r) => $r->domKey() === $activeRoot);
+
+        return $root?->children
+            ->filter(fn (Category $child) => $child->show_in_catalog)
+            ->values() ?? collect();
+    }
+
+    /**
+     * @param  Collection<int, Category>  $roots
+     * @param  Collection<int, Product>  $products
+     * @param  array<string, string>  $labels
+     * @return array<string, mixed>
+     */
+    private function buildClientJson(
+        Collection $roots,
+        Collection $products,
+        array $labels,
+        string $activeRoot,
+        ?string $activeSub,
+        bool $catalogTabsEnabled = true,
+    ): array {
+        $catalogChildren = [];
+        foreach ($roots as $root) {
+            $catalogChildren[$root->domKey()] = $root->children
+                ->filter(fn (Category $child) => $child->show_in_catalog)
+                ->map(fn (Category $child): array => [
+                    'key' => $child->domKey(),
+                    'label' => $child->name,
+                ])
+                ->values()
+                ->all();
+        }
 
         return [
-            'megaChildren' => $megaChildren,
-            'products' => $productRows,
-            'initialCategory' => $activeSeriesKey,
-            'initialCatalogCategory' => $activeCatalogTab,
+            'catalogRoots' => $roots->map(fn (Category $root): array => [
+                'key' => $root->domKey(),
+                'label' => $root->name,
+            ])->values()->all(),
+            'catalogChildren' => $catalogChildren,
+            'products' => $this->mapProductRows($products),
+            'initialRoot' => $activeRoot,
+            'initialSub' => $activeSub,
+            'catalogTabsEnabled' => $catalogTabsEnabled,
             'labels' => $labels,
+            'catalogApiUrl' => localized_route('api.products.catalog', [], $this->locale, false),
         ];
     }
 

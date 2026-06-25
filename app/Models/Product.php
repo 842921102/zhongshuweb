@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\HasOverlayCopyColors;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 #[Fillable([
-    'category_id', 'name', 'slug', 'model_no', 'subtitle', 'summary', 'meta_title', 'meta_description', 'metrics',
+    'category_id', 'name', 'slug', 'model_no', 'subtitle', 'overlay_title_color', 'overlay_subtitle_color', 'summary', 'meta_title', 'meta_description', 'metrics',
     'cover_image', 'cover_image_mobile', 'home_image', 'home_image_mobile', 'hero_video', 'hero_poster',
     'showcase_images', 'detail_hero_image', 'detail_hero_image_mobile', 'detail_gallery', 'detail_features',
     'spec_groups', 'spec_document', 'rights_content', 'contact_bg_image', 'contact_bg_image_mobile',
@@ -20,6 +21,7 @@ use Illuminate\Support\Str;
 class Product extends Model
 {
     use HasLocale;
+    use HasOverlayCopyColors;
 
     protected function casts(): array
     {

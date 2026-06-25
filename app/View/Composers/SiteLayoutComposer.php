@@ -9,11 +9,14 @@ class SiteLayoutComposer
 {
     /** @var list<string> */
     private const SHARED_KEYS = [
+        'locale',
         'navMenus',
         'productNavJson',
         'footer',
         'siteName',
         'siteDescription',
+        'headerLogoDefault',
+        'headerLogoScrolled',
     ];
 
     public function compose(View $view): void

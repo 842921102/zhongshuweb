@@ -22,6 +22,15 @@ class ProductController extends Controller
         ));
     }
 
+    public function catalog(Request $request): JsonResponse
+    {
+        $locale = current_lang();
+
+        return response()->json(
+            (new ProductPageService($locale))->catalogJson($request->query('category'))
+        );
+    }
+
     public function show(Request $request, string $product): View
     {
         $locale = current_lang();
@@ -37,14 +46,21 @@ class ProductController extends Controller
     public function consult(Request $request, string $product): JsonResponse
     {
         $locale = current_lang();
-        $data = (new ProductPageService($locale))->showData($product);
 
-        if ($data === null) {
+        $productModel = Product::query()
+            ->forLocale($locale)
+            ->active()
+            ->where(function ($q) use ($product): void {
+                $q->where('slug', $product);
+                if (is_numeric($product)) {
+                    $q->orWhere('id', (int) $product);
+                }
+            })
+            ->first();
+
+        if ($productModel === null) {
             return response()->json(['message' => '产品不存在'], 404);
         }
-
-        /** @var Product $productModel */
-        $productModel = $data['product'];
 
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:80'],

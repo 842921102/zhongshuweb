@@ -3,16 +3,20 @@
 namespace App\Filament\Resources\SupportVideos;
 
 use App\Filament\Resources\SupportVideos\Pages\ManageSupportVideos;
+use App\Filament\Resources\SupportVideos\Schemas\SupportVideoForm;
 use App\Models\SupportVideo;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Actions\EditAction;
+use Filament\Actions\ReplicateAction;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -32,33 +36,45 @@ class SupportVideoResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make('title')->label('标题')->required()->maxLength(200),
-            FileUpload::make('cover_image')->label('封面图（PC / 默认）')->image()->directory('support/videos')->disk('public'),
-            FileUpload::make('cover_image_mobile')->label('封面图（手机端，可选）')->image()->directory('support/videos')->disk('public')->columnSpanFull(),
-            FileUpload::make('video_url')->label('视频 MP4')->acceptedFileTypes(['video/mp4', 'video/webm'])->directory('support/videos')->disk('public')->required()->columnSpanFull(),
-            TextInput::make('duration_label')->label('时长')->placeholder('02:00'),
-            TextInput::make('tag')->label('标签')->placeholder('宣传视频'),
-            TextInput::make('sort_order')->label('排序')->numeric()->default(0),
-            Toggle::make('is_active')->label('启用')->default(true),
-            TextInput::make('locale')->label('语言')->default('zh-cn'),
-        ]);
+        return SupportVideoForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                ImageColumn::make('cover_image')->label('封面')->height(40),
-                TextColumn::make('title')->label('标题')->searchable(),
-                TextColumn::make('play_count')->label('播放量'),
-                TextColumn::make('sort_order')->label('排序'),
+                ImageColumn::make('cover_image')->label('封面')->disk(upload_disk())->height(40),
+                TextColumn::make('title')->label('标题')->searchable()->sortable(),
+                TextColumn::make('tag')->label('标签')->toggleable(),
+                TextColumn::make('duration_label')->label('时长')->toggleable(),
+                TextColumn::make('play_count')->label('播放量')->sortable(),
+                TextColumn::make('sort_order')->label('排序')->sortable(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->defaultSort('sort_order')
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->filters([
+                TernaryFilter::make('is_active')->label('启用'),
+                SelectFilter::make('locale')
+                    ->label('语言')
+                    ->options(['zh-cn' => '中文', 'en-us' => 'English']),
+            ])
+            ->recordActions(ResourceTableActions::recordActions(
+                configureEdit: fn (EditAction $action) => $action
+                    ->fillForm(fn (SupportVideo $record): array => SupportVideoForm::fillFormState($record))
+                    ->using(function (SupportVideo $record, array $data): SupportVideo {
+                        $record->update(SupportVideoForm::normalizePersistedData($data));
+
+                        return $record;
+                    }),
+                configureReplicate: fn (ReplicateAction $action) => $action
+                    ->mutateRecordDataUsing(function (array $data): array {
+                        $data = ResourceTableActions::mutateReplicaData($data);
+                        $data['play_count'] = 0;
+
+                        return $data;
+                    }),
+            ))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

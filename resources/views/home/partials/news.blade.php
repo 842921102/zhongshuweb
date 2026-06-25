@@ -15,7 +15,7 @@
                         <x-responsive-image
                             :pc="$article->cover_image"
                             :mobile="$article->cover_image_mobile"
-                            fallback="home-assets/69eb3db6a3bc9.png"
+                            fallback="/home-assets/69eb3db6a3bc9.png"
                             :alt="$article->title"
                             loading="lazy"
                         />

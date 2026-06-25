@@ -13,8 +13,22 @@ use Illuminate\Support\Collection;
 
 class SiteLayoutService
 {
+    /** @var array<string, array<string, mixed>> */
+    private static array $sharedByLocale = [];
+
     /** @var list<string> */
     private const FOOTER_GROUP_ORDER = ['products', 'solutions', 'about'];
+
+    public static function clearRequestCache(?string $locale = null): void
+    {
+        if ($locale !== null) {
+            unset(self::$sharedByLocale[$locale]);
+
+            return;
+        }
+
+        self::$sharedByLocale = [];
+    }
 
     public function __construct(
         public string $locale = 'zh-cn',
@@ -27,6 +41,18 @@ class SiteLayoutService
      */
     public function shared(): array
     {
+        if (isset(self::$sharedByLocale[$this->locale])) {
+            return self::$sharedByLocale[$this->locale];
+        }
+
+        return self::$sharedByLocale[$this->locale] = $this->buildShared();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildShared(): array
+    {
         $navCategories = Category::query()
             ->forLocale($this->locale)
             ->active()
@@ -37,11 +63,14 @@ class SiteLayoutService
 
         return [
             'locale' => $this->locale,
+            'navCategories' => $navCategories,
             'navMenus' => SiteNavMenu::headerMenus($this->locale),
             'productNavJson' => $this->productNavJson($navCategories),
             'footer' => $this->footerData(),
             'siteName' => SiteSetting::get('site_name', '众鼠科技'),
             'siteDescription' => SiteSetting::get('site_description', ''),
+            'headerLogoDefault' => SiteSetting::get('header_logo_default'),
+            'headerLogoScrolled' => SiteSetting::get('header_logo_scrolled'),
         ];
     }
 

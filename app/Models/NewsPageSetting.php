@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,19 +14,23 @@ use Illuminate\Database\Eloquent\Model;
 class NewsPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
 
-    public static function forLocale(string $locale = 'zh-cn'): self
+    protected static function booted(): void
     {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            [
-                'meta_title' => '新闻资讯 - 众鼠智能',
-                'meta_description' => '新闻资讯 - 众鼠智能最新动态、产品发布与行业深度资讯',
-                'meta_keywords' => '众鼠智能,新闻资讯,新能源商用车,环卫车辆,行业动态',
-                'banner_height' => 450,
-                'read_more_label' => '阅读全文',
-                'all_category_label' => '全部',
-            ]
-        );
+        static::bootRemembersLocaleRow();
+    }
+
+    /** @return array<string, mixed> */
+    public static function defaultAttributes(): array
+    {
+        return [
+            'meta_title' => '新闻资讯 - 众鼠智能',
+            'meta_description' => '新闻资讯 - 众鼠智能最新动态、产品发布与行业深度资讯',
+            'meta_keywords' => '众鼠智能,新闻资讯,新能源商用车,环卫车辆,行业动态',
+            'banner_height' => 640,
+            'read_more_label' => '阅读全文',
+            'all_category_label' => '全部',
+        ];
     }
 }

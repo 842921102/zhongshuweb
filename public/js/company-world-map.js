@@ -9,6 +9,7 @@
   var fallbackImg = mapSvg.parentElement && mapSvg.parentElement.querySelector('.about-global__map-fallback');
   var width = Number(mapSvg.getAttribute('data-map-width')) || 1100;
   var height = Number(mapSvg.getAttribute('data-map-height')) || 550;
+  var started = false;
 
   if (!landGroup || !topoUrl) {
     return;
@@ -70,45 +71,67 @@
     });
   }
 
-  ensureLibraries()
-    .then(function () {
-      return fetch(topoUrl);
-    })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error('topojson load failed');
-      }
-      return response.json();
-    })
-    .then(function (world) {
-      var countries = topojson.feature(world, world.objects.countries);
-      var features = countries.features.filter(function (feature) {
-        return !isAntarctica(feature);
+  function initMap() {
+    if (started) {
+      return;
+    }
+    started = true;
+
+    ensureLibraries()
+      .then(function () {
+        return fetch(topoUrl);
+      })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('topojson load failed');
+        }
+        return response.json();
+      })
+      .then(function (world) {
+        var countries = topojson.feature(world, world.objects.countries);
+        var features = countries.features.filter(function (feature) {
+          return !isAntarctica(feature);
+        });
+        var land = { type: 'FeatureCollection', features: features };
+        var padding = 4;
+        var projection = d3
+          .geoNaturalEarth1()
+          .fitExtent(
+            [
+              [padding, padding],
+              [width - padding, height - padding],
+            ],
+            land
+          );
+        var path = d3.geoPath(projection);
+
+        d3.select(landGroup)
+          .selectAll('path')
+          .data(features)
+          .join('path')
+          .attr('class', 'about-global__country')
+          .attr('d', path);
+
+        positionMarkers(projection);
+        mapSvg.classList.add('is-map-ready');
+      })
+      .catch(function () {
+        showFallback();
       });
-      var land = { type: 'FeatureCollection', features: features };
-      var padding = 4;
-      var projection = d3
-        .geoNaturalEarth1()
-        .fitExtent(
-          [
-            [padding, padding],
-            [width - padding, height - padding],
-          ],
-          land
-        );
-      var path = d3.geoPath(projection);
+  }
 
-      d3.select(landGroup)
-        .selectAll('path')
-        .data(features)
-        .join('path')
-        .attr('class', 'about-global__country')
-        .attr('d', path);
-
-      positionMarkers(projection);
-      mapSvg.classList.add('is-map-ready');
-    })
-    .catch(function () {
-      showFallback();
-    });
+  var section = mapSvg.closest('.about-global');
+  if ('IntersectionObserver' in window && section) {
+    var observer = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          obs.disconnect();
+          initMap();
+        }
+      });
+    }, { rootMargin: '240px 0px' });
+    observer.observe(section);
+  } else {
+    initMap();
+  }
 })();

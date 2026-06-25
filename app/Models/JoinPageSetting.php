@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,13 +25,11 @@ use Illuminate\Database\Eloquent\Model;
 class JoinPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
 
-    public static function forLocale(string $locale = 'zh-cn'): self
+    protected static function booted(): void
     {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            static::defaultAttributes()
-        );
+        static::bootRemembersLocaleRow();
     }
 
     /** @return array<string, mixed> */

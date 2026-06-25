@@ -585,3 +585,42 @@ html.fi {
 .fi-simple-main {
     padding-bottom: 52px !important;
 }
+
+/* —— 列表表格行间距收紧 —— */
+.fi-ta-text:not(.fi-inline),
+.fi-ta-image:not(.fi-inline) {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.fi-ta-text.fi-ta-text-has-descriptions:not(.fi-ta-text-has-badges) {
+    gap: 2px !important;
+}
+
+.fi-ta-text > .fi-ta-text-description {
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+}
+
+.fi-ta-cell:has(.fi-ta-actions) {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* —— 产品分类层级列表 —— */
+.category-tree-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline-start: 1.25rem;
+}
+
+.category-tree-glyph {
+    color: var(--admin-text-muted);
+    font-size: 13px;
+    line-height: 1;
+}
+
+.fi-ta-row:has(.category-tree-child) {
+    background-color: #fafbfc;
+}

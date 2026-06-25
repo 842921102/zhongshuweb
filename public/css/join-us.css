@@ -12,7 +12,7 @@
   --join-bg: #f8fafc;
   --join-green-soft: rgba(0, 168, 90, 0.1);
   --join-shadow: 0 24px 60px rgba(16, 24, 40, 0.1);
-  --join-shell: min(1200px, calc(100% - 48px));
+  --join-shell: var(--site-page-shell);
 }
 
 .join-main {
@@ -29,7 +29,6 @@
 
 /* Hero */
 .join-hero {
-  min-height: 86vh;
   display: flex;
   align-items: center;
   color: #fff;

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CompanyTeamMembers;
 
 use App\Filament\Resources\CompanyTeamMembers\Pages\ManageCompanyTeamMembers;
 use App\Models\CompanyTeamMember;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -12,8 +13,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -63,14 +64,13 @@ class CompanyTeamMemberResource extends Resource
             ->columns([
                 TextColumn::make('name')->label('姓名'),
                 TextColumn::make('role')->label('职位'),
-                IconColumn::make('is_featured')->label('置顶')->boolean(),
+                ToggleColumn::make('is_featured')->label('置顶'),
+                ToggleColumn::make('is_active')->label('启用'),
                 TextColumn::make('sort_order')->label('排序'),
             ])
             ->defaultSort('sort_order')
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

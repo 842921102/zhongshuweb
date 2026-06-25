@@ -6,6 +6,7 @@ use App\Filament\Resources\JoinPageSettings\Pages\EditJoinPageSetting;
 use App\Filament\Resources\JoinPageSettings\Pages\ListJoinPageSettings;
 use App\Filament\Resources\JoinPageSettings\Schemas\JoinPageSettingForm;
 use App\Models\JoinPageSetting;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -38,9 +39,9 @@ class JoinPageSettingResource extends Resource
     {
         return $table->columns([
             \Filament\Tables\Columns\TextColumn::make('meta_title')->label('标题'),
-        ])->recordActions([
-            \Filament\Actions\EditAction::make(),
-        ]);
+        ])
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

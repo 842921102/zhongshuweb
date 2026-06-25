@@ -44,25 +44,13 @@ body.company-about-page {
 }
 
 .about-banner__media {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
-  height: min(560px, 68vh);
-  min-height: 240px;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-}
-
-@media (min-width: 768px) {
-  .about-banner__media {
-    min-height: 360px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .about-banner__media {
-    min-height: 420px;
-    max-height: min(560px, 68vh);
-  }
 }
 
 /* Sections */

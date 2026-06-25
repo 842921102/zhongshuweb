@@ -27,18 +27,18 @@
     @if($metaDescription)
         <meta name="description" content="{{ $metaDescription }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/product-banner.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/product-detail.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/product-banner.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/product-detail.css') }}">
 @endpush
 
 @push('scripts')
     <script id="productDetailData" type="application/json">@json($detailPageJson)</script>
-    <script src="{{ asset('js/product-banner.js') }}" defer></script>
-    <script src="{{ asset('js/product-detail.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/product-banner.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/product-detail.js') }}" defer></script>
 @endpush
 
 @section('content')
-<main class="productdetail-main new_xz">
+<div class="productdetail-main new_xz">
     <section class="product-hero product-hero--with-copy">
         @include('products.partials.banner', [
             'imagePc' => $heroImage,
@@ -89,7 +89,7 @@
                     <div class="showcase-stage">
                         <div class="showcase-stage-media">
                             <a id="showcaseMainLink" class="showcase-stage-link is-disabled" href="javascript:void(0);" aria-disabled="true" tabindex="-1">
-                                <img id="showcaseMainImage" src="{{ $showcaseSlides[0]['image'] }}" alt="{{ $showcaseSlides[0]['alt'] }}" loading="lazy" decoding="async">
+                                <img id="showcaseMainImage" src="{{ $showcaseSlides[0]['image'] }}" alt="{{ $showcaseSlides[0]['alt'] }}" fetchpriority="high" decoding="async">
                             </a>
                             @if(count($showcaseSlides) > 1)
                                 <button type="button" class="showcase-arrow showcase-arrow-prev" id="showcasePrev" aria-label="上一张">
@@ -332,5 +332,5 @@
             </form>
         </div>
     </section>
-</main>
+</div>
 @endsection

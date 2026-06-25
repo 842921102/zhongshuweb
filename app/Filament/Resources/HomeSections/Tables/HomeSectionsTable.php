@@ -3,11 +3,9 @@
 namespace App\Filament\Resources\HomeSections\Tables;
 
 use App\Models\HomeSection;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -50,9 +48,7 @@ class HomeSectionsTable
                 TextColumn::make('locale')
                     ->label('语言')
                     ->badge(),
-                IconColumn::make('is_enabled')
-                    ->label('显示')
-                    ->boolean(),
+                ToggleColumn::make('is_enabled')->label('显示'),
             ])
             ->filters([
                 SelectFilter::make('locale')
@@ -61,13 +57,7 @@ class HomeSectionsTable
                 TernaryFilter::make('is_enabled')
                     ->label('前台显示'),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

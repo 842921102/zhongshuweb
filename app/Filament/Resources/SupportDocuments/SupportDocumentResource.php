@@ -3,16 +3,17 @@
 namespace App\Filament\Resources\SupportDocuments;
 
 use App\Filament\Resources\SupportDocuments\Pages\ManageSupportDocuments;
+use App\Filament\Resources\SupportDocuments\Schemas\SupportDocumentForm;
 use App\Models\SupportDocument;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -32,34 +33,33 @@ class SupportDocumentResource extends Resource
 
     public static function form(Schema $schema): Schema
     {
-        return $schema->components([
-            TextInput::make('title')->label('文档名称')->required()->maxLength(200),
-            TextInput::make('category')->label('分类')->required()->placeholder('产品手册'),
-            TextInput::make('version')->label('版本')->placeholder('v1.0'),
-            TextInput::make('published_label')->label('发布月份')->placeholder('2026-04'),
-            TextInput::make('page_count')->label('页数')->numeric(),
-            FileUpload::make('file_path')->label('PDF 文件')->acceptedFileTypes(['application/pdf'])->directory('support/docs')->disk('public')->required()->columnSpanFull(),
-            TextInput::make('file_size_label')->label('文件大小展示')->placeholder('26KB'),
-            TextInput::make('sort_order')->label('排序')->numeric()->default(0),
-            Toggle::make('is_active')->label('启用')->default(true),
-            TextInput::make('locale')->label('语言')->default('zh-cn'),
-        ]);
+        return SupportDocumentForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('title')->label('名称')->searchable(),
-                TextColumn::make('category')->label('分类'),
-                TextColumn::make('published_label')->label('月份'),
-                TextColumn::make('sort_order')->label('排序'),
+                TextColumn::make('title')->label('名称')->searchable()->sortable(),
+                TextColumn::make('category')->label('分类')->sortable(),
+                TextColumn::make('version')->label('版本')->toggleable(),
+                TextColumn::make('published_label')->label('月份')->toggleable(),
+                TextColumn::make('file_size_label')->label('大小')->toggleable(),
+                TextColumn::make('sort_order')->label('排序')->sortable(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->defaultSort('sort_order')
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->filters([
+                SelectFilter::make('category')
+                    ->label('分类')
+                    ->options(fn (): array => SupportDocumentForm::categoryOptions()),
+                TernaryFilter::make('is_active')->label('启用'),
+                SelectFilter::make('locale')
+                    ->label('语言')
+                    ->options(['zh-cn' => '中文', 'en-us' => 'English']),
+            ])
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

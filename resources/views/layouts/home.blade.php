@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $siteDescription ?: '众鼠科技 - 全场景智能清洁设备服务商' }}">
-    <title>{{ $siteName ?? '众鼠科技' }}</title>
-    <link rel="stylesheet" href="{{ asset('home-assets/home-common.css') }}">
-    <link rel="stylesheet" href="{{ asset('home-assets/home.css') }}">
-    <link rel="stylesheet" href="{{ asset('home-assets/overlay-cleanup.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/home-fullpage.css') }}">
+    @stack('head')
+    <link rel="stylesheet" href="{{ versioned_asset('home-assets/home-common.css') }}">
+    @if(request()->routeIs('home'))
+        <link rel="stylesheet" href="{{ versioned_asset('home-assets/home.css') }}">
+        <link rel="stylesheet" href="{{ versioned_asset('css/home-fullpage.css') }}">
+    @endif
+    <link rel="stylesheet" href="{{ versioned_asset('home-assets/overlay-cleanup.css') }}">
     <style>
         :root {
             --theme-default-color: #00A85A;
@@ -17,10 +18,10 @@
             --theme-default-button-border-color: transparent;
         }
     </style>
-    @stack('head')
-    <link rel="stylesheet" href="{{ asset('css/site-responsive.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/site-typography.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/site-footer.css') }}">
+    @stack('preload')
+    <link rel="stylesheet" href="{{ versioned_asset('css/site-responsive.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/site-typography.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/site-footer.css') }}">
 </head>
 <body class="site-layout has-immersive-header @if(request()->routeIs('home')) is-home-index home-page @endif @yield('body_class')">
 <div class="site-layout @if(request()->routeIs('home')) is-home-index home-page @endif">
@@ -31,8 +32,10 @@
     </main>
     @include('home.partials.footer')
 </div>
-<script src="{{ asset('home-assets/site-layout.js') }}" defer></script>
-<script src="{{ asset('home-assets/home.js') }}" defer></script>
+<script src="{{ versioned_asset('home-assets/site-layout.js') }}" defer></script>
+@if(request()->routeIs('home'))
+    <script src="{{ versioned_asset('home-assets/home.js') }}" defer></script>
+@endif
 @stack('scripts')
 </body>
 </html>

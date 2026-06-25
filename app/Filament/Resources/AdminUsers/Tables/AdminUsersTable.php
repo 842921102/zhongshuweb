@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\AdminUsers\Tables;
 
-use Filament\Actions\BulkActionGroup;
+use App\Support\Filament\ResourceTableActions;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -37,20 +37,19 @@ class AdminUsersTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->before(function ($records): void {
-                            $currentUserId = auth()->id();
+            ->recordActions(ResourceTableActions::recordActions(
+                configureDelete: fn (DeleteAction $action) => $action
+                    ->hidden(fn ($record): bool => $record->id === auth()->id()),
+            ))
+            ->toolbarActions(ResourceTableActions::toolbarActions(
+                configureBulkDelete: fn (DeleteBulkAction $action) => $action
+                    ->before(function ($records): void {
+                        $currentUserId = auth()->id();
 
-                            if ($records->contains(fn ($record) => $record->id === $currentUserId)) {
-                                throw new \RuntimeException('不能删除当前登录账号。');
-                            }
-                        }),
-                ]),
-            ]);
+                        if ($records->contains(fn ($record) => $record->id === $currentUserId)) {
+                            throw new \RuntimeException('不能删除当前登录账号。');
+                        }
+                    }),
+            ));
     }
 }

@@ -28,7 +28,10 @@ class SupportPageSettingForm
                     Section::make('顶部 Banner')->schema([
                         FileUpload::make('hero_image_pc')->label('PC 横图')->image()->directory('support/hero')->disk('public')->maxSize(10240)->columnSpanFull(),
                         FileUpload::make('hero_image_mobile')->label('手机图（可选）')->image()->directory('support/hero')->disk('public')->maxSize(10240)->columnSpanFull(),
-                        TextInput::make('hero_height')->label('高度(px)')->numeric()->default(450),
+                        TextInput::make('hero_height')->label('高度(px)')->numeric()->default(640),
+                        TextInput::make('hero_eyebrow')->label('Banner 眉标')->maxLength(120)->columnSpanFull(),
+                        TextInput::make('hero_title')->label('Banner 主标题')->maxLength(200)->columnSpanFull(),
+                        Textarea::make('hero_subtitle')->label('Banner 副标题')->rows(2)->columnSpanFull(),
                     ]),
                 ]),
                 Tab::make('文档区')->schema([

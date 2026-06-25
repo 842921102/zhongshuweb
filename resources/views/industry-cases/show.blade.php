@@ -23,11 +23,11 @@
     @elseif($heroSummary)
         <meta name="description" content="{{ Str::limit($heroSummary, 160) }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/industry-cases.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/industry-cases.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/industry-cases-detail.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/industry-cases-detail.js') }}" defer></script>
 @endpush
 
 <div class="ic-detail">

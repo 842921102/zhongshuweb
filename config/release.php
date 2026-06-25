@@ -5,9 +5,9 @@
  */
 return [
 
-    'version' => env('APP_RELEASE_VERSION', '2026.05.26.2'),
+    'version' => env('APP_RELEASE_VERSION', '2026.05.26.3'),
 
-    'label' => env('APP_RELEASE_LABEL', '首页模块排序、全站页脚统一、合作伙伴横排'),
+    'label' => env('APP_RELEASE_LABEL', '首页关于我们叠层布局与字号优化'),
 
     'published_at' => env('APP_RELEASE_AT'),
 

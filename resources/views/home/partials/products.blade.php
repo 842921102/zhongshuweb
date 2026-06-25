@@ -31,12 +31,12 @@
                                 :alt="$featured->name"
                             />
                             <div class="products__feature-content">
-                                <h3>{{ $featured->model_no ?: $featured->name }}</h3>
-                                <p>{{ $featured->subtitle ?: $featured->name }}</p>
-                                <strong>{{ $panel['tab']->name }}</strong>
-                                @if($featured->detail_url)
-                                    <a class="button button--primary bts" href="{{ $featured->detail_url }}">进一步了解</a>
-                                @endif
+                                <div class="products__feature-panel overlay-copy"@if($style = $featured->overlayCopyStyle()) style="{{ $style }}"@endif>
+                                    <h3>{{ $featured->model_no ?: $featured->name }}</h3>
+                                    <p>{{ $featured->subtitle ?: $featured->name }}</p>
+                                    <strong>{{ $panel['tab']->name }}</strong>
+                                    <a class="button button--primary bts" href="{{ $featured->url() }}">了解更多</a>
+                                </div>
                             </div>
                         </div>
                     @endif
@@ -49,10 +49,13 @@
                                     :alt="$product->name"
                                     loading="lazy"
                                 />
-                                <a class="product-mini-card__content" href="{{ $product->detail_url ?: '#' }}">
-                                    <h3>{{ $product->model_no ?: $product->name }}</h3>
-                                    <p>{{ $product->subtitle ?: $product->summary }}</p>
-                                </a>
+                                <div class="product-mini-card__content">
+                                    <div class="product-mini-card__panel overlay-copy"@if($style = $product->overlayCopyStyle()) style="{{ $style }}"@endif>
+                                        <h3>{{ $product->model_no ?: $product->name }}</h3>
+                                        <span>{{ $product->subtitle ?: $product->summary }}</span>
+                                        <a class="button button--primary button--small" href="{{ $product->url() }}">了解更多</a>
+                                    </div>
+                                </div>
                             </article>
                         @endforeach
                     </div>

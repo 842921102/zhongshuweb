@@ -30,9 +30,15 @@ class NewsPageService
             ->orderBy('sort_order')
             ->get();
 
-        $activeCategory = $categorySlug && $categorySlug !== 'all'
-            ? $categories->firstWhere('slug', $categorySlug)
-            : null;
+        $activeCategorySlug = 'all';
+        $activeCategory = null;
+
+        if ($categorySlug && $categorySlug !== 'all') {
+            $activeCategory = $categories->firstWhere('slug', $categorySlug);
+            if ($activeCategory) {
+                $activeCategorySlug = $categorySlug;
+            }
+        }
 
         $featuredQuery = Article::query()
             ->forLocale($this->locale)
@@ -70,7 +76,7 @@ class NewsPageService
         return array_merge((new SiteLayoutService($this->locale))->shared(), [
             'pageSettings' => $settings,
             'categories' => $categories,
-            'activeCategorySlug' => $categorySlug ?: 'all',
+            'activeCategorySlug' => $activeCategorySlug,
             'activeCategory' => $activeCategory,
             'featuredArticle' => $featured,
             'articles' => $articles,

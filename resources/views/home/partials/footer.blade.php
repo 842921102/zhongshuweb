@@ -50,7 +50,8 @@
                 </summary>
                 <div class="site-footer__accordion-body">
                     @foreach($links as $link)
-                        <a href="{{ localized_url($link->url ?: '#', $locale ?? null) }}">{{ $link->label }}</a>
+                        <a href="{{ localized_url($link->url ?: '#', $locale ?? null) }}"
+                           @if(str_starts_with($link->url ?? '', 'http')) target="_blank" rel="noopener noreferrer" @endif>{{ $link->label }}</a>
                     @endforeach
                 </div>
             </details>

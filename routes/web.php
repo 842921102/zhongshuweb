@@ -31,6 +31,7 @@ Route::get('/join-us', [JoinUsController::class, 'index'])->name('joinus.index')
 Route::post('/join-us/apply', [JoinUsController::class, 'apply'])->name('joinus.apply');
 
 Route::get('/support', [SupportController::class, 'index'])->name('support.index');
+Route::get('/support/documents/{document}/download', [SupportController::class, 'downloadDocument'])->name('support.document.download');
 Route::get('/support/region', [SupportController::class, 'region'])->name('support.region');
 Route::post('/support/submit', [SupportController::class, 'submit'])->name('support.submit');
 Route::post('/support/videos/{video}/play', [SupportController::class, 'videoPlay'])->name('support.video.play');

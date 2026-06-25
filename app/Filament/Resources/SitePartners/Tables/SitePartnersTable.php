@@ -3,12 +3,10 @@
 namespace App\Filament\Resources\SitePartners\Tables;
 
 use App\Models\SitePartner;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -45,12 +43,8 @@ class SitePartnersTable
                 TextColumn::make('locale')
                     ->label('语言')
                     ->badge(),
-                IconColumn::make('is_home_show')
-                    ->label('首页')
-                    ->boolean(),
-                IconColumn::make('is_active')
-                    ->label('启用')
-                    ->boolean(),
+                ToggleColumn::make('is_home_show')->label('首页'),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->filters([
                 SelectFilter::make('locale')
@@ -61,13 +55,7 @@ class SitePartnersTable
                 TernaryFilter::make('is_active')
                     ->label('启用'),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

@@ -5,7 +5,7 @@
 @php
     $bannerPc = media_url($pageSettings->banner_image_pc);
     $bannerMobile = media_url($pageSettings->banner_image_mobile) ?: $bannerPc;
-    $heroHeight = $pageSettings->banner_height ?: 450;
+    $heroHeight = $pageSettings->banner_height ?: 640;
     $pageTitle = $pageSettings->meta_title ?: ('新闻资讯 - '.$siteName);
 @endphp
 
@@ -17,23 +17,23 @@
     @if($pageSettings->meta_keywords)
         <meta name="keywords" content="{{ $pageSettings->meta_keywords }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/news.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/news.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/news.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/news.js') }}" defer></script>
 @endpush
 
 @section('content')
 <div class="news-main">
-    <section class="news-hero site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px">
+    <section class="news-hero site-page-banner" style="--site-page-banner-height: {{ $heroHeight }}px">
         <x-responsive-bg
             :pc="$pageSettings->banner_image_pc"
             :mobile="$pageSettings->banner_image_mobile"
             class="news-hero-media"
             aria-hidden="true"
         />
-        <div class="news-hero-container site-responsive-hero" style="height:{{ $heroHeight }}px;min-height:{{ $heroHeight }}px"></div>
+        <div class="news-hero-container"></div>
     </section>
 
     <section class="news-content">

@@ -81,12 +81,12 @@
   }
 
   .is-home-index .solutions-hero__content h3,
-  .is-home-index .solution-card__content h3 {
+  .is-home-index .solution-card__panel h3 {
     font-size: clamp(1.5rem, 6vw, 2.25rem);
   }
 
   .is-home-index .solutions-hero__content > p:last-of-type,
-  .is-home-index .solution-card__content span {
+  .is-home-index .solution-card__panel span {
     font-size: clamp(0.875rem, 3.5vw, 1rem);
   }
 

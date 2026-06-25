@@ -48,12 +48,29 @@ class BusinessCosSetting extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => static::flushResolvedInstance());
+        static::deleted(fn () => static::flushResolvedInstance());
+    }
+
+    private static ?self $resolvedInstance = null;
+
     public static function instance(): self
     {
-        return static::query()->firstOrCreate([], [
+        if (static::$resolvedInstance !== null) {
+            return static::$resolvedInstance;
+        }
+
+        return static::$resolvedInstance = static::query()->firstOrCreate([], [
             'region' => 'ap-guangzhou',
             'path_prefix' => 'uploads',
         ]);
+    }
+
+    public static function flushResolvedInstance(): void
+    {
+        static::$resolvedInstance = null;
     }
 
     /**

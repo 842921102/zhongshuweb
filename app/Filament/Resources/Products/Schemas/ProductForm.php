@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Filament\Support\OverlayCopyColorFields;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -62,6 +63,7 @@ class ProductForm
                             ->addActionLabel('添加参数')
                             ->columnSpanFull(),
                     ])->columns(2),
+                    OverlayCopyColorFields::section('用于首页产品 Tab 主图左下角文案区'),
                 ]),
                 Tab::make('详情 Banner')->schema([
                     Section::make()->description('与产品列表 Banner 组件相同；数据来自本页，非「产品中心页面」设置')->schema([

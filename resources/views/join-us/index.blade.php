@@ -18,7 +18,7 @@
     @if($s->meta_keywords)
         <meta name="keywords" content="{{ $s->meta_keywords }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/join-us.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/join-us.css') }}">
 @endpush
 
 @push('scripts')
@@ -30,12 +30,12 @@
             errorMessage: @json($s->form_error_message ?: '提交失败，请稍后重试'),
         };
     </script>
-    <script src="{{ asset('js/join-us.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/join-us.js') }}" defer></script>
 @endpush
 
 @section('content')
 <div class="join-main">
-    <section class="join-hero @if($heroBgStyle) has-responsive-bg @endif" @if($heroBgStyle) style="{{ $heroBgStyle }}" @endif>
+    <section class="join-hero site-page-banner @if($heroBgStyle) has-responsive-bg @endif" @if($heroBgStyle) style="{{ $heroBgStyle }}" @endif>
         <div class="join-shell">
             <div class="join-hero-content">
                 @if($s->hero_eyebrow)

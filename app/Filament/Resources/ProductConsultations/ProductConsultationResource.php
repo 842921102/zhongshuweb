@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProductConsultations;
 use App\Filament\Resources\ProductConsultations\Pages\EditProductConsultation;
 use App\Filament\Resources\ProductConsultations\Pages\ListProductConsultations;
 use App\Models\ProductConsultation;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -101,9 +102,8 @@ class ProductConsultationResource extends Resource
                     'closed' => '已关闭',
                 ]),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('处理'),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(replicate: false, editLabel: '处理'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

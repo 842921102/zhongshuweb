@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+HOST="${SERVER_HOST:-127.0.0.1}"
+PORT="${SERVER_PORT:-8000}"
+INI="${ROOT}/php-local.ini"
+ROUTER="${ROOT}/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php"
+
+cd "${ROOT}/public"
+
+echo "Starting Laravel dev server with php-local.ini (upload_max_filesize=32M)"
+echo "http://${HOST}:${PORT}"
+
+exec php -c "${INI}" -S "${HOST}:${PORT}" "${ROUTER}"

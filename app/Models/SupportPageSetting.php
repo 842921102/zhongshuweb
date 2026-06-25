@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Casts\JsonArrayCast;
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'locale', 'meta_title', 'meta_description', 'meta_keywords',
     'hero_image_pc', 'hero_image_mobile', 'hero_height',
+    'hero_eyebrow', 'hero_title', 'hero_subtitle',
     'docs_kicker', 'docs_title', 'videos_kicker', 'videos_title',
     'service_kicker', 'service_form_title',
     'contact_title', 'contact_phone_label', 'contact_phone',
@@ -19,6 +21,12 @@ use Illuminate\Database\Eloquent\Model;
 class SupportPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
+
+    protected static function booted(): void
+    {
+        static::bootRemembersLocaleRow();
+    }
 
     protected function casts(): array
     {
@@ -29,14 +37,6 @@ class SupportPageSetting extends Model
         ];
     }
 
-    public static function forLocale(string $locale = 'zh-cn'): self
-    {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            static::defaultAttributes($locale)
-        );
-    }
-
     /** @return array<string, mixed> */
     public static function defaultAttributes(string $locale): array
     {
@@ -44,9 +44,12 @@ class SupportPageSetting extends Model
             'meta_title' => '技术支持 - 众鼠智能',
             'meta_description' => '众鼠智能技术支持页面，提供技术文档下载、教学视频与售后服务申请。',
             'meta_keywords' => '众鼠智能,技术支持,PDF文档,教学视频,售后服务',
-            'hero_image_pc' => null,
-            'hero_image_mobile' => null,
-            'hero_height' => 450,
+            'hero_image_pc' => 'support/hero/support-hero-pc.jpg',
+            'hero_image_mobile' => 'support/hero/support-hero-mobile.jpg',
+            'hero_height' => 640,
+            'hero_eyebrow' => null,
+            'hero_title' => '技术支持中心',
+            'hero_subtitle' => null,
             'docs_kicker' => 'Documents · 产品资料文档',
             'docs_title' => 'PDF 技术文档下载',
             'videos_kicker' => 'VIDEO TUTORIALS · 教学视频',

@@ -6,6 +6,7 @@ use App\Filament\Resources\CompanyPageSettings\Pages\EditCompanyPageSetting;
 use App\Filament\Resources\CompanyPageSettings\Pages\ListCompanyPageSettings;
 use App\Filament\Resources\CompanyPageSettings\Schemas\CompanyPageSettingForm;
 use App\Models\CompanyPageSetting;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -43,9 +44,8 @@ class CompanyPageSettingResource extends Resource
                 \Filament\Tables\Columns\TextColumn::make('intro_title')->label('标题'),
                 \Filament\Tables\Columns\TextColumn::make('locale')->label('语言')->badge(),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('编辑'),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

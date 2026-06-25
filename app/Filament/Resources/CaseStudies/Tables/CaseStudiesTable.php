@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\CaseStudies\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -43,15 +41,9 @@ class CaseStudiesTable
                 TextColumn::make('locale')
                     ->label('语言')
                     ->badge(),
-                IconColumn::make('is_featured')
-                    ->label('精选')
-                    ->boolean(),
-                IconColumn::make('is_home_show')
-                    ->label('首页')
-                    ->boolean(),
-                IconColumn::make('is_active')
-                    ->label('启用')
-                    ->boolean(),
+                ToggleColumn::make('is_featured')->label('精选'),
+                ToggleColumn::make('is_home_show')->label('首页'),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->filters([
                 SelectFilter::make('category_id')
@@ -64,13 +56,7 @@ class CaseStudiesTable
                 TernaryFilter::make('is_home_show')->label('首页'),
                 TernaryFilter::make('is_active')->label('启用'),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

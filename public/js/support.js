@@ -26,19 +26,49 @@
     feedback.className = 'support-form-feedback' + (type ? ' is-' + type : '');
   }
 
-  /* Banner responsive */
-  var bannerImg = document.querySelector('[data-banner-img]');
-  if (bannerImg) {
-    function swapBanner() {
-      var mobile = bannerImg.getAttribute('data-banner-mobile');
-      var pc = bannerImg.getAttribute('data-banner-pc') || bannerImg.src;
-      bannerImg.src = window.innerWidth <= 640 && mobile ? mobile : pc;
+  /* Anchor smooth scroll */
+  document.querySelectorAll('a[href^="#support-"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href');
+      if (!id || id === '#') return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (history.replaceState) {
+        history.replaceState(null, '', id);
+      }
+    });
+  });
+
+  /* Document search */
+  var docSearch = document.getElementById('supportDocSearch');
+  var docList = document.getElementById('supportDocList');
+  var docSearchEmpty = document.getElementById('supportDocSearchEmpty');
+
+  if (docSearch && docList) {
+    var docCards = docList.querySelectorAll('.support-doc-row');
+
+    function filterDocs() {
+      var q = (docSearch.value || '').trim().toLowerCase();
+      var visible = 0;
+
+      docCards.forEach(function (card) {
+        var haystack = (card.getAttribute('data-search') || card.textContent || '').toLowerCase();
+        var match = !q || haystack.indexOf(q) !== -1;
+        card.classList.toggle('is-hidden', !match);
+        if (match) visible += 1;
+      });
+
+      if (docSearchEmpty) {
+        docSearchEmpty.hidden = !q || visible > 0;
+      }
     }
-    swapBanner();
-    window.addEventListener('resize', swapBanner);
+
+    docSearch.addEventListener('input', filterDocs);
+    docSearch.addEventListener('search', filterDocs);
   }
 
-  /* Nav active */
   /* Topic buttons */
   if (form) {
     var topicInput = form.querySelector('input[name="topic"]');

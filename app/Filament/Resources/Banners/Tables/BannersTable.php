@@ -2,12 +2,10 @@
 
 namespace App\Filament\Resources\Banners\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class BannersTable
@@ -34,17 +32,9 @@ class BannersTable
                 TextColumn::make('sort_order')
                     ->label('排序')
                     ->sortable(),
-                IconColumn::make('is_active')
-                    ->label('启用')
-                    ->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
-            ->recordActions([
-                EditAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

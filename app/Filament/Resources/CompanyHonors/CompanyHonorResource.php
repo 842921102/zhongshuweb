@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CompanyHonors;
 
 use App\Filament\Resources\CompanyHonors\Pages\ManageCompanyHonors;
 use App\Models\CompanyHonor;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -14,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -85,12 +87,11 @@ class CompanyHonorResource extends Resource
                         default => '其他',
                     }),
                 TextColumn::make('sort_order')->label('排序'),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->defaultSort('sort_order')
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

@@ -50,4 +50,10 @@ class SiteSocialLink extends Model
             'qr_image' => $this->qr_image,
         ];
     }
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => \App\Support\SiteLayoutCache::forget());
+        static::deleted(fn () => \App\Support\SiteLayoutCache::forget());
+    }
 }

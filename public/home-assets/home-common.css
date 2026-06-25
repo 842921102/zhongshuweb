@@ -30,6 +30,9 @@ html.is-product-dropdown-open {
   --home-radius-pill: 999px;
   --home-shell-width: 1600px;
   --home-shell-gap: 48px;
+  --site-page-shell: min(var(--home-shell-width), calc(100% - (var(--home-shell-gap) * 2)));
+  --site-page-banner-height: 640px;
+  --site-page-banner-max-height: 900px;
   --home-transition: 220ms ease;
   /* 全站断点（导航/Banner JS 用 968，见 site-layout.js） */
   --site-bp-nav: 968px;
@@ -81,8 +84,26 @@ ul {
 }
 
 .site-shell {
-  width: min(var(--home-shell-width), calc(100% - (var(--home-shell-gap) * 2)));
+  width: var(--site-page-shell);
   margin: 0 auto;
+}
+
+/* 内页 Banner 高度 — 与解决方案页一致 */
+.site-page-banner {
+  min-height: max(var(--site-page-banner-height, 640px), 72vh);
+  max-height: var(--site-page-banner-max-height, 900px);
+}
+
+@supports (height: 100dvh) {
+  .site-page-banner {
+    min-height: max(var(--site-page-banner-height, 640px), 85dvh);
+  }
+}
+
+@media (max-width: 767px) {
+  .site-page-banner {
+    min-height: max(var(--site-page-banner-height, 640px), 78vh);
+  }
 }
 
 .section {
@@ -168,6 +189,120 @@ ul {
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* 首页文案鼠标交互：品牌绿光晕 + 轻微视差 */
+.copy-interactive {
+  --copy-x: 50%;
+  --copy-y: 50%;
+  --copy-tilt-x: 0px;
+  --copy-tilt-y: 0px;
+  --copy-line-scale: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+.copy-interactive::before {
+  content: "";
+  position: absolute;
+  inset: -48px -72px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    480px circle at var(--copy-x) var(--copy-y),
+    rgba(0, 168, 90, 0.12) 0%,
+    rgba(0, 168, 90, 0.04) 38%,
+    transparent 68%
+  );
+  transition: opacity 420ms ease;
+}
+
+.copy-interactive.copy-interactive--on-dark::before {
+  background: radial-gradient(
+    520px circle at var(--copy-x) var(--copy-y),
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(0, 168, 90, 0.12) 36%,
+    transparent 70%
+  );
+}
+
+.copy-interactive.is-hover::before {
+  opacity: 1;
+}
+
+.copy-interactive h2,
+.copy-interactive h3,
+.copy-interactive p {
+  position: relative;
+  z-index: 1;
+  transition: transform 380ms cubic-bezier(0.23, 1, 0.32, 1), color 320ms ease, letter-spacing 320ms ease;
+}
+
+.copy-interactive h2,
+.copy-interactive h3 {
+  transform: translate3d(var(--copy-tilt-x), var(--copy-tilt-y), 0);
+}
+
+.copy-interactive p {
+  transform: translate3d(
+    calc(var(--copy-tilt-x) * 0.45),
+    calc(var(--copy-tilt-y) * 0.45),
+    0
+  );
+}
+
+.section-heading.copy-interactive.is-hover p {
+  letter-spacing: 0.04em;
+}
+
+.section-heading.copy-interactive h2 span {
+  position: relative;
+  display: inline-block;
+  transition: color 320ms ease, transform 320ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.section-heading.copy-interactive.is-hover h2 span {
+  color: var(--theme-default-color, #00a85a);
+  transform: scale(1.02);
+}
+
+.section-heading.copy-interactive h2 span::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--theme-default-color, #00a85a),
+    transparent
+  );
+  transform: scaleX(var(--copy-line-scale));
+  transform-origin: center;
+  transition: transform 450ms cubic-bezier(0.23, 1, 0.32, 1);
+  opacity: 0.9;
+}
+
+.copy-interactive--on-dark.is-hover h3 {
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copy-interactive::before {
+    display: none;
+  }
+
+  .copy-interactive h2,
+  .copy-interactive h3,
+  .copy-interactive p,
+  .section-heading.copy-interactive h2 span {
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 .site-header {
@@ -362,12 +497,46 @@ ul {
 }
 
 .site-header__nav-link {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   padding: 8px 0;
   color: inherit;
   transition: color var(--home-transition);
+}
+
+.site-header__nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--theme-default-color, var(--home-color-primary));
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.22s ease, opacity 0.22s ease;
+  opacity: 0;
+}
+
+.site-header__nav-link.is-active::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .site-header__nav-link:hover::after,
+  .site-header__nav-link:focus-visible::after {
+    transform: scaleX(1);
+    opacity: 0.72;
+  }
+
+  .site-header__nav-link.is-active:hover::after,
+  .site-header__nav-link.is-active:focus-visible::after {
+    opacity: 1;
+  }
 }
 
 .site-header__nav-link:hover,
@@ -394,6 +563,11 @@ ul {
 .site-header .site-header__nav-link--product-wrap .site-header__nav-link.is-active,
 .site-header .site-header__nav-link--product-wrap.is-open .site-header__nav-link {
   color: var(--theme-default-color, var(--home-color-primary));
+}
+
+.site-header .site-header__nav-link--product-wrap.is-open .site-header__nav-link::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 .site-header__nav-link img {

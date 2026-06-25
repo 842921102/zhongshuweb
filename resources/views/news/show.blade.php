@@ -6,7 +6,7 @@
     $pageTitle = $article->seo_title ?: ($article->title.' - 新闻资讯 - '.$siteName);
     $metaDescription = $article->seo_description ?: $article->listSummary(160);
     $coverUrl = media_url($article->cover_image);
-    $bannerHeight = $pageSettings->banner_height ?: 450;
+    $bannerHeight = $pageSettings->banner_height ?: 640;
 @endphp
 
 @push('head')
@@ -14,24 +14,24 @@
     @if($metaDescription)
         <meta name="description" content="{{ $metaDescription }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/news.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/news.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/news.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/news.js') }}" defer></script>
 @endpush
 
 @section('content')
 <div class="news-main newsdetail-main">
     @if($article->cover_image || $article->cover_image_mobile)
-        <section class="news-hero newsdetail-banner site-responsive-hero" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px">
+        <section class="news-hero newsdetail-banner site-page-banner" style="--site-page-banner-height: {{ $bannerHeight }}px">
             <x-responsive-bg
                 :pc="$article->cover_image"
                 :mobile="$article->cover_image_mobile"
                 class="news-hero-media newsdetail-banner-media"
                 aria-hidden="true"
             />
-            <div class="news-hero-container site-responsive-hero" style="height:{{ $bannerHeight }}px;min-height:{{ $bannerHeight }}px"></div>
+            <div class="news-hero-container"></div>
         </section>
     @endif
 

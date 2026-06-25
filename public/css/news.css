@@ -4,9 +4,11 @@
   --news-primary-dark: #008a4a;
   --news-dark: #101828;
   --news-text: #4b5563;
+  --news-text-soft: #4a5565;
   --news-muted: #6b7280;
   --news-border: #e5e7eb;
-  --news-shell: min(1200px, calc(100% - 48px));
+  --news-surface: #f3f4f6;
+  --news-shell: var(--site-page-shell);
 }
 
 .news-main {
@@ -30,6 +32,7 @@
 
 .news-hero-container {
   position: relative;
+  min-height: inherit;
 }
 
 /* Content area */
@@ -41,7 +44,7 @@
 .news-content-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #f9fafb 0%, #fff 120px);
+  background: var(--news-surface);
   pointer-events: none;
 }
 
@@ -52,43 +55,48 @@
   margin: 0 auto;
 }
 
-/* Category tabs */
+/* Category tabs — 与客户案例页 cs-filters 一致 */
 .news-category-tabs {
+  position: sticky;
+  top: 80px;
+  z-index: 20;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px 24px;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--news-border);
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 0 8px;
+  padding: 16px 0 24px;
+  background: var(--news-surface);
+  scrollbar-width: none;
+}
+
+.news-category-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .news-category-tab {
-  position: relative;
-  padding: 4px 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--news-muted);
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--news-text-soft);
   text-decoration: none;
-  transition: color 0.2s ease;
+  white-space: nowrap;
+  background: #fff;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
 }
 
 .news-category-tab:hover {
-  color: var(--news-dark);
-}
-
-.news-category-tab.is-active {
   color: var(--news-primary);
 }
 
-.news-category-tab.is-active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -21px;
-  height: 2px;
+.news-category-tab.is-active {
   background: var(--news-primary);
-  border-radius: 1px;
+  color: #fff;
+  font-weight: 500;
 }
 
 /* Featured card */

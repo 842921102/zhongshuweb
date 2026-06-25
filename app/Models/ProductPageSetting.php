@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Models\Concerns\RemembersLocaleRow;
 use App\Services\ProductPageService;
+use App\Support\SiteLayoutCache;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,25 +13,26 @@ use Illuminate\Database\Eloquent\Model;
     'locale', 'meta_title', 'meta_description', 'meta_keywords',
     'banner_media_type', 'banner_image_pc', 'banner_image_mobile',
     'banner_video_url', 'banner_video_poster',
-    'view_all_label', 'all_label', 'detail_label', 'catalog_empty',
+    'view_all_label', 'all_label', 'detail_label', 'catalog_empty', 'catalog_tabs_enabled',
     'detail_labels',
 ])]
 class ProductPageSetting extends Model
 {
     use HasLocale;
+    use RemembersLocaleRow;
 
-    public static function forLocale(string $locale = 'zh-cn'): self
+    protected static function booted(): void
     {
-        return static::query()->firstOrCreate(
-            ['locale' => $locale],
-            static::defaultAttributes()
-        );
+        static::bootRemembersLocaleRow();
+        static::saved(fn () => SiteLayoutCache::forget());
+        static::deleted(fn () => SiteLayoutCache::forget());
     }
 
     protected function casts(): array
     {
         return [
             'detail_labels' => 'array',
+            'catalog_tabs_enabled' => 'boolean',
         ];
     }
 
@@ -50,6 +53,8 @@ class ProductPageSetting extends Model
             'all_label' => '全部',
             'detail_label' => '查看详情',
             'catalog_empty' => '暂无产品数据',
+            'catalog_load_error' => '产品加载失败，请稍后重试',
+            'catalog_tabs_enabled' => true,
         ];
     }
 
@@ -71,6 +76,7 @@ class ProductPageSetting extends Model
             'all' => $this->all_label ?: $defaults['all_label'],
             'detail' => $this->detail_label ?: $defaults['detail_label'],
             'catalog_empty' => $this->catalog_empty ?: $defaults['catalog_empty'],
+            'catalog_load_error' => $defaults['catalog_load_error'],
         ];
     }
 

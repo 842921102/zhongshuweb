@@ -3,12 +3,10 @@
 namespace App\Filament\Resources\SiteNavMenus\Tables;
 
 use App\Models\SiteNavMenu;
-use Filament\Actions\BulkActionGroup;
+use App\Support\Filament\ResourceTableActions;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
@@ -46,9 +44,7 @@ class SiteNavMenusTable
                 TextColumn::make('locale')
                     ->label('语言')
                     ->badge(),
-                IconColumn::make('is_active')
-                    ->label('启用')
-                    ->boolean(),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->filters([
                 SelectFilter::make('menu_type')
@@ -60,21 +56,15 @@ class SiteNavMenusTable
                 TernaryFilter::make('is_active')
                     ->label('启用'),
             ])
-            ->recordActions([
-                EditAction::make()->label('编辑'),
-                DeleteAction::make()
-                    ->label('删除')
+            ->recordActions(ResourceTableActions::recordActions(
+                configureDelete: fn (DeleteAction $action) => $action
                     ->requiresConfirmation()
                     ->modalHeading('删除菜单')
                     ->modalDescription(fn (SiteNavMenu $record): string => $record->isSystem()
                         ? '这是系统内置菜单，删除后可通过顶部「同步默认菜单」恢复。确定删除吗？'
                         : '确定删除该菜单项吗？'),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->label('删除选中'),
-                ]),
-            ]);
+                editLabel: '编辑',
+            ))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 }

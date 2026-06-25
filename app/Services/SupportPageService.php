@@ -21,30 +21,39 @@ class SupportPageService
     {
         $settings = SupportPageSetting::forLocale($this->locale);
 
+        $categories = $settings->categoryFilters();
+        $activeFilter = filled($docType) ? $docType : 'all';
+        if ($activeFilter !== 'all' && ! array_key_exists($activeFilter, $categories)) {
+            $activeFilter = 'all';
+        }
+
         $documents = SupportDocument::query()
             ->forLocale($this->locale)
             ->active()
-            ->when(filled($docType) && $docType !== 'all', fn ($q) => $q->where('category', $docType))
+            ->when($activeFilter !== 'all', fn ($q) => $q->where('category', $activeFilter))
             ->orderBy('sort_order')
             ->orderByDesc('id')
             ->get();
 
-        $categories = $settings->categoryFilters();
-        $activeFilter = filled($docType) ? $docType : 'all';
+        $videos = SupportVideo::query()
+            ->forLocale($this->locale)
+            ->active()
+            ->orderBy('sort_order')
+            ->orderByDesc('id')
+            ->get();
 
         return array_merge((new SiteLayoutService($this->locale))->shared(), [
             'settings' => $settings,
             'documents' => $documents,
             'categories' => $categories,
             'activeDocFilter' => $activeFilter,
-            'videos' => SupportVideo::query()
-                ->forLocale($this->locale)
-                ->active()
-                ->orderBy('sort_order')
-                ->orderByDesc('id')
-                ->get(),
+            'videos' => $videos,
             'provinces' => ChinaRegions::provinces(),
             'pageData' => static::pageData($this->locale),
+            'docCount' => $activeFilter === 'all'
+                ? SupportDocument::query()->forLocale($this->locale)->active()->count()
+                : $documents->count(),
+            'videoCount' => $videos->count(),
         ]);
     }
 

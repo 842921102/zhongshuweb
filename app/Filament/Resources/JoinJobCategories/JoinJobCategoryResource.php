@@ -4,6 +4,7 @@ namespace App\Filament\Resources\JoinJobCategories;
 
 use App\Filament\Resources\JoinJobCategories\Pages\ManageJoinJobCategories;
 use App\Models\JoinJobCategory;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -11,8 +12,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -45,11 +46,10 @@ class JoinJobCategoryResource extends Resource
             TextColumn::make('sort_order')->label('排序')->width(70),
             TextColumn::make('name')->label('名称'),
             TextColumn::make('slug')->badge(),
-            IconColumn::make('is_active')->boolean(),
-        ])->recordActions([
-            \Filament\Actions\EditAction::make(),
-            \Filament\Actions\DeleteAction::make(),
-        ]);
+            ToggleColumn::make('is_active')->label('启用'),
+        ])
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

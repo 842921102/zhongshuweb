@@ -22,17 +22,17 @@
     @if($settings->meta_description)
         <meta name="description" content="{{ $settings->meta_description }}">
     @endif
-    <link rel="stylesheet" href="{{ asset('css/company-about.css') }}">
+    <link rel="stylesheet" href="{{ versioned_asset('css/company-about.css') }}">
 @endpush
 
 @push('scripts')
-    <script src="{{ asset('js/company-about.js') }}" defer></script>
+    <script src="{{ versioned_asset('js/company-about.js') }}" defer></script>
 @endpush
 
 <div class="about-page">
     {{-- 顶部 Banner（全宽原图/原视频，无遮罩） --}}
     @if($settings->showsBanner())
-    <section class="about-banner" aria-label="关于我们">
+    <section class="about-banner site-page-banner" aria-label="关于我们">
         @if($isVideo)
             <video class="about-banner__media"
                    autoplay muted loop playsinline
@@ -47,7 +47,7 @@
             <x-responsive-image
                 :pc="$settings->hero_media_url"
                 :mobile="$settings->hero_media_mobile"
-                fallback="home-assets/69e9ff102a425.jpg"
+                fallback="/home-assets/69e9ff102a425.jpg"
                 :alt="$settings->intro_title ?: '关于我们'"
                 class="about-banner__media"
                 fetchpriority="high"

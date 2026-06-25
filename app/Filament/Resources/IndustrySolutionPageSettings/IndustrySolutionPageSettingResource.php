@@ -6,6 +6,7 @@ use App\Filament\Resources\IndustrySolutionPageSettings\Pages\EditIndustrySoluti
 use App\Filament\Resources\IndustrySolutionPageSettings\Pages\ListIndustrySolutionPageSettings;
 use App\Filament\Resources\IndustrySolutionPageSettings\Schemas\IndustrySolutionPageSettingForm;
 use App\Models\IndustrySolutionPageSetting;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -41,9 +42,8 @@ class IndustrySolutionPageSettingResource extends Resource
                 \Filament\Tables\Columns\TextColumn::make('page_title')->label('页面标题'),
                 \Filament\Tables\Columns\TextColumn::make('locale')->label('语言')->badge(),
             ])
-            ->recordActions([
-                \Filament\Actions\EditAction::make()->label('编辑'),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions(editLabel: '编辑'))
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

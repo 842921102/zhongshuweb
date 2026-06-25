@@ -4,6 +4,7 @@ namespace App\Filament\Resources\CompanyCultureValues;
 
 use App\Filament\Resources\CompanyCultureValues\Pages\ManageCompanyCultureValues;
 use App\Models\CompanyCultureValue;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
@@ -13,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -61,12 +63,11 @@ class CompanyCultureValueResource extends Resource
                 TextColumn::make('label')->label('要义'),
                 TextColumn::make('subtitle')->label('副标题')->limit(24),
                 TextColumn::make('sort_order')->label('排序'),
+                ToggleColumn::make('is_active')->label('启用'),
             ])
             ->defaultSort('sort_order')
-            ->recordActions([
-                \Filament\Actions\EditAction::make(),
-                \Filament\Actions\DeleteAction::make(),
-            ]);
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasLocale;
+use App\Support\FileSize;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,15 @@ class SupportDocument extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::saving(function (SupportDocument $document): void {
+            if (filled($document->file_path) && blank($document->file_size_label)) {
+                $document->file_size_label = FileSize::labelForStoragePath($document->file_path);
+            }
+        });
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
@@ -31,6 +41,10 @@ class SupportDocument extends Model
 
     public function downloadUrl(): string
     {
-        return media_url($this->file_path) ?? '#';
+        if (blank($this->file_path)) {
+            return '#';
+        }
+
+        return localized_route('support.document.download', ['document' => $this->id]);
     }
 }

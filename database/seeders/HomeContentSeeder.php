@@ -61,9 +61,9 @@ class HomeContentSeeder extends Seeder
             ['key' => 'contact_address', 'value' => '上海市浦东新区成山路718弄1号T1栋906室', 'group' => 'footer', 'label' => '联系地址', 'type' => 'textarea'],
             ['key' => 'footer_copyright', 'value' => '© 2026 众鼠科技有限公司. All rights reserved', 'group' => 'footer', 'label' => '版权信息', 'type' => 'text'],
             ['key' => 'icp_number', 'value' => '京ICP备12345678号', 'group' => 'footer', 'label' => 'ICP备案号', 'type' => 'text'],
-            ['key' => 'header_logo_default', 'value' => '/home-assets/69f053450ed94.png', 'group' => 'header', 'label' => '顶部Logo(透明底)', 'type' => 'text'],
-            ['key' => 'header_logo_scrolled', 'value' => '/home-assets/69f026d932c50.png', 'group' => 'header', 'label' => '顶部Logo(滚动后)', 'type' => 'text'],
-            ['key' => 'footer_logo', 'value' => '/home-assets/69e9d8260dd85.png', 'group' => 'footer', 'label' => '页脚Logo', 'type' => 'text'],
+            ['key' => 'header_logo_default', 'value' => '/home-assets/69f053450ed94.png', 'group' => 'header', 'label' => '顶部Logo(透明底)', 'type' => 'image'],
+            ['key' => 'header_logo_scrolled', 'value' => '/home-assets/69f026d932c50.png', 'group' => 'header', 'label' => '顶部Logo(滚动后)', 'type' => 'image'],
+            ['key' => 'footer_logo', 'value' => '/home-assets/69e9d8260dd85.png', 'group' => 'footer', 'label' => '页脚Logo', 'type' => 'image'],
         ];
 
         foreach ($settings as $row) {
@@ -97,7 +97,7 @@ class HomeContentSeeder extends Seeder
         foreach ($tabs as $i => [$parent, $slug, $name, $subtitle, $cover, $model, $homeImage, $featured, $productName]) {
             $cat = Category::query()->updateOrCreate(
                 ['slug' => $slug],
-                ['parent_id' => $parent->id, 'name' => $name, 'subtitle' => $subtitle, 'cover_image' => $cover, 'is_station_tab' => true, 'sort_order' => $i + 1]
+                ['parent_id' => $parent->id, 'name' => $name, 'subtitle' => $subtitle, 'cover_image' => $cover, 'is_station_tab' => true, 'show_in_catalog' => true, 'sort_order' => $i + 1]
             );
             Product::query()->updateOrCreate(
                 ['category_id' => $cat->id, 'name' => $productName],
@@ -176,7 +176,7 @@ class HomeContentSeeder extends Seeder
                 'page_title' => '客户案例',
                 'page_subtitle' => '全场景智能清洁设备在各类场景的成功应用，以可靠装备与数字化服务助力客户提升运营效率。',
                 'banner_image_pc' => '/home-assets/69eb39ed040f4.jpg',
-                'banner_height' => 420,
+                'banner_height' => 640,
                 'meta_title' => '客户案例 - 众鼠科技',
                 'meta_description' => '众鼠科技客户案例：环卫清扫、产业园区、产业基地等场景的项目落地与实践。',
             ]
@@ -313,7 +313,7 @@ class HomeContentSeeder extends Seeder
                 ['公司介绍', '/about'],
                 ['新闻资讯', '/news'],
                 ['加入我们', '/join-us'],
-                ['联系我们', '/about#contact'],
+                ['联系我们', '/join-us#contact'],
             ]],
         ];
 

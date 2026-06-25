@@ -63,6 +63,10 @@ class CaseStudyPageService
             $listQuery->where('category_id', $activeCategory->id);
         }
 
+        if ($featured->isNotEmpty()) {
+            $listQuery->whereNotIn('id', $featured->pluck('id'));
+        }
+
         /** @var LengthAwarePaginator<int, CaseStudy> $cases */
         $cases = $listQuery->paginate($perPage)->withQueryString();
 

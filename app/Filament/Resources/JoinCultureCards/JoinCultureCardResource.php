@@ -4,6 +4,7 @@ namespace App\Filament\Resources\JoinCultureCards;
 
 use App\Filament\Resources\JoinCultureCards\Pages\ManageJoinCultureCards;
 use App\Models\JoinCultureCard;
+use App\Support\Filament\ResourceTableActions;
 use BackedEnum;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -12,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
@@ -45,10 +47,10 @@ class JoinCultureCardResource extends Resource
             TextColumn::make('sort_order')->width(70),
             TextColumn::make('step_label')->label('步骤'),
             TextColumn::make('title')->label('标题'),
-        ])->recordActions([
-            \Filament\Actions\EditAction::make(),
-            \Filament\Actions\DeleteAction::make(),
-        ]);
+            ToggleColumn::make('is_active')->label('启用'),
+        ])
+            ->recordActions(ResourceTableActions::recordActions())
+            ->toolbarActions(ResourceTableActions::toolbarActions());
     }
 
     public static function getPages(): array
