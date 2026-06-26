@@ -61,7 +61,34 @@ class MediaUrl
             }
         }
 
-        return null;
+        // COS 已配置时：服务器 exists() 可能因网络/权限失败，仍生成公开访问 URL
+        return self::cosConfiguredPublicUrl($path);
+    }
+
+    /** COS 启用且配置完整时，按 path_prefix 拼接公开 URL（不依赖 exists 探测）。 */
+    public static function cosConfiguredPublicUrl(string $path): ?string
+    {
+        try {
+            $settings = \App\Models\BusinessCosSetting::instance();
+
+            if (! $settings->is_enabled || ! $settings->isConfigured()) {
+                return null;
+            }
+
+            $base = rtrim((string) $settings->publicBaseUrl(), '/');
+            if ($base === '') {
+                return null;
+            }
+
+            $relative = ltrim($path, '/');
+            $prefix = $settings->normalizedPathPrefix();
+
+            return $prefix !== ''
+                ? $base.'/'.$prefix.'/'.$relative
+                : $base.'/'.$relative;
+        } catch (Throwable) {
+            return null;
+        }
     }
 
     /** @return list<string> */
