@@ -17,6 +17,7 @@
                         :alt="$case->title"
                         class="case-card__base"
                         loading="lazy"
+                        :deferLoad="$index !== 0"
                     />
                     <div class="case-card__shade"></div>
                     <div class="case-card__content">

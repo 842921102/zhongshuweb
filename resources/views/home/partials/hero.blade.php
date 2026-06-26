@@ -17,13 +17,16 @@
                         data-banner-poster-mobile="{{ $posterMobile }}"
                         data-banner-video-pc="{{ $banner->videoPcUrl() }}"
                         data-banner-video-mobile="{{ $banner->videoMobileUrl() }}"
-                        @if($posterPc) poster="{{ $posterPc }}" @endif
+                        @if($posterPc && $isFirst) poster="{{ $posterPc }}" @endif
                         playsinline
                         muted
-                        preload="metadata"
+                        preload="{{ $isFirst ? 'metadata' : 'none' }}"
                         @if($isFirst) autoplay @endif
+                        @if(! $isFirst) data-deferred-video="1" @endif
                     >
-                        <source src="{{ $banner->videoPcUrl() }}" type="video/mp4">
+                        @if($isFirst)
+                            <source src="{{ $banner->videoPcUrl() }}" type="video/mp4">
+                        @endif
                     </video>
                 @else
                     @php
@@ -37,6 +40,8 @@
                             class="hero__image"
                             decorative
                             :fetchpriority="$isFirst ? 'high' : null"
+                            :deferLoad="! $isFirst"
+                            :decoding="$isFirst ? 'async' : null"
                         />
                     @endif
                 @endif

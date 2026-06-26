@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @stack('head')
+    @stack('preload')
     <link rel="stylesheet" href="{{ versioned_asset('home-assets/home-common.css') }}">
     @if(request()->routeIs('home'))
         <link rel="stylesheet" href="{{ versioned_asset('home-assets/home.css') }}">
@@ -18,7 +19,6 @@
             --theme-default-button-border-color: transparent;
         }
     </style>
-    @stack('preload')
     <link rel="stylesheet" href="{{ versioned_asset('css/site-responsive.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/site-typography.css') }}">
     <link rel="stylesheet" href="{{ versioned_asset('css/site-footer.css') }}">

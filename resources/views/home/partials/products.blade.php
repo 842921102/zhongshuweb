@@ -29,6 +29,8 @@
                                 :pc="$featured->displayImage()"
                                 :mobile="$featured->displayImageMobile()"
                                 :alt="$featured->name"
+                                :deferLoad="$index !== 0"
+                                :loading="$index !== 0 ? 'lazy' : null"
                             />
                             <div class="products__feature-content">
                                 <div class="products__feature-panel overlay-copy"@if($style = $featured->overlayCopyStyle()) style="{{ $style }}"@endif>
@@ -48,6 +50,7 @@
                                     :mobile="$product->displayImageMobile()"
                                     :alt="$product->name"
                                     loading="lazy"
+                                    :deferLoad="$index !== 0"
                                 />
                                 <div class="product-mini-card__content">
                                     <div class="product-mini-card__panel overlay-copy"@if($style = $product->overlayCopyStyle()) style="{{ $style }}"@endif>

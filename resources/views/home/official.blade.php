@@ -7,6 +7,20 @@
     @endif
 @endpush
 
+@push('preload')
+    @if(isset($banners) && $banners->isNotEmpty())
+        @php
+            $firstBanner = $banners->first();
+            $lcpImage = $firstBanner->isVideo()
+                ? ($firstBanner->posterPcUrl() ?: media_url($firstBanner->image))
+                : media_url($firstBanner->image, media_url($firstBanner->image_mobile));
+        @endphp
+        @if($lcpImage)
+            <link rel="preload" as="image" href="{{ $lcpImage }}" fetchpriority="high">
+        @endif
+    @endif
+@endpush
+
 @section('content')
     @foreach($orderedSections ?? \App\Models\HomeSection::sortedEnabled($sections ?? []) as $section)
         @php($partial = $section->partialView())
